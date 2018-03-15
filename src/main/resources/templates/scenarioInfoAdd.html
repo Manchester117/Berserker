@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ScenarioAdd</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-edit"></i> 新建场景 </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <form id="create_scenario_form" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="scenario_name" class="col-sm-1 control-label">场景名称: </label>
+                                <div class="col-sm-10">
+                                    <input id="scenario_name" class="form-control" name="scenarioName" value=""/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="scenario_name" class="col-sm-1 control-label">测试脚本: </label>
+                                <div class="col-sm-10">
+                                    <input id="script_file" name="scriptFile" type="file" class="file" data-show-preview="false"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="num_threads" class="col-sm-1 control-label">并发数量: </label>
+                                <div class="col-sm-10">
+                                    <input id="num_threads" class="form-control" name="numThreads" value=""/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ramp_up" class="col-sm-1 control-label">攀升时间: </label>
+                                <div class="col-sm-10">
+                                    <input id="ramp_up" class="form-control" name="rampUp" value=""/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration" class="col-sm-1 control-label">持续时间: </label>
+                                <div class="col-sm-10">
+                                    <input id="duration" class="form-control" name="duration" value=""/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="scenario_description" class="col-sm-1 control-label">场景描述: </label>
+                                <div class="col-sm-10">
+                                    <textarea id="scenario_description" class="form-control" rows="7" name="scenarioDescription"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-10">
+                                    <div class="pull-right">
+                                        <div class="btn-group">
+                                            <input id="create_scenario_button" type="button" class="btn btn-primary" value="创建"/>
+                                        </div>
+                                        <span>&nbsp;&nbsp;</span>
+                                        <div class="btn-group">
+                                            <input id="clear_scenario_button" type="button" class="btn btn-default" value="重置"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list-ol"></i> 添加参数文件 </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <form id="create_param_file_slot_list" method="post" enctype="multipart/form-data">
+                            <input id="scenario_id_input" type="hidden" name="scenarioId" value=""/>
+                            <div id="param_file_upload_list"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-10">
+                                    <div class="pull-right">
+                                        <div class="btn-group">
+                                            <input id="create_csv_data_set_button" type="button" class="btn btn-primary" value="保存场景"/>
+                                        </div>
+                                        <span>&nbsp;&nbsp;</span>
+                                        <div class="btn-group">
+                                            <input id="clear_csv_data_set_button" type="button" class="btn btn-default" value="重置"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-eye"></i> 脚本预览 </h3>
+                </div>
+                <div class="panel-body">
+                    <div id="create_script_tree" class="form-horizontal"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

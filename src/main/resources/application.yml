@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/bushmaster?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static/
+  http:
+    multipart:
+      enabled: true
+      max-file-size: 16MB
+      max-request-size: 24MB
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    enabled: true
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+    content-type: text/html
+    mode: HTML
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+server:
+  tomcat:
+    uri-encoding: UTF-8
+jmeterSetting:
+  jmeter-home: D:\Apache-jmeter-4.0
+  jmeter-properties: D:\Apache-jmeter-4.0\bin\jmeter.properties
+fileStorage:
+  script-folder-path: D:\ScriptStorage

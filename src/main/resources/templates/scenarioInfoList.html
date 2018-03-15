@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ScenarioList</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-folder-open"></i> 场景列表 </h3>
+                </div>
+                <div class="panel-body">
+                    <div id="search" class="form-inline">
+                        <div class="form-group">
+                            <label for="search_name">名称: </label>
+                            <input id="search_name" class="form-control input-sm" name="scenarioName" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="select_status">状态: </label>
+                            <input type="hidden" id="select_status_hidden" value=""/>
+                            <select id="select_status" class="selectpicker" name="status">
+                                <option value="">--</option>
+                                <option value="1">启用</option>
+                                <option value="0">停用</option>
+                            </select>
+                        </div>
+                        <button id="search_btn" type="button" class="btn btn-primary btn-sm">查询</button>
+                        <button id="reset_btn" type="button" class="btn btn-primary btn-sm">重置</button>
+                        <a href="/scenarioInfoAdd" id="add_btn" type="button" class="btn btn-primary btn-sm">新建</a>
+                    </div>
+                    <div id="list">
+                        <table id="scenario_list"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
