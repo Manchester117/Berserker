@@ -139,12 +139,11 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
         // 2.对上传脚本进行判断
         Map<String, Object> modifyScriptResult = null;
         if (Objects.nonNull(scriptFile)) {
-            // 对原有的参数文件进行删除
-            List<Map<String, Object>> modifyParamResult = paramFileService.delParamFileInfoByScenarioId(scenarioInfo.getId());
-            result.put("modifyParamResult", modifyParamResult);
             // 对脚本进行更新
             modifyScriptResult = scriptInfoService.modScriptInfo(scriptFile, scenarioInfo.getId());
             result.put("modifyScriptResult", modifyScriptResult);
+            List<Map<String, Object>> modifyParamResult = this.getCsvDataSetSlotList(scenarioInfo.getId());
+            result.put("modifyParamResult", modifyParamResult);
         }
         return result;
     }

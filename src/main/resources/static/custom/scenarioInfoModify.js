@@ -17,9 +17,18 @@ $modify_scenario_button.click(
             url: "/modScenarioInfo",
             type: "post",
             success: function(result){
-                if (result["modifyScenarioResult"] && result["modifyScriptResult"]) {
+                var modifyScenarioResult = result["modifyScenarioResult"];
+                var modifyScriptResult = result["modifyScriptResult"];
+                var modifyParamResult = result["modifyParamResult"];
+
+                if (modifyScenarioResult && modifyScriptResult) {
                     // 如果更新了脚本
-                    var successMsg = result["modifyScenarioResult"].message + '<br/>' + result["modifyScriptResult"].message;
+                    var successMsg = "";
+                    if (modifyParamResult.length > 0) {
+                        successMsg = modifyScenarioResult.message + '<br/>' + modifyScriptResult.message + "<br/>" + "请重新上传参数文件";
+                    } else {
+                        successMsg = modifyScenarioResult.message + '<br/>' + modifyScriptResult.message;
+                    }
                     bootbox.alert({
                         title: '提示',
                         message: successMsg,
@@ -28,7 +37,7 @@ $modify_scenario_button.click(
                             refreshScriptTreeView("/getScenarioScriptDataStructure", result);
                         }
                     });
-                } else if (result["modifyScenarioResult"] && !result["modifyScriptResult"]) {
+                } else if (modifyScenarioResult && !modifyScriptResult) {
                     // 如果脚本没有被更新
                     bootbox.alert({
                         title: '提示',
@@ -36,32 +45,27 @@ $modify_scenario_button.click(
                     });
                 } else {
                     // 如果遇到了其他问题
-                    if (result["errorMessages"]) {
+                    var errorMessages = result["paramErrors"];
+                    if (errorMessages) {
                         var errMsg = '';
-                        $.each(result["errorMessages"], function (index, data) {
-                            errMsg = errMsg + (index + 1) + '. ' + data + '<br/>';
-                        });
+                        for (var index = 0; index < errorMessages.length; index++) {
+                            errMsg = errMsg + errorMessages[index] + "<br/>";
+                        }
                         bootbox.alert({
-                            title: '错误',
-                            message: errMsg,
-                            ok: {
-                                className: 'btn-warning'
-                            }
+                            title: '警告',
+                            message: errMsg
                         });
                     } else {
                         bootbox.alert({
-                            title: '错误',
-                            message: "其他错误",
-                            ok: {
-                                className: 'btn-warning'
-                            }
+                            title: '警告',
+                            message: "不要重复提交场景"
                         });
                     }
                 }
             },
-            error: function(data) {
+            error: function() {
                 bootbox.alert({
-                    title: '错误',
+                    title: '警告',
                     message: "请求错误"
                 });
             }
@@ -140,17 +144,30 @@ $modify_csv_data_set_button.click(
             type: "post",
             success: function (result) {
                 var status = result.status;
+                var message = result.message;
                 if (status === "Success") {
+                    var insertParamFileMsg = "";
+                    var insertParamFileMsgList = result["insertParamFileResultList"];
+                    if (insertParamFileMsgList) {
+                        // 如果脚本中存在CSV Data Set
+                        for (var index = 0; index < insertParamFileMsgList.length; index++) {
+                            insertParamFileMsg = insertParamFileMsg + insertParamFileMsgList[index].message + ": " + insertParamFileMsgList[index].object + "<br/>";
+                        }
+                        message = "场景创建完毕" + "<br/>" + message + "<br/>" + insertParamFileMsg;
+                    } else {
+                        // 如果脚本中不存在CSV Data Set
+                        message = "场景创建完毕"
+                    }
                     bootbox.alert({
-                        title: "修改场景完毕",
-                        message: result.message,
+                        title: "提示",
+                        message: message,
                         callback: function () {
                             window.location.href = "/";             // 回到场景列表页
                         }
                     });
-                } else if (status === "Error") {
+                } else if (status === "Fail") {
                     bootbox.alert({
-                        title: "上传参数文件异常",
+                        title: "提示",
                         message: result.message
                     });
                 }

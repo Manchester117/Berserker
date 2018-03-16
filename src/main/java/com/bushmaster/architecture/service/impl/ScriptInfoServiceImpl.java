@@ -112,9 +112,10 @@ public class ScriptInfoServiceImpl implements ScriptInfoService{
         ScriptFileInfo newScriptInfo = fileUtil.scriptFileUpload(scriptFileUpload);     // 进行脚本上传操作,获取新的脚本对象
         newScriptInfo.setId(oldScriptInfo.getId());
         newScriptInfo.setScenarioId(modScenarioId);
-
+        // 更新DB中的记录
         int modScriptFlag = scriptMapper.modifyScriptFileInfo(newScriptInfo);
         Path oldScriptPath = Paths.get(URI.create(oldScriptInfo.getScriptFilePath()));
+        // 删除旧的文件夹
         Boolean deleteOldFolderFlag = fileUtil.deleteScriptFolder(oldScriptPath);
         if (modScriptFlag > 0 && deleteOldFolderFlag) {
             result.put("status", "Success");

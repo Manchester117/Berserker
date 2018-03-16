@@ -129,9 +129,10 @@ public class ParamFileServiceImpl implements ParamFileService{
     public List<Map<String, Object>> delParamFileInfoByScenarioId(Integer scenarioId) {
         List<Map<String, Object>> result = new ArrayList<>();
         List<ParamFileInfo> paramFileInfoList = paramMapper.getParamFileInfoListByScenarioId(scenarioId);
-        for (ParamFileInfo paramFileInfo: paramFileInfoList)
-            result.add(this.delParamFileInfo(paramFileInfo));
-
+        for (ParamFileInfo paramFileInfo: paramFileInfoList) {
+            Map<String, Object> delSingleParamFileResult = this.delParamFileInfo(paramFileInfo);
+            result.add(delSingleParamFileResult);
+        }
         return result;
     }
 }

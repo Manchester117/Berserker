@@ -8,6 +8,7 @@ import com.bushmaster.architecture.domain.entity.ScriptFileInfo;
 import com.bushmaster.architecture.domain.param.ScenarioInfoAddParams;
 import com.bushmaster.architecture.domain.param.ScenarioInfoListParams;
 import com.bushmaster.architecture.domain.param.ScenarioInfoModParams;
+import com.bushmaster.architecture.interceptor.PreventRepeatSubmit;
 import com.bushmaster.architecture.service.ScenarioInfoService;
 import com.google.common.base.Strings;
 import org.apache.commons.io.FilenameUtils;
@@ -21,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -109,7 +109,7 @@ public class ScenarioInfoController {
         return "scenarioInfoAdd";
     }
 
-
+    @PreventRepeatSubmit
     @PostMapping(path = "/addScenarioInfo")
     public @ResponseBody JSONObject addScenarioInfo(@Validated ScenarioInfoAddParams requestParams, BindingResult bindingResult,
                                                     @RequestParam(value = "scriptFile", required = false) MultipartFile scriptFile) {
@@ -166,6 +166,7 @@ public class ScenarioInfoController {
         return JSONObject.parseObject(JSON.toJSONString(result));
     }
 
+    @PreventRepeatSubmit
     @PostMapping(path = "/saveScenarioParamFiles")
     public @ResponseBody JSONObject saveScenarioParamFiles(@RequestParam("scenarioId") Integer scenarioId,
                                                            @RequestParam(value = "csvDataSetName", required = false) List<String> csvDataSetNameList,
@@ -242,6 +243,7 @@ public class ScenarioInfoController {
         return "scenarioInfoModify";
     }
 
+    @PreventRepeatSubmit
     @PostMapping(path = "/modScenarioInfo")
     public @ResponseBody JSONObject modScenarioInfo(@Validated ScenarioInfoModParams requestParams, BindingResult bindingResult,
                                                     @RequestParam(value = "scriptFile", required = false) MultipartFile scriptFile) {

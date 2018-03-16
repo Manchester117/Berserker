@@ -21,19 +21,27 @@ $create_scenario_button.click(
             url: "/addScenarioInfo",
             type: "post",
             success: function(result){
+                var insertScenarioResult = result["insertScenarioResult"];
+                if (result) {
                     bootbox.alert({
                         title: '提示',
-                        message: result["insertScenarioResult"].message + '<br/>' + result["insertScriptResult"].message,
+                        message: insertScenarioResult.message + '<br/>' + insertScenarioResult.message,
                         callback: function () {
                             setScenarioIdAtInput(result["scenarioId"]);
                             createParamsUploadList(result["csvDataSetSlotList"]);
                             createTestPlanTree(result["scenarioId"]);
                         }
                     });
+                } else {
+                    bootbox.alert({
+                        title: '警告',
+                        message: "不要重复提交场景"
+                    });
+                }
             },
             error: function() {
                 bootbox.alert({
-                    title: '错误',
+                    title: '警告',
                     message: "请求错误"
                 });
             }
@@ -105,12 +113,18 @@ $create_csv_data_set_button.click(
                 if (status === "Success") {
                     var insertParamFileMsg = "";
                     var insertParamFileMsgList = result["insertParamFileResultList"];
-                    for (var index = 0; index < insertParamFileMsgList.length; index++) {
-                        insertParamFileMsg = insertParamFileMsg + insertParamFileMsgList[index].message + ": " + insertParamFileMsgList[index].object + "<br/>";
+                    if (insertParamFileMsgList) {
+                        // 如果脚本中存在CSV Data Set
+                        for (var index = 0; index < insertParamFileMsgList.length; index++) {
+                            insertParamFileMsg = insertParamFileMsg + insertParamFileMsgList[index].message + ": " + insertParamFileMsgList[index].object + "<br/>";
+                        }
+                        message = "场景创建完毕" + "<br/>" + message + "<br/>" + insertParamFileMsg;
+                    } else {
+                        // 如果脚本中不存在CSV Data Set
+                        message = "场景创建完毕"
                     }
-                    message = message + "<br/>" + insertParamFileMsg;
                     bootbox.alert({
-                        title: "创建场景完毕",
+                        title: "提示",
                         message: message,
                         callback: function () {
                             window.location.href = "/";             // 回到场景列表页
@@ -118,7 +132,7 @@ $create_csv_data_set_button.click(
                     });
                 } else if (status === "Fail") {
                     bootbox.alert({
-                        title: "上传参数文件异常",
+                        title: "警告",
                         message: result.message
                     });
                 }
