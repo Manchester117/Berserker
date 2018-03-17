@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Properties;
 //@SpringBootApplication
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)      // Springboot启动时不要默认加载MongoDriver
 @EnableTransactionManagement
+@EnableAsync
 @MapperScan("com.bushmaster.architecture.mapper")
 public class ArchitectureApplication {
     @Bean
