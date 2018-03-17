@@ -62,7 +62,7 @@ $script_list.bootstrapTable({
                     '<i class="fa fa-times"></i>删除' +
                     '</a>',
                     '&nbsp&nbsp' +
-                    '<a href="javascript:runScript(' + row.id + ')">' +
+                    '<a href="javascript:runScenario(' + row.id + ')">' +
                     '<i class="fa fa-cogs"></i>运行' +
                     '</a>'
                 ].join('');

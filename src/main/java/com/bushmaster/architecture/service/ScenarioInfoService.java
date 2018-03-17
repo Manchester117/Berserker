@@ -12,13 +12,13 @@ public interface ScenarioInfoService {
 
     Map<String, Object> getScenarioInfoByPageList(Integer offset, Integer limit, String scenarioName, Boolean status);
 
-    Map<String, Object> addScenarioInfo(ScenarioInfo scenarioInfo, MultipartFile scriptFile);
-
     ScriptFileInfo getScriptFileInfoByScenarioId(Integer scenarioId);
 
     List<Map<String, Object>> getCsvDataSetSlotList(Integer scenarioId);
 
     Map<String, Object> getScriptDataStructure(Integer scenarioId);
+
+    Map<String, Object> addScenarioInfo(ScenarioInfo scenarioInfo, MultipartFile scriptFile);
 
     Map<String, Object> addScenarioParamFiles(Integer scenarioId, List<Map<String, Object>> csvDataParamFileList);
 

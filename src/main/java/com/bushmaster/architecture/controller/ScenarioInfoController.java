@@ -8,6 +8,8 @@ import com.bushmaster.architecture.domain.entity.ScriptFileInfo;
 import com.bushmaster.architecture.domain.param.ScenarioInfoAddParams;
 import com.bushmaster.architecture.domain.param.ScenarioInfoListParams;
 import com.bushmaster.architecture.domain.param.ScenarioInfoModParams;
+import com.bushmaster.architecture.engine.core.EngineController;
+import com.bushmaster.architecture.engine.core.EngineListener;
 import com.bushmaster.architecture.interceptor.PreventRepeatSubmit;
 import com.bushmaster.architecture.service.ScenarioInfoService;
 import com.google.common.base.Strings;
@@ -30,6 +32,10 @@ import java.util.*;
 public class ScenarioInfoController {
     @Autowired
     private ScenarioInfoService scenarioInfoService;
+    @Autowired
+    private EngineController engineController;
+    @Autowired
+    private EngineListener listener;
 
     private Map<String, List<String>> paramsValidator(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -306,5 +312,31 @@ public class ScenarioInfoController {
             resultJson.put("message", "删除场景ID必须是非零正整数");
             return resultJson;
         }
+    }
+
+    @GetMapping(path = "/scenarioStartRun")
+    public String scenarioStartRun(Model model, @RequestParam("scenarioId") String scenarioId) {
+        engineController.engineScenarioRunner(Integer.parseInt(scenarioId));
+        return "scenarioInfoRun";
+    }
+
+    @GetMapping(path = "/scenarioStopRun")
+    public @ResponseBody JSONObject scenarioStopRun() {
+//        listener.stopTestPerform("StopTestNow");
+
+        Boolean engineRunStatus = engineController.getEngine().isActive();
+
+        if (engineRunStatus) {
+            engineController.getEngine().stopTest(Boolean.TRUE);
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        engineRunStatus = engineController.getEngine().isActive();
+        Map<String, Boolean> stopRunResult = new HashMap<>();
+        stopRunResult.put("状态", engineRunStatus);
+        return JSONObject.parseObject(JSON.toJSONString(stopRunResult));
     }
 }

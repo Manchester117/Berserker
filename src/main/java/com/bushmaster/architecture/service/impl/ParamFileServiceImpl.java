@@ -1,7 +1,7 @@
 package com.bushmaster.architecture.service.impl;
 
 import com.bushmaster.architecture.domain.entity.ParamFileInfo;
-import com.bushmaster.architecture.engine.EngineScriptParser;
+import com.bushmaster.architecture.engine.core.EngineScriptParser;
 import com.bushmaster.architecture.mapper.ParamFileInfoMapper;
 import com.bushmaster.architecture.service.ParamFileService;
 import com.bushmaster.architecture.utils.FileStorageUtil;

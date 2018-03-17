@@ -1,4 +1,4 @@
-package com.bushmaster.architecture.engine;
+package com.bushmaster.architecture.engine.core;
 
 import com.rometools.utils.Strings;
 import org.apache.jmeter.config.CSVDataSet;
@@ -6,6 +6,7 @@ import org.apache.jmeter.save.SaveService;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.collections.HashTree;
 import org.apache.jorphan.collections.SearchByClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -15,17 +16,18 @@ import java.io.IOException;
 import java.util.*;
 
 @Component
-@PropertySource(value = {"classpath:application.yml"}, encoding="UTF-8")
 public class EngineScriptParser {
-    @Value("${jmeterSetting.jmeter-home}")
-    private String jmeterHomePath;
-    @Value("${jmeterSetting.jmeter-properties}")
-    private String jmeterPropertiesPath;
+    @Autowired
+    private EngineParamLoader paramLoader;
 
-
+    /**
+     * @description                         通过测试计划文件获取测试计划HashTree
+     * @param scriptFile                    测试计划文件
+     * @return                              返回的测试计划HashTree
+     */
     public HashTree loadTestPlan(File scriptFile) {
         // 参数加载和启用SaveService
-        EngineParamLoader.setEngineParam(jmeterHomePath, jmeterPropertiesPath);
+        paramLoader.setEngineParam();
         HashTree testPlanTree = null;
         try {
             testPlanTree = SaveService.loadTree(scriptFile);
@@ -35,6 +37,11 @@ public class EngineScriptParser {
         return testPlanTree;
     }
 
+    /**
+     * @description                         通过测试计划获取其中的CSV Data Set
+     * @param scriptFile                    测试计划文件
+     * @return                              返回CSV Data Set的列表
+     */
     public List<Map<String, Object>> parseScriptToParamFileSlots(File scriptFile) {
         HashTree testPlanTree = this.loadTestPlan(scriptFile);
         // 定义CSV Data Slot的列表
@@ -63,7 +70,13 @@ public class EngineScriptParser {
         return csvDataSetSlotList;
     }
 
-    public HashTree correlationScriptToSetParamFile(File scriptFile, List<Map<String, String>> correlationParamFileList) {
+    /**
+     * @description                         将测试计划和参数文件进行关联
+     * @param scriptFile                    测试计划文件
+     * @param csvDataSetInfoList            CSV Data Set的信息列表(包含CSV Data Set的名称和文件路径)
+     * @return                              返回修改后的测试计划HashTree
+     */
+    public HashTree correlationScriptToSetParamFile(File scriptFile, List<Map<String, String>> csvDataSetInfoList) {
         HashTree testPlanTree = this.loadTestPlan(scriptFile);
         // 定义CSV data set的列表
         List<CSVDataSet> csvDataSetList = new ArrayList<>();
@@ -88,7 +101,7 @@ public class EngineScriptParser {
         // 通过列表的遍历修改脚本中CSV Data Set的filename(CSV和脚本关联)
         for (CSVDataSet csvDataSetElement: csvDataSetList) {
             String csvDataSetSlotName = csvDataSetElement.getProperty("TestElement.name").getStringValue();
-            for (Map<String, String> correlationParamFile: correlationParamFileList) {
+            for (Map<String, String> correlationParamFile: csvDataSetInfoList) {
                 if (Objects.equals(csvDataSetSlotName, correlationParamFile.get("csvDataSetName")))
                     csvDataSetElement.setProperty("filename", correlationParamFile.get("paramFileAbsolutePath"));
             }
@@ -96,6 +109,11 @@ public class EngineScriptParser {
         return testPlanTree;
     }
 
+    /**
+     * @description                     将测试计划解析成List<Map<String, Object>>数据结构
+     * @param scriptFile                测试计划脚本文件
+     * @return                          返回List<Map<String, Object>>
+     */
     public List<Map<String, Object>> parseScriptToDataStructure(File scriptFile) {
         HashTree testPlanTree = this.loadTestPlan(scriptFile);
         List<Map<String, Object>> scriptStructureList = new ArrayList<>();
@@ -111,7 +129,7 @@ public class EngineScriptParser {
     }
 
     /**
-     * @description 对测试计划进行递归遍历,生成测试计划的数据结构.
+     * @description                     对测试计划进行递归遍历,生成测试计划的数据结构.
      * @param testElement               测试计划中的根节点
      * @param testPlanTree              根节点下元素
      * @param scriptStructureMap        测试计划的数据结构

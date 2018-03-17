@@ -34,6 +34,11 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
     @Autowired
     private FileStorageUtil fileUtil;
 
+    /**
+     * @description             通过ID获取场景实体信息
+     * @param id                场景ID
+     * @return                  如果DB中存在场景则返回场景信息,否则返回null
+     */
     @Override
     public ScenarioInfo getScenarioInfo(Integer id) {
         ScenarioInfo scenarioInfo = scenarioMapper.getScenarioInfo(id);
@@ -43,6 +48,14 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
             return null;
     }
 
+    /**
+     * @description             获取场景信息分页列表
+     * @param offset            页码
+     * @param limit             单页信息个数
+     * @param scenarioName      搜索条件: 场景名称
+     * @param status            搜索条件: 场景使用状态
+     * @return                  返回场景列表的分页信息
+     */
     @Override
     public Map<String, Object> getScenarioInfoByPageList(Integer offset, Integer limit, String scenarioName, Boolean status) {
         Map<String, Object> result = new HashMap<>();
@@ -53,6 +66,42 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
         return result;
     }
 
+    /**
+     * @description             通过场景ID获取脚本实体对象
+     * @param scenarioId        场景ID
+     * @return                  要返回的脚本实体对象
+     */
+    @Override
+    public ScriptFileInfo getScriptFileInfoByScenarioId(Integer scenarioId) {
+        return scriptInfoService.getScriptFileInfoByScenarioId(scenarioId);
+    }
+
+    /**
+     * @description             通过场景ID获取脚本中的CSV Data Set信息列表(包含: CSV Data Set名称, 文件名称, 变量名称)
+     * @param scenarioId        场景ID
+     * @return                  返回的CSV Data Set列表
+     */
+    @Override
+    public List<Map<String, Object>> getCsvDataSetSlotList(Integer scenarioId) {
+        return scriptInfoService.getCsvDataSetSlotList(scenarioId);
+    }
+
+    /**
+     * @description             通过场景ID获取脚本的数据结构
+     * @param scenarioId        场景ID
+     * @return                  数据结构以Map形式返回,用于前端显示
+     */
+    @Override
+    public Map<String, Object> getScriptDataStructure(Integer scenarioId) {
+        return scriptInfoService.getScriptDataStructure(scenarioId);
+    }
+
+    /**
+     * @description             添加场景实体信息
+     * @param scenarioInfo      要添加场景实体对象
+     * @param scriptFile        上传的测试计划文件
+     * @return                  返回前端所需要的信息
+     */
     @Override
     @Transactional
     public Map<String, Object> addScenarioInfo(ScenarioInfo scenarioInfo, MultipartFile scriptFile) {
@@ -80,16 +129,18 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
         return result;
     }
 
+    /**
+     * @description             给脚本添加参数文件
+     * @param scenarioId        场景ID
+     * @param csvParamFileList  参数文件的信息列表(包含: CSV Data Set的名称, 上传的参数文件)
+     * @return
+     */
     @Override
-    public ScriptFileInfo getScriptFileInfoByScenarioId(Integer scenarioId) {
-        return scriptInfoService.getScriptFileInfoByScenarioId(scenarioId);
-    }
-
-    @Override
-    public Map<String, Object> addScenarioParamFiles(Integer scenarioId, List<Map<String, Object>> csvDataParamFileList) {
+    @Transactional
+    public Map<String, Object> addScenarioParamFiles(Integer scenarioId, List<Map<String, Object>> csvParamFileList) {
         Map<String, Object> result = new HashMap<>();
-        if (Objects.nonNull(csvDataParamFileList)) {
-            result = paramFileService.addParamFileInfo(scenarioId, csvDataParamFileList);
+        if (Objects.nonNull(csvParamFileList)) {
+            result = paramFileService.addParamFileInfo(scenarioId, csvParamFileList);
             String scriptAbsolutePath = result.get("scriptPath").toString();
             HashTree testPlanTree = (HashTree) result.get("testPlanTree");
             // 进行脚本重写
@@ -110,16 +161,12 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
         return result;
     }
 
-    @Override
-    public List<Map<String, Object>> getCsvDataSetSlotList(Integer scenarioId) {
-        return scriptInfoService.getCsvDataSetSlotList(scenarioId);
-    }
-
-    @Override
-    public Map<String, Object> getScriptDataStructure(Integer scenarioId) {
-        return scriptInfoService.getScriptDataStructure(scenarioId);
-    }
-
+    /**
+     * @description             修改场景实体信息
+     * @param scenarioInfo      场景ID
+     * @param scriptFile        测试计划文件
+     * @return                  返回前端所需要的信息
+     */
     @Override
     @Transactional
     public Map<String, Object> modScenarioInfo(ScenarioInfo scenarioInfo, MultipartFile scriptFile) {
@@ -148,6 +195,11 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
         return result;
     }
 
+    /**
+     * @description             删除场景实体信息
+     * @param scenarioId        场景ID
+     * @return                  返回前端所需要的信息
+     */
     @Override
     @Transactional
     public Map<String, Object> delScenarioInfo(Integer scenarioId) {

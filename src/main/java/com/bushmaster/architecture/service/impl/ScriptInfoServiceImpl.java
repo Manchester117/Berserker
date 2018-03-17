@@ -1,12 +1,13 @@
 package com.bushmaster.architecture.service.impl;
 
 import com.bushmaster.architecture.domain.entity.ScriptFileInfo;
-import com.bushmaster.architecture.engine.EngineScriptParser;
+import com.bushmaster.architecture.engine.core.EngineScriptParser;
 import com.bushmaster.architecture.mapper.ScriptFileInfoMapper;
 import com.bushmaster.architecture.service.ScriptInfoService;
 import com.bushmaster.architecture.utils.FileStorageUtil;
 import com.bushmaster.architecture.utils.ScriptUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jorphan.collections.HashTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +51,30 @@ public class ScriptInfoServiceImpl implements ScriptInfoService{
     }
 
     @Override
+    public HashTree getTestPlanTreeByScenarioId(Integer scenarioId) {
+        File scriptFile = scriptUtil.getScriptFileByScenarioId(scenarioId);
+        return parser.loadTestPlan(scriptFile);
+    }
+
+    @Override
+    public Map<String, Object> getScriptDataStructure(Integer scenarioId) {
+        File scriptFile = scriptUtil.getScriptFileByScenarioId(scenarioId);
+        // 获得脚本的数据结构
+        Map<String, Object> result = new HashMap<>();
+        List<Map<String, Object>> scriptDataStructure = parser.parseScriptToDataStructure(scriptFile);
+        result.put("scriptDataStructure", scriptDataStructure);
+
+        return result;
+    }
+
+    @Override
+    public List<Map<String, Object>> getCsvDataSetSlotList(Integer scenarioId) {
+        File scriptFile = scriptUtil.getScriptFileByScenarioId(scenarioId);
+        // 获得脚本中的CSV Data Set
+        return parser.parseScriptToParamFileSlots(scriptFile);
+    }
+
+    @Override
     public Map<String, Object> addScriptInfo(MultipartFile scriptFileUpload, Integer scenarioId) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> insertScriptResult = new HashMap<>();
@@ -83,24 +108,6 @@ public class ScriptInfoServiceImpl implements ScriptInfoService{
 
         result.put("insertScriptResult", insertScriptResult);
         return result;
-    }
-
-    @Override
-    public Map<String, Object> getScriptDataStructure(Integer scenarioId) {
-        File scriptFile = scriptUtil.getScriptFileByScenarioId(scenarioId);
-        // 获得脚本的数据结构
-        Map<String, Object> result = new HashMap<>();
-        List<Map<String, Object>> scriptDataStructure = parser.parseScriptToDataStructure(scriptFile);
-        result.put("scriptDataStructure", scriptDataStructure);
-
-        return result;
-    }
-
-    @Override
-    public List<Map<String, Object>> getCsvDataSetSlotList(Integer scenarioId) {
-        File scriptFile = scriptUtil.getScriptFileByScenarioId(scenarioId);
-        // 获得脚本中的CSV Data Set
-        return parser.parseScriptToParamFileSlots(scriptFile);
     }
 
     @Override

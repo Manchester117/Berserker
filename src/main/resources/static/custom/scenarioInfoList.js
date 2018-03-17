@@ -54,7 +54,7 @@ function performController(path, id) {
 
 // 修改场景
 function modScenario(id) {
-    window.location.href = "/scenarioInfoMod?scenarioId=" + id;
+    $(window).attr('location', "/scenarioInfoMod?scenarioId=" + id);
 }
 
 // 删除场景
@@ -108,4 +108,8 @@ function delScenario(id) {
             }
         }
     });
+}
+
+function runScenario(id) {
+    $(window).attr('location', "/scenarioStartRun?scenarioId=" + id);
 }
