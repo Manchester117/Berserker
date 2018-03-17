@@ -2,6 +2,7 @@ package com.bushmaster.architecture.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -12,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -24,21 +23,27 @@ public class PreventRepeatSubmitInterceptor extends HandlerInterceptorAdapter {
      * @param uploadFile    上传的文件
      * @return              返回文件的MD5
      */
-    public String calculateFileMD5(MultipartFile uploadFile) {
+    private String calculateFileMD5(MultipartFile uploadFile) {
         byte [] uploadBytes = null;
-        MessageDigest md5 = null;
         try {
             uploadBytes = uploadFile.getBytes();
-            md5 = MessageDigest.getInstance("MD5");
-            byte [] digest = md5.digest(uploadBytes);
+            byte [] digest = DigestUtils.md5Digest(uploadBytes);
             String hashString = new BigInteger(1, digest).toString(16);
             return hashString.toUpperCase();
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * @description             拦截表单重复提交
+     * @param request           HttpServletRequest request
+     * @param response          HttpServletResponse response
+     * @param handler           Object handler
+     * @return                  返回false代表重复提交,true为非重复提交
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
