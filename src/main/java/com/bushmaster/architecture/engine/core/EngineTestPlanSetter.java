@@ -38,7 +38,8 @@ public class EngineTestPlanSetter {
             testPlanTree.traverse(testElementVisitor);
             Collection<TestElement> testElementCollection = testElementVisitor.getSearchResults();
             for (TestElement testElement : testElementCollection) {
-                System.out.println(testElement.getName());
+                // 输出元素名称
+                // System.out.println(testElement.getName());
                 if (testElement instanceof ThreadGroup) {
                     // 定义线程组参数
                     ThreadGroup threadGroup = (ThreadGroup) testElement;

@@ -25,6 +25,8 @@ repositories {
 
 configurations {
     providedRuntime
+    // 禁用Springboot的默认日志组件
+    // all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 }
 
 bootRun {
@@ -36,7 +38,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-logging:1.5.10.RELEASE') {
         exclude module: 'ch.qos.logback:logback-classic:1.1.11'
     }
+    // compile('org.springframework.boot:spring-boot-starter-log4j2:1.5.10.RELEASE')
     compile('org.springframework.boot:spring-boot-starter-aop:1.5.10.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-websocket:1.5.10.RELEASE')
     compile('org.springframework.boot:spring-boot-starter-data-redis:1.5.10.RELEASE')
     compile('org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE')
     compile('org.springframework.boot:spring-boot-devtools:1.5.10.RELEASE')

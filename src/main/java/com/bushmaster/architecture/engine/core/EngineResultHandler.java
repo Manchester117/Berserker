@@ -1,6 +1,6 @@
 package com.bushmaster.architecture.engine.core;
 
-import com.bushmaster.architecture.engine.collect.EngineResultCollector;
+import com.bushmaster.architecture.engine.collect.EngineSamplerCollector;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.util.JMeterUtils;
@@ -24,10 +24,10 @@ public class EngineResultHandler {
         List<ResultCollector> resultCollectorList = new ArrayList<>();
 
         // 自定义结果收集.继承自ResultCollector
-        EngineResultCollector engineResultCollector = new EngineResultCollector(summary);
-        engineResultCollector.setName("自定义结果收集");
-//        engineResultCollector.setFilename(reportFilePath);
-        resultCollectorList.add(engineResultCollector);
+        EngineSamplerCollector engineSamplerCollector = new EngineSamplerCollector(summary);
+        engineSamplerCollector.setName("自定义结果收集");
+//        engineSamplerCollector.setFilename(reportFilePath);
+        resultCollectorList.add(engineSamplerCollector);
 
         return resultCollectorList;
     }
