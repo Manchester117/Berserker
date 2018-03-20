@@ -127,7 +127,7 @@ public class EngineScriptParser {
     }
 
     /**
-     * @description                     对测试计划进行递归遍历,生成测试计划的数据结构.
+     * @description                     对测试计划进行递归遍历,生成测试计划的数据结构,用于前端显示脚本结构树
      * @param testElement               测试计划中的根节点
      * @param testPlanTree              根节点下元素
      * @param scriptStructureMap        测试计划的数据结构

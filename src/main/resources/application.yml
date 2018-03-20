@@ -32,8 +32,6 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#logging:
-#    config: classpath:log4j2-spring.xml
 pagehelper:
   helperDialect: mysql
   reasonable: true
@@ -47,3 +45,5 @@ jmeterSetting:
   jmeter-properties: D:\Apache-jmeter-4.0\bin\jmeter.properties
 fileStorage:
   script-folder-path: D:\ScriptStorage
+#logging:
+#  config: classpath:log4j2-spring.xml

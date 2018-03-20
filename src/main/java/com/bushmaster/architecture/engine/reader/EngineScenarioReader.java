@@ -23,6 +23,7 @@ public class EngineScenarioReader {
 
         Map<String, Object> scenarioRunInfo = new HashMap<>();
         scenarioRunInfo.put("scriptFile", scriptFileObject);
+        scenarioRunInfo.put("scriptAbsolutePath", scriptFileObject.getAbsolutePath());
         scenarioRunInfo.put("numThreads", scenarioInfo.getNumThreads());
         scenarioRunInfo.put("rampUp", scenarioInfo.getRampUp());
         scenarioRunInfo.put("duration", scenarioInfo.getDuration());

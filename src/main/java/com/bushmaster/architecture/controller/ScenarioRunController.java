@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,11 @@ public class ScenarioRunController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+
     @GetMapping(path = "/scenarioStartRun")
     public String scenarioStartRun(Model model, @RequestParam("scenarioId") String scenarioId) {
         runService.scenarioStartRun(Integer.parseInt(scenarioId));
-        return "scenarioInfoSampler";
+        return "scenarioInfoChart";
     }
 
     @GetMapping(path = "/scenarioStopRun")
@@ -46,23 +48,23 @@ public class ScenarioRunController {
 //        return samplerInfo.toString();
 //    }
 
-    @GetMapping(path = "/index")
-    public String index() {
-        return "index";
-    }
+//    @GetMapping(path = "/index")
+//    public String index() {
+//        return "index";
+//    }
 
-    // 简化的WebSocket接收发送方法
-    @MessageMapping("/change-notice")
-    @SendTo("/topic")
-    public String greeting(String value) {
-        System.out.println(value);
-        return value;
-    }
+//    // 简化的WebSocket接收发送方法
+//    @MessageMapping("/change-notice")
+//    @SendTo("/topic/notice")
+//    public String greeting(String value) {
+//        System.out.println(value);
+//        return value;
+//    }
 
-    @GetMapping(path = "receive")
-    public String receive() {
-        return "receive";
-    }
+//    @GetMapping(path = "receive")
+//    public String receive() {
+//        return "receive";
+//    }
 
     // 原始的WebSocket接收发送方法
 //    @MessageMapping("/change-notice")
@@ -70,6 +72,4 @@ public class ScenarioRunController {
 //        System.out.println(value);
 //        this.simpMessagingTemplate.convertAndSend("/topic/notice", value);
 //    }
-
-
 }

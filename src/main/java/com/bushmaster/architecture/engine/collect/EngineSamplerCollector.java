@@ -1,7 +1,11 @@
 package com.bushmaster.architecture.engine.collect;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bushmaster.architecture.domain.entity.SamplerInfo;
+import com.bushmaster.architecture.engine.core.EngineController;
 import com.bushmaster.architecture.engine.queue.SamplerQueue;
+import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
@@ -9,22 +13,35 @@ import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.util.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EngineSamplerCollector extends ResultCollector{
     private static final Logger log = LoggerFactory.getLogger(EngineSamplerCollector.class);
     private static volatile Calculator calculator = new Calculator();
+    private SimpMessagingTemplate template;                 // 通过构造函数获取WebSocket信息发送机制
 
-    public EngineSamplerCollector(Summariser summer) {
-        super(summer);
+//    public EngineSamplerCollector(Summariser summer, SimpMessagingTemplate template) {
+//        super(summer);
+//        this.template = template;
+//    }
+
+    public EngineSamplerCollector(SimpMessagingTemplate template) {
+        this.template = template;
     }
 
     @Override
     public void sampleOccurred(SampleEvent event) {
+        // 获取引擎运行状态,用于是否停止动态显示趋势图
+        EngineController controller = EngineController.getInstance();
+        boolean engineIsActive = controller.getEngineStatus();
+
         super.sampleOccurred(event);
         SampleResult result = event.getResult();
         calculator.addSample(result);
 
-        log.info("Response Number Time: " + calculator.getMeanAsNumber() +
+        log.info("Response Mean Time: " + calculator.getMeanAsNumber() +
                 "\t\tMin Response Time: " + calculator.getMin() +
                 "\t\tMax Response Time: " + calculator.getMax() +
                 "\t\tSampler Count: " + calculator.getCount() +
@@ -35,7 +52,8 @@ public class EngineSamplerCollector extends ResultCollector{
         );
 
         SamplerInfo samplerInfo = new SamplerInfo();
-        samplerInfo.setMeanTime(calculator.getMean());
+        samplerInfo.setEngineIsActive(engineIsActive);
+        samplerInfo.setMeanTime(calculator.getMeanAsNumber());
         samplerInfo.setMinTime(calculator.getMin());
         samplerInfo.setMaxTime(calculator.getMax());
         samplerInfo.setSamplerCount(calculator.getCount());
@@ -46,5 +64,10 @@ public class EngineSamplerCollector extends ResultCollector{
 
         SamplerQueue samplerQueue = SamplerQueue.getInstance();
         samplerQueue.push(samplerInfo);
+
+        String samplerInfoJson = JSON.toJSONString(samplerInfo);
+
+        // 使用WebSocket把信息发送到客户端
+        template.convertAndSend("/topic/notice", samplerInfoJson);
     }
 }

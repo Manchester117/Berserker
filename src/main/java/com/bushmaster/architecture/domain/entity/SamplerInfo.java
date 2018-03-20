@@ -1,6 +1,7 @@
 package com.bushmaster.architecture.domain.entity;
 
 public class SamplerInfo {
+    private boolean engineIsActive;
     private Number meanTime;
     private Long minTime;
     private Long maxTime;
@@ -9,6 +10,14 @@ public class SamplerInfo {
     private Double totalBytesPerSecond;
     private Double errorPercentage;
     private Integer threadCount;
+
+    public boolean isEngineIsActive() {
+        return engineIsActive;
+    }
+
+    public void setEngineIsActive(boolean engineIsActive) {
+        this.engineIsActive = engineIsActive;
+    }
 
     public Number getMeanTime() {
         return meanTime;
