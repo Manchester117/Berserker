@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ScenarioRun</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="sampler_charts">
+        <div id="mean_time_chart" style="min-width:400px;height:400px"></div>
+    </div>
+    <!-- WebSocket support -->
+    <script type="text/javascript" th:src="@{js/sockjs.js}"></script>
+    <script type="text/javascript" th:src="@{js/stomp.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{custom/scenarioInfoChart.js}"></script>
+</div>
+</body>
+</html>
