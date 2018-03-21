@@ -1,23 +1,15 @@
 package com.bushmaster.architecture.domain.entity;
 
 public class SamplerInfo {
-    private boolean engineIsActive;
     private Number meanTime;
     private Long minTime;
     private Long maxTime;
     private int samplerCount;
-    private Double sendBytesPerSecond;
+    private Double requestRate;
+    private Double sentBytesPerSecond;
     private Double totalBytesPerSecond;
     private Double errorPercentage;
     private Integer threadCount;
-
-    public boolean isEngineIsActive() {
-        return engineIsActive;
-    }
-
-    public void setEngineIsActive(boolean engineIsActive) {
-        this.engineIsActive = engineIsActive;
-    }
 
     public Number getMeanTime() {
         return meanTime;
@@ -51,12 +43,20 @@ public class SamplerInfo {
         this.samplerCount = samplerCount;
     }
 
-    public Double getSendBytesPerSecond() {
-        return sendBytesPerSecond;
+    public Double getRequestRate() {
+        return requestRate;
     }
 
-    public void setSendBytesPerSecond(Double sendBytesPerSecond) {
-        this.sendBytesPerSecond = sendBytesPerSecond;
+    public void setRequestRate(Double requestRate) {
+        this.requestRate = requestRate;
+    }
+
+    public Double getSentBytesPerSecond() {
+        return sentBytesPerSecond;
+    }
+
+    public void setSentBytesPerSecond(Double sentBytesPerSecond) {
+        this.sentBytesPerSecond = sentBytesPerSecond;
     }
 
     public Double getTotalBytesPerSecond() {
@@ -90,7 +90,7 @@ public class SamplerInfo {
                 ", minTime=" + minTime +
                 ", maxTime=" + maxTime +
                 ", samplerCount=" + samplerCount +
-                ", sendBytesPerSecond=" + sendBytesPerSecond +
+                ", requestRate=" + requestRate +
                 ", totalBytesPerSecond=" + totalBytesPerSecond +
                 ", errorPercentage=" + errorPercentage +
                 ", threadCount=" + threadCount +

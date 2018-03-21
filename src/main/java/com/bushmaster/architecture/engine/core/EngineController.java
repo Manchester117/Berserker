@@ -22,8 +22,6 @@ public class EngineController {
     private EngineResultHandler resultHandler;
     @Autowired
     private EngineTestPlanSetter testPlanSetter;
-//    @Autowired
-//    private FileStorageUtil fileUtil;
     @Autowired
     private EngineTestRunner testRunner;
 
@@ -65,10 +63,6 @@ public class EngineController {
         Map<String, Object> scenarioRunInfo = scenarioReader.testPlanReader(scenarioId);
         List<ResultCollector> resultCollectorList = resultHandler.resultCollect();
         HashTree testPlanTree = testPlanSetter.testPlanSetting(scenarioRunInfo, resultCollectorList);
-
-        // 暂时不做脚本回写,因为回写后自定义的结果收集器会导致脚本语法错误
-//        String scriptAbsolutePath = scenarioRunInfo.get("scriptAbsolutePath").toString();
-//        fileUtil.scriptBackWrite(scriptAbsolutePath, testPlanTree);
         // 运行测试
         testRunner.scenarioRun(engine, testPlanTree);
     }

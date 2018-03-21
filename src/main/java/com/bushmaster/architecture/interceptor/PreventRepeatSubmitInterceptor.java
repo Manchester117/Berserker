@@ -3,6 +3,7 @@ package com.bushmaster.architecture.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -68,17 +69,21 @@ public class PreventRepeatSubmitInterceptor extends HandlerInterceptorAdapter {
      * @return          如果返回True代表是重复提交,false为非重复提交
      */
     private boolean preventRepeatSubmitValidator(HttpServletRequest request) {
-        Map<String, String[]> requestParams = request.getParameterMap();
         // 获取请求URL
         String url = request.getRequestURI();
-        // 获取文件的HashCode
-        MultipartFile uploadFile = ((MultipartHttpServletRequest) request).getMultiFileMap().get("scriptFile").get(0);
-        String uploadFileMD5 = this.calculateFileMD5(uploadFile);
+        Map<String, String[]> requestParams = request.getParameterMap();
         // 获取请求参数,转成JSON字符串
         JSONObject paramsJsonObject = JSONObject.parseObject(JSON.toJSONString(requestParams));
-        // 将上传文件的HashCode放置到待验证的参数Json中
-        paramsJsonObject.put("uploadFileMD5", uploadFileMD5);
 
+        MultiValueMap<String, MultipartFile> multiValueMap = ((MultipartHttpServletRequest) request).getMultiFileMap();
+        // 判断上传文件是否为空
+        if (multiValueMap.size() > 0) {
+            MultipartFile uploadFile = ((MultipartHttpServletRequest) request).getMultiFileMap().get("scriptFile").get(0);
+            // 获取文件的MD5
+            String uploadFileMD5 = this.calculateFileMD5(uploadFile);
+            // 将上传文件的HashCode放置到待验证的参数Json中
+            paramsJsonObject.put("uploadFileMD5", uploadFileMD5);
+        }
         // 将URL和参数组成map,转成字符串
         Map<String, String> currentRequestObject = new HashMap<>();
         currentRequestObject.put(url, paramsJsonObject.toJSONString());

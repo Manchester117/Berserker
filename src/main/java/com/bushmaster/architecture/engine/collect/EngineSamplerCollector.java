@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class EngineSamplerCollector extends ResultCollector{
     private static final Logger log = LoggerFactory.getLogger(EngineSamplerCollector.class);
     private static volatile Calculator calculator = new Calculator();
@@ -33,10 +33,6 @@ public class EngineSamplerCollector extends ResultCollector{
 
     @Override
     public void sampleOccurred(SampleEvent event) {
-        // 获取引擎运行状态,用于是否停止动态显示趋势图
-        EngineController controller = EngineController.getInstance();
-        boolean engineIsActive = controller.getEngineStatus();
-
         super.sampleOccurred(event);
         SampleResult result = event.getResult();
         calculator.addSample(result);
@@ -45,19 +41,20 @@ public class EngineSamplerCollector extends ResultCollector{
                 "\t\tMin Response Time: " + calculator.getMin() +
                 "\t\tMax Response Time: " + calculator.getMax() +
                 "\t\tSampler Count: " + calculator.getCount() +
-                "\t\tSend throughput bytes Per Second: " + calculator.getSentBytesPerSecond() +
+                "\t\tRequest Throughput Per Second: " + calculator.getRate() +
+                "\t\tSent Throughput bytes Per Second: " + calculator.getSentBytesPerSecond() +
                 "\t\tThroughput bytes Per Second: " + calculator.getBytesPerSecond() +
                 "\t\tErrorPercentage: " + calculator.getErrorPercentage() +
                 "\t\tThread Count: " + result.getAllThreads()
         );
 
         SamplerInfo samplerInfo = new SamplerInfo();
-        samplerInfo.setEngineIsActive(engineIsActive);
         samplerInfo.setMeanTime(calculator.getMeanAsNumber());
         samplerInfo.setMinTime(calculator.getMin());
         samplerInfo.setMaxTime(calculator.getMax());
         samplerInfo.setSamplerCount(calculator.getCount());
-        samplerInfo.setSendBytesPerSecond(calculator.getSentBytesPerSecond());
+        samplerInfo.setRequestRate(calculator.getRate());
+        samplerInfo.setSentBytesPerSecond(calculator.getSentBytesPerSecond());
         samplerInfo.setTotalBytesPerSecond(calculator.getBytesPerSecond());
         samplerInfo.setErrorPercentage(calculator.getErrorPercentage());
         samplerInfo.setThreadCount(result.getAllThreads());

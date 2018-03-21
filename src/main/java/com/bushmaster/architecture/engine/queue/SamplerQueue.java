@@ -19,6 +19,14 @@ public class SamplerQueue {
     }
 
     /**
+     * @description         获得当前队列的长度
+     * @return              当前队列长度
+     */
+    public int getQueueCurrentSize() {
+        return queue.size();
+    }
+
+    /**
      * @description         消息入列
      * @param samplerInfo   Sampler实体
      * @return              返回是否添加的boolean值

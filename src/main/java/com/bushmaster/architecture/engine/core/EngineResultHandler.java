@@ -36,6 +36,11 @@ public class EngineResultHandler {
         // 添加刚才定义的结果收集
         resultCollectorList.add(engineSamplerCollector);
 
+        ResultCollector csvCollector = new ResultCollector(summary);
+        csvCollector.setName("自定义结果记录");
+        csvCollector.setFilename("D:\\abc.csv");
+        resultCollectorList.add(csvCollector);
+
         return resultCollectorList;
     }
 }

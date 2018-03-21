@@ -22,10 +22,11 @@ $create_scenario_button.click(
             type: "post",
             success: function(result){
                 var insertScenarioResult = result["insertScenarioResult"];
+                var insertScriptResult = result["insertScriptResult"];
                 if (result) {
                     bootbox.alert({
                         title: '提示',
-                        message: insertScenarioResult.message + '<br/>' + insertScenarioResult.message,
+                        message: insertScenarioResult.message + '<br/>' + insertScriptResult.message,
                         callback: function () {
                             setScenarioIdAtInput(result["scenarioId"]);
                             createParamsUploadList(result["csvDataSetSlotList"]);
