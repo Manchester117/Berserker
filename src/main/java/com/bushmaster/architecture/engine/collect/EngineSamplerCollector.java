@@ -11,6 +11,7 @@ import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.util.Calculator;
+import org.apache.jmeter.visualizers.backend.SamplerMetric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -22,12 +23,8 @@ public class EngineSamplerCollector extends ResultCollector{
     private static volatile Calculator calculator = new Calculator();
     private SimpMessagingTemplate template;                 // 通过构造函数获取WebSocket信息发送机制
 
-//    public EngineSamplerCollector(Summariser summer, SimpMessagingTemplate template) {
-//        super(summer);
-//        this.template = template;
-//    }
-
-    public EngineSamplerCollector(SimpMessagingTemplate template) {
+    public EngineSamplerCollector(Summariser summer, SimpMessagingTemplate template) {
+        super(summer);
         this.template = template;
     }
 
@@ -35,21 +32,27 @@ public class EngineSamplerCollector extends ResultCollector{
     public void sampleOccurred(SampleEvent event) {
         super.sampleOccurred(event);
         SampleResult result = event.getResult();
+
+        result.getTime();
         calculator.addSample(result);
 
-        log.info("Response Mean Time: " + calculator.getMeanAsNumber() +
-                "\t\tMin Response Time: " + calculator.getMin() +
-                "\t\tMax Response Time: " + calculator.getMax() +
-                "\t\tSampler Count: " + calculator.getCount() +
-                "\t\tRequest Throughput Per Second: " + calculator.getRate() +
-                "\t\tSent Throughput bytes Per Second: " + calculator.getSentBytesPerSecond() +
-                "\t\tThroughput bytes Per Second: " + calculator.getBytesPerSecond() +
-                "\t\tErrorPercentage: " + calculator.getErrorPercentage() +
-                "\t\tThread Count: " + result.getAllThreads()
-        );
+//        SamplerMetric samplerMetric = new SamplerMetric();
+//        samplerMetric
+
+//        log.info("Response Mean Time: " + calculator.getMeanAsNumber() +
+//                "\t\tMin Response Time: " + calculator.getMin() +
+//                "\t\tMax Response Time: " + calculator.getMax() +
+//                "\t\tSampler Count: " + calculator.getCount() +
+//                "\t\tRequest Throughput Per Second: " + calculator.getRate() +
+//                "\t\tSent Throughput bytes Per Second: " + calculator.getSentBytesPerSecond() +
+//                "\t\tThroughput bytes Per Second: " + calculator.getBytesPerSecond() +
+//                "\t\tErrorPercentage: " + calculator.getErrorPercentage() +
+//                "\t\tThread Count: " + result.getAllThreads()
+//        );
 
         SamplerInfo samplerInfo = new SamplerInfo();
-        samplerInfo.setMeanTime(calculator.getMeanAsNumber());
+        samplerInfo.setTimeStamp(System.currentTimeMillis());
+        samplerInfo.setMeanTime(result.getTime());
         samplerInfo.setMinTime(calculator.getMin());
         samplerInfo.setMaxTime(calculator.getMax());
         samplerInfo.setSamplerCount(calculator.getCount());

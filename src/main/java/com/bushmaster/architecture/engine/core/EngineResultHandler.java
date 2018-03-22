@@ -29,7 +29,7 @@ public class EngineResultHandler {
         List<ResultCollector> resultCollectorList = new ArrayList<>();
 
         // 自定义结果收集.继承自ResultCollector
-        EngineSamplerCollector engineSamplerCollector = new EngineSamplerCollector(template);
+        EngineSamplerCollector engineSamplerCollector = new EngineSamplerCollector(summary, template);
         engineSamplerCollector.setName("自定义结果收集");
         engineSamplerCollector.setEnabled(Boolean.TRUE);
 //        engineSamplerCollector.setFilename(reportFilePath);

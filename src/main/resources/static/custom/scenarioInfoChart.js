@@ -1,21 +1,26 @@
-var sock = null;
 var stompClient = null;
 var samplerInfo = null;
 
-$(document).ready(
-    function samplerSocket() {
-        sock = new SockJS('/socket');
-        stompClient = Stomp.over(sock);
-        stompClient.connect({}, function () {
-            console.log('notice socket connected!');
-            stompClient.subscribe('/topic/notice', function (data) {
-                // 拿到数据后将字符串转成JSON对象
-                samplerInfo = $.parseJSON(data.body);
-                console.log(data);
-            });
+/**
+ * @description WebSocket建立连接,获取实时数据
+ */
+function samplerSocket(series, dataType) {
+    var sock = new SockJS('/socket');
+    stompClient = Stomp.over(sock);
+    stompClient.connect({}, function (frame) {
+        console.log('connected ' + frame);
+        stompClient.subscribe('/topic/notice', function (data) {
+            // 拿到数据后将字符串转成JSON对象
+            samplerInfo = $.parseJSON(data.body);
+            if (samplerInfo) {
+                var timeStamp = samplerInfo["timeStamp"];
+                var dataSampler = samplerInfo[dataType];
+                series.addPoint([timeStamp, dataSampler], true, false);   // 第三个参数,设置为false,说明将以前的数据积累下来
+                samplerInfo = null;
+            }
         });
-    }
-);
+    });
+}
 
 Highcharts.setOptions({
     global: {
@@ -23,38 +28,32 @@ Highcharts.setOptions({
     }
 });
 
+/**
+ * @description 动态显示趋势图
+ */
 $('#mean_time_chart').highcharts({
+    series: [{
+        name: '平均响应时间',
+        data: []
+    }],
     chart: {
         type: 'spline',
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
         events: {
             load: function () {
-                var seriesMeanTime = this.series[0];
-
-                setInterval(function () {
-                    if (samplerInfo) {
-                        var currentTime = (new Date()).getTime();
-                        var meanTime = samplerInfo["meanTime"];
-                        seriesMeanTime.addPoint([currentTime, meanTime], true, false);   // 第三个参数,设置为false,说明将以前的数据积累下来
-                        samplerInfo = null;
-                    }
-                }, 250);
+                var series = this.series[0];
+                samplerSocket(series, "meanTime");
             }
         }
     },
-    series: [
-        {
-            name: '平均响应时间',
-            data: []
-        }
-    ],
     title: {
-        text: '平均响应时间-实时'
+        text: '平均响应时间'
     },
     xAxis: {
         type: 'datetime',
-        tickPixelInterval: 10
+        tickPixelInterval: 5,
+        rotation: 30
     },
     yAxis: {
         title: {
@@ -63,7 +62,7 @@ $('#mean_time_chart').highcharts({
         plotLines: [{
             value: 0,
             width: 1,
-            color: 'red'
+            color: '#808080'
         }]
     },
     plotOptions: {
@@ -92,37 +91,28 @@ $('#mean_time_chart').highcharts({
 });
 
 // $('#request_rate_chart').highcharts({
+//     series: [{
+//         name: '每秒请求处理量',
+//         data: []
+//     }],
 //     chart: {
 //         type: 'spline',
 //         animation: Highcharts.svg, // don't animate in old IE
 //         marginRight: 10,
 //         events: {
 //             load: function () {
-//                 var seriesMeanTime = this.series[0];
-//
-//                 setInterval(function () {
-//                     if (samplerInfo) {
-//                         var currentTime = (new Date()).getTime();
-//                         var threadCount = samplerInfo["requestRate"];
-//                         seriesMeanTime.addPoint([currentTime, threadCount], true, false);   // 第三个参数,设置为false,说明将以前的数据积累下来
-//                         samplerInfo = null;
-//                     }
-//                 }, 10);
+//                 var series = this.series[0];
+//                 samplerSocket(series, "requestRate");
 //             }
 //         }
 //     },
-//     series: [
-//         {
-//             name: '每秒请求处理量',
-//             data: []
-//         }
-//     ],
 //     title: {
-//         text: '每秒请求处理量-实时'
+//         text: '每秒请求处理量'
 //     },
 //     xAxis: {
 //         type: 'datetime',
-//         tickPixelInterval: 150
+//         tickPixelInterval: 5,
+//         rotation: 30
 //     },
 //     yAxis: {
 //         title: {
@@ -131,7 +121,7 @@ $('#mean_time_chart').highcharts({
 //         plotLines: [{
 //             value: 0,
 //             width: 1,
-//             color: 'green'
+//             color: '#808080'
 //         }]
 //     },
 //     plotOptions: {

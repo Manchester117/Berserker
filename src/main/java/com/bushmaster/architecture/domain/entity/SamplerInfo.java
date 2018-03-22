@@ -1,7 +1,8 @@
 package com.bushmaster.architecture.domain.entity;
 
 public class SamplerInfo {
-    private Number meanTime;
+    private Long timeStamp;
+    private Long meanTime;
     private Long minTime;
     private Long maxTime;
     private int samplerCount;
@@ -11,11 +12,19 @@ public class SamplerInfo {
     private Double errorPercentage;
     private Integer threadCount;
 
-    public Number getMeanTime() {
+    public Long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public Long getMeanTime() {
         return meanTime;
     }
 
-    public void setMeanTime(Number meanTime) {
+    public void setMeanTime(Long meanTime) {
         this.meanTime = meanTime;
     }
 
