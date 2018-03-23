@@ -65,5 +65,7 @@ public class EngineController {
         HashTree testPlanTree = testPlanSetter.testPlanSetting(scenarioRunInfo, resultCollectorList);
         // 运行测试
         testRunner.scenarioRun(engine, testPlanTree);
+        // 重置结果收集器
+        resultHandler.clearCalculator();
     }
 }

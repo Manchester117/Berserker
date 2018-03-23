@@ -7,6 +7,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class WebAppConfigurerAdapter extends WebMvcConfigurerAdapter {
+    /**
+     * @description         添加拦截器(针对于添加场景和修改场景)
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new PreventRepeatSubmitInterceptor()).addPathPatterns("/addScenarioInfo");

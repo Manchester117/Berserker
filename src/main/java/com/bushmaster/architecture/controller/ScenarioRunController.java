@@ -2,15 +2,9 @@ package com.bushmaster.architecture.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bushmaster.architecture.domain.entity.SamplerInfo;
-import com.bushmaster.architecture.engine.core.EngineController;
-import com.bushmaster.architecture.engine.queue.SamplerQueue;
 import com.bushmaster.architecture.service.ScenarioRunService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +36,7 @@ public class ScenarioRunController {
 //    @SendTo(value = "/topic/notice")
 //    public String greeting() {
 //        SamplerQueue queue = SamplerQueue.getInstance();
-//        SamplerInfo samplerInfo = queue.pop();
+//        SampleResultInfo samplerInfo = queue.pop();
 //
 //        System.out.println(samplerInfo);
 //        return samplerInfo.toString();

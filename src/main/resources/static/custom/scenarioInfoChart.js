@@ -52,8 +52,8 @@ $('#mean_time_chart').highcharts({
     },
     xAxis: {
         type: 'datetime',
-        tickPixelInterval: 5,
-        rotation: 30
+        tickPixelInterval: 10,
+        rotation: 10
     },
     yAxis: {
         title: {

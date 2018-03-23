@@ -67,9 +67,6 @@ dependencies {
     compile group: 'org.apache.jmeter', name: 'ApacheJMeter_config', version: '4.0'
     compile group: 'org.apache.jmeter', name: 'jorphan', version: '4.0'
 
-    compile group: 'kg.apc', name: 'jmeter-plugins-graphs-basic', version: '2.0'
-    compile group: 'kg.apc', name: 'jmeter-plugins-graphs-additional', version: '2.0'
-
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
