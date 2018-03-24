@@ -1,13 +1,12 @@
 package com.bushmaster.architecture.engine.core;
 
+import com.bushmaster.architecture.domain.entity.SampleResultInfo;
 import com.bushmaster.architecture.engine.collect.EngineSamplerCollector;
-import com.bushmaster.architecture.engine.queue.SampleResultPublisher;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.util.JMeterUtils;
-import org.apache.jmeter.visualizers.backend.SamplerMetric;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,10 +16,7 @@ import java.util.Objects;
 @Component
 public class EngineResultHandler {
     @Autowired
-    private SimpMessagingTemplate template;       // 因为WebSocket的信息发送需要注入,所以需要在Component中定义,传给Sampler的收集器
-    @Autowired
-    private SampleResultPublisher publisher;
-
+    private StringRedisTemplate stringRedisTemplate;
     private static EngineSamplerCollector engineSamplerCollector;
 
     /**
@@ -39,8 +35,8 @@ public class EngineResultHandler {
         // 定义结果收集器的List
         List<ResultCollector> resultCollectorList = new ArrayList<>();
 
-        // 自定义结果收集.继承自ResultCollector
-        engineSamplerCollector = new EngineSamplerCollector(summary, template, publisher);
+        // 自定义结果收集.继承自ResultCollector.传入stringRedisTemplate,将SampleResult的数据进行缓存
+        engineSamplerCollector = new EngineSamplerCollector(summary, stringRedisTemplate);
         engineSamplerCollector.setName("自定义结果收集");
         engineSamplerCollector.setEnabled(Boolean.TRUE);
 //        engineSamplerCollector.setFilename(reportFilePath);

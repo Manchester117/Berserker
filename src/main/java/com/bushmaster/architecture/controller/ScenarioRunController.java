@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bushmaster.architecture.service.ScenarioRunService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,10 +34,16 @@ public class ScenarioRunController {
         return JSONObject.parseObject(JSON.toJSONString(stopRunMessage));
     }
 
+    @SendTo(value = "/sampleResult/data")
+    public String getSampleResultData() {
+        String value = "";
+        return value;
+    }
+
 //    @SendTo(value = "/topic/notice")
 //    public String greeting() {
-//        SamplerQueue queue = SamplerQueue.getInstance();
-//        SampleResultInfo samplerInfo = queue.pop();
+//        SamplerQueue cache = SamplerQueue.getInstance();
+//        SampleResultInfo samplerInfo = cache.pop();
 //
 //        System.out.println(samplerInfo);
 //        return samplerInfo.toString();

@@ -4138,7 +4138,7 @@ jQuery.extend( {
 				jQuery.dequeue( elem, type );
 			};
 
-		// If the fx queue is dequeued, always remove the progress sentinel
+		// If the fx cache is dequeued, always remove the progress sentinel
 		if ( fn === "inprogress" ) {
 			fn = queue.shift();
 			startLength--;
@@ -4146,13 +4146,13 @@ jQuery.extend( {
 
 		if ( fn ) {
 
-			// Add a progress sentinel to prevent the fx queue from being
+			// Add a progress sentinel to prevent the fx cache from being
 			// automatically dequeued
 			if ( type === "fx" ) {
 				queue.unshift( "inprogress" );
 			}
 
-			// clear up the last queue stop function
+			// clear up the last cache stop function
 			delete hooks.stop;
 			fn.call( elem, next, hooks );
 		}
@@ -4194,7 +4194,7 @@ jQuery.fn.extend( {
 			this.each( function() {
 				var queue = jQuery.queue( this, type, data );
 
-				// ensure a hooks for this queue
+				// ensure a hooks for this cache
 				jQuery._queueHooks( this, type );
 
 				if ( type === "fx" && queue[ 0 ] !== "inprogress" ) {
@@ -4918,7 +4918,7 @@ jQuery.event = {
 				namespace: namespaces.join( "." )
 			}, handleObjIn );
 
-			// Init the event handler queue if we're the first
+			// Init the event handler cache if we're the first
 			if ( !( handlers = events[ type ] ) ) {
 				handlers = events[ type ] = [];
 				handlers.delegateCount = 0;
@@ -7546,7 +7546,7 @@ function defaultPrefilter( elem, props, opts ) {
 		hidden = elem.nodeType && isHidden( elem ),
 		dataShow = jQuery._data( elem, "fxshow" );
 
-	// handle queue: false promises
+	// handle cache: false promises
 	if ( !opts.queue ) {
 		hooks = jQuery._queueHooks( elem, "fx" );
 		if ( hooks.unqueued == null ) {
@@ -7887,7 +7887,7 @@ jQuery.speed = function( speed, easing, fn ) {
 		opt.duration in jQuery.fx.speeds ?
 			jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
 
-	// normalize opt.queue - true/undefined/null -> "fx"
+	// normalize opt.cache - true/undefined/null -> "fx"
 	if ( opt.queue == null || opt.queue === true ) {
 		opt.queue = "fx";
 	}
@@ -7980,7 +7980,7 @@ jQuery.fn.extend( {
 				}
 			}
 
-			// start the next in the queue if the last step wasn't forced
+			// start the next in the cache if the last step wasn't forced
 			// timers currently will call their complete callbacks, which will dequeue
 			// but only if they were gotoEnd
 			if ( dequeue || !gotoEnd ) {
@@ -8003,7 +8003,7 @@ jQuery.fn.extend( {
 			// enable finishing flag on private data
 			data.finish = true;
 
-			// empty the queue first
+			// empty the cache first
 			jQuery.queue( this, type, [] );
 
 			if ( hooks && hooks.stop ) {
@@ -8018,7 +8018,7 @@ jQuery.fn.extend( {
 				}
 			}
 
-			// look for any animations in the old queue and finish them
+			// look for any animations in the old cache and finish them
 			for ( index = 0; index < length; index++ ) {
 				if ( queue[ index ] && queue[ index ].finish ) {
 					queue[ index ].finish.call( this );

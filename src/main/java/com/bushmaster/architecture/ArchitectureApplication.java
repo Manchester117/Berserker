@@ -19,7 +19,6 @@ import java.util.Properties;
 //@SpringBootApplication
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)      // Springboot启动时不要默认加载MongoDriver
 @EnableTransactionManagement
-@EnableWebSocketMessageBroker
 @EnableAsync
 @MapperScan("com.bushmaster.architecture.mapper")
 public class ArchitectureApplication {

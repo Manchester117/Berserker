@@ -1,6 +1,8 @@
 package com.bushmaster.architecture.domain.entity;
 
-public class SampleResultInfo {
+import java.io.Serializable;
+
+public class SampleResultInfo implements Serializable {
     private Long timeStamp;
     private int samplerCount;
     private Number meanTime;

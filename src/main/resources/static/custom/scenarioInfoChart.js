@@ -4,12 +4,12 @@ var samplerInfo = null;
 /**
  * @description WebSocket建立连接,获取实时数据
  */
-function samplerSocket(series, dataType) {
+function sampleResultSocket(series, dataType) {
     var sock = new SockJS('/socket');
     stompClient = Stomp.over(sock);
     stompClient.connect({}, function (frame) {
         console.log('connected ' + frame);
-        stompClient.subscribe('/topic/notice', function (data) {
+        stompClient.subscribe('/sampleResult/data', function (data) {
             // 拿到数据后将字符串转成JSON对象
             samplerInfo = $.parseJSON(data.body);
             if (samplerInfo) {
@@ -43,7 +43,7 @@ $('#mean_time_chart').highcharts({
         events: {
             load: function () {
                 var series = this.series[0];
-                samplerSocket(series, "meanTime");
+                sampleResultSocket(series, "meanTime");
             }
         }
     },

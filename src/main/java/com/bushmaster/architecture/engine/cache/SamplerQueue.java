@@ -1,4 +1,4 @@
-package com.bushmaster.architecture.engine.queue;
+package com.bushmaster.architecture.engine.cache;
 
 import com.bushmaster.architecture.domain.entity.SampleResultInfo;
 

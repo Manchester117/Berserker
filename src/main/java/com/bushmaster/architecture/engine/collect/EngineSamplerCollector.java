@@ -2,8 +2,6 @@ package com.bushmaster.architecture.engine.collect;
 
 import com.alibaba.fastjson.JSON;
 import com.bushmaster.architecture.domain.entity.SampleResultInfo;
-import com.bushmaster.architecture.engine.queue.SampleResultPublisher;
-import com.bushmaster.architecture.engine.queue.SamplerQueue;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
@@ -11,19 +9,21 @@ import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.util.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;;
 
 
 public class EngineSamplerCollector extends ResultCollector{
     private static final Logger log = LoggerFactory.getLogger(EngineSamplerCollector.class);
-    private static volatile Calculator calculator = new Calculator();
-    private SimpMessagingTemplate template;                 // 通过构造函数获取WebSocket信息发送机制
-    private SampleResultPublisher publisher;
+    private static volatile Calculator calculator = new Calculator();   // 性能计数器
 
-    public EngineSamplerCollector(Summariser summer, SimpMessagingTemplate template, SampleResultPublisher publisher) {
+    private StringRedisTemplate stringRedisTemplate;                    // 将SampleResult存入Redis的模板
+    private String nowTime;                                             // 将SampleResult存入缓存的时间戳字符串
+
+    public EngineSamplerCollector(Summariser summer, StringRedisTemplate stringRedisTemplate) {
         super(summer);
-        this.template = template;
-        this.publisher = publisher;
+        this.stringRedisTemplate = stringRedisTemplate;
+        this.nowTime = String.valueOf(System.currentTimeMillis());      // 使用当前时间
     }
 
     @Override
@@ -61,15 +61,12 @@ public class EngineSamplerCollector extends ResultCollector{
         sampleResultInfo.setAvgPageBytes(calculator.getAvgPageBytes());                  // 平均收发数据量
         sampleResultInfo.setThreadCount(result.getAllThreads());                         // 线程数量
 
-        SamplerQueue samplerQueue = SamplerQueue.getInstance();
-        samplerQueue.push(sampleResultInfo);
-
+        // 将信息以列表形式存入Redis,以时间戳为Key
         String sampleResultJson = JSON.toJSONString(sampleResultInfo);
+        ListOperations<String, String> sampleRedisList = this.stringRedisTemplate.opsForList();
+        sampleRedisList.leftPush(nowTime, sampleResultJson);
 
-        this.publisher.publishSampleResult();
-
-        // 使用WebSocket把信息发送到客户端
-        template.convertAndSend("/topic/notice", sampleResultJson);
+        sampleRedisList.range(nowTime, 0, sampleRedisList.size(nowTime));
     }
 
     /**

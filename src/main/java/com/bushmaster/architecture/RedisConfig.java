@@ -1,33 +1,38 @@
 package com.bushmaster.architecture;
 
-import com.bushmaster.architecture.engine.queue.SampleResultReceiver;
+import com.bushmaster.architecture.domain.entity.SampleResultInfo;
+import com.bushmaster.architecture.engine.cache.RedisSampleSerializer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
+@EnableCaching
 public class RedisConfig {
     @Bean
-    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        // 订阅一个叫message的通道
-        container.addMessageListener(listenerAdapter, new PatternTopic("message"));
-        // container中可以添加多个messageListener
-        return container;
+    public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
+        return new RedisCacheManager(redisTemplate);
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter(SampleResultReceiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveSampleResult");
+    JedisConnectionFactory jedisConnectionFactory() {
+        return new JedisConnectionFactory();
     }
 
-//    @Bean
-//    StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
-//        return new StringRedisTemplate(connectionFactory);
-//    }
+    @Bean
+    @ConditionalOnMissingBean(name = {"redisTemplate"})
+    public RedisTemplate<String, SampleResultInfo> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, SampleResultInfo> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new RedisSampleSerializer());
+        return template;
+    }
 }
