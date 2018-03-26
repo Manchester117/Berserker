@@ -75,7 +75,7 @@ public class ScenarioInfoController {
 
     @GetMapping(path = "/")
     public String index() {
-        return "scenarioInfoList";
+        return "scenarioList";
     }
 
     @PostMapping(path = "/scenarioInfoList")
@@ -109,7 +109,7 @@ public class ScenarioInfoController {
 
     @GetMapping(path = "/scenarioInfoAdd")
     public String scenarioInfoAdd() {
-        return "scenarioInfoAdd";
+        return "scenarioAdd";
     }
 
     @PreventRepeatSubmit
@@ -243,7 +243,7 @@ public class ScenarioInfoController {
         model.addAttribute("scenarioInfo", scenarioInfo);
         model.addAttribute("scriptFileInfo", scriptFileInfo);
         model.addAttribute("csvDataSetSlotList", csvDataSetSlotList);
-        return "scenarioInfoModify";
+        return "scenarioModify";
     }
 
     @PreventRepeatSubmit

@@ -23,4 +23,10 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
     public Map<String, Object> scenarioStopRun() {
         return engineController.stopEngine();
     }
+
+    @Async
+    @Override
+    public void scenarioSampleResultRealOuter() {
+        engineController.engineScenarioRealOuter();
+    }
 }

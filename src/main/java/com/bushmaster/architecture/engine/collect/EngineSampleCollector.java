@@ -9,21 +9,18 @@ import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.util.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;;
+import org.springframework.data.redis.core.BoundListOperations;
 
 
-public class EngineSamplerCollector extends ResultCollector{
-    private static final Logger log = LoggerFactory.getLogger(EngineSamplerCollector.class);
-    private static volatile Calculator calculator = new Calculator();   // 性能计数器
+public class EngineSampleCollector extends ResultCollector{
+    private static final Logger log = LoggerFactory.getLogger(EngineSampleCollector.class);
+    private static volatile Calculator calculator = new Calculator();           // 性能计数器
 
-    private StringRedisTemplate stringRedisTemplate;                    // 将SampleResult存入Redis的模板
-    private String nowTime;                                             // 将SampleResult存入缓存的时间戳字符串
+    private BoundListOperations<String, String> runningSampleResultList;        // 将SampleResult存入Redis的模板
 
-    public EngineSamplerCollector(Summariser summer, StringRedisTemplate stringRedisTemplate) {
+    public EngineSampleCollector(Summariser summer, BoundListOperations<String, String> runningSampleResultList) {
         super(summer);
-        this.stringRedisTemplate = stringRedisTemplate;
-        this.nowTime = String.valueOf(System.currentTimeMillis());      // 使用当前时间
+        this.runningSampleResultList = runningSampleResultList;
     }
 
     @Override
@@ -49,6 +46,7 @@ public class EngineSamplerCollector extends ResultCollector{
 
         SampleResultInfo sampleResultInfo = new SampleResultInfo();
         sampleResultInfo.setTimeStamp(result.getTimeStamp());                            // 时间戳
+        sampleResultInfo.setSamplerLabel(result.getSampleLabel());                       // 请求名称
         sampleResultInfo.setSamplerCount(calculator.getCount());                         // SamplerCount
         sampleResultInfo.setMeanTime(calculator.getMeanAsNumber());                      // 平均响应时间
         sampleResultInfo.setMinTime(calculator.getMin());                                // 最小响应时间
@@ -63,10 +61,8 @@ public class EngineSamplerCollector extends ResultCollector{
 
         // 将信息以列表形式存入Redis,以时间戳为Key
         String sampleResultJson = JSON.toJSONString(sampleResultInfo);
-        ListOperations<String, String> sampleRedisList = this.stringRedisTemplate.opsForList();
-        sampleRedisList.leftPush(nowTime, sampleResultJson);
-
-        sampleRedisList.range(nowTime, 0, sampleRedisList.size(nowTime));
+        // 使用右侧插入,在实时显示的时候可以以正确顺序显示
+        runningSampleResultList.rightPush(sampleResultJson);
     }
 
     /**

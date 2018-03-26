@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class SampleResultInfo implements Serializable {
     private Long timeStamp;
+    private String samplerLabel;
     private int samplerCount;
     private Number meanTime;
     private Long minTime;
@@ -22,6 +23,14 @@ public class SampleResultInfo implements Serializable {
 
     public void setTimeStamp(Long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getSamplerLabel() {
+        return samplerLabel;
+    }
+
+    public void setSamplerLabel(String samplerLabel) {
+        this.samplerLabel = samplerLabel;
     }
 
     public int getSamplerCount() {

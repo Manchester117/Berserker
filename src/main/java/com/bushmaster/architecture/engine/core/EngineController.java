@@ -25,18 +25,10 @@ public class EngineController {
     @Autowired
     private EngineTestRunner testRunner;
 
-
-    private static final EngineController INSTANCE = new EngineController();
     private StandardJMeterEngine engine = new StandardJMeterEngine();
-
-    private EngineController() {}
 
     public StandardJMeterEngine getEngine() {
         return engine;
-    }
-
-    public static EngineController getInstance() {
-        return INSTANCE;
     }
 
     public Boolean getEngineStatus() {
@@ -61,11 +53,15 @@ public class EngineController {
         paramLoader.setEngineParam();
         // 添加场景参数,获得新的测试计划树
         Map<String, Object> scenarioRunInfo = scenarioReader.testPlanReader(scenarioId);
-        List<ResultCollector> resultCollectorList = resultHandler.resultCollect();
+        List<ResultCollector> resultCollectorList = resultHandler.resultCollect(scenarioId);
         HashTree testPlanTree = testPlanSetter.testPlanSetting(scenarioRunInfo, resultCollectorList);
         // 运行测试
         testRunner.scenarioRun(engine, testPlanTree);
         // 重置结果收集器
         resultHandler.clearCalculator();
+    }
+
+    public void engineScenarioRealOuter() {
+        resultHandler.resultRealOuter();
     }
 }

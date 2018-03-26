@@ -32,12 +32,14 @@ Highcharts.setOptions({
  * @description 动态显示趋势图
  */
 $('#mean_time_chart').highcharts({
-    series: [{
-        name: '平均响应时间',
-        data: []
-    }],
+    series: [
+        {
+            name: '平均响应时间',
+            data: []
+        }
+    ],
     chart: {
-        type: 'spline',
+        type: 'area',
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
         events: {
@@ -52,8 +54,8 @@ $('#mean_time_chart').highcharts({
     },
     xAxis: {
         type: 'datetime',
-        tickPixelInterval: 10,
-        rotation: 10
+        tickPixelInterval: 25,
+        rotation: 25
     },
     yAxis: {
         title: {
@@ -86,65 +88,6 @@ $('#mean_time_chart').highcharts({
         enabled: false
     },
     credits: {
-        enabled: false     // 不显示LOGO
+        enabled: false                  // 不显示LOGO
     }
 });
-
-// $('#request_rate_chart').highcharts({
-//     series: [{
-//         name: '每秒请求处理量',
-//         data: []
-//     }],
-//     chart: {
-//         type: 'spline',
-//         animation: Highcharts.svg, // don't animate in old IE
-//         marginRight: 10,
-//         events: {
-//             load: function () {
-//                 var series = this.series[0];
-//                 samplerSocket(series, "requestRate");
-//             }
-//         }
-//     },
-//     title: {
-//         text: '每秒请求处理量'
-//     },
-//     xAxis: {
-//         type: 'datetime',
-//         tickPixelInterval: 5,
-//         rotation: 30
-//     },
-//     yAxis: {
-//         title: {
-//             text: '个'
-//         },
-//         plotLines: [{
-//             value: 0,
-//             width: 1,
-//             color: '#808080'
-//         }]
-//     },
-//     plotOptions: {
-//         series: {
-//             marker: {
-//                 enabled: false          // 不显示数据点
-//             }
-//         }
-//     },
-//     tooltip: {
-//         formatter: function () {
-//             return '<b>' + this.series.name + '</b><br/>' +
-//                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-//                 Highcharts.numberFormat(this.y, 2);
-//         }
-//     },
-//     legend: {
-//         enabled: false
-//     },
-//     exporting: {
-//         enabled: false
-//     },
-//     credits: {
-//         enabled: false     // 不显示LOGO
-//     }
-// });
