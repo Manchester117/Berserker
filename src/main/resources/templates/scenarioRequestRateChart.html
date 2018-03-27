@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>每秒请求处理能力</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="sampler_charts">
+        <input type="hidden" name="chartId" value="#request_rate_chart"/>
+        <input type="hidden" name="dataType" th:value="${dataType}"/>
+        <input type="hidden" name="chartTitle" value="每秒请求处理能力"/>
+        <input type="hidden" name="unit" value="个"/>
+        <div id="request_rate_chart" style="min-width:640px; min-height:480px;"></div>
+    </div>
+    <!-- WebSocket support -->
+    <script type="text/javascript" th:src="@{js/sockjs.js}"></script>
+    <script type="text/javascript" th:src="@{js/stomp.js}"></script>
+    <script type="text/javascript" th:src="@{custom/scenarioCommonChart.js}"></script>
+</div>
+</body>
+</html>

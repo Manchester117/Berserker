@@ -60,12 +60,22 @@ dependencies {
     compile('com.google.guava:guava:23.0')
     compile('com.alibaba:fastjson:1.2.46')
 
+    // Jmeter Base Component
     compile group: 'org.apache.jmeter', name: 'ApacheJMeter_core', version: '4.0'
     compile group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '4.0'
     compile group: 'org.apache.jmeter', name: 'ApacheJMeter_http', version: '4.0'
     compile group: 'org.apache.jmeter', name: 'ApacheJMeter_components', version: '4.0'
     compile group: 'org.apache.jmeter', name: 'ApacheJMeter_config', version: '4.0'
     compile group: 'org.apache.jmeter', name: 'jorphan', version: '4.0'
+    // Jmeter Plugin
+    compile group: 'kg.apc', name: 'jmeter-plugins-graphs-basic', version: '2.0'                // Jmeter图形显示-base
+    compile group: 'kg.apc', name: 'jmeter-plugins-graphs-additional', version: '2.0'           // Jmeter图形显示-additional
+    compile group: 'kg.apc', name: 'jmeter-plugins-casutg', version: '2.5'                      // Custom Thread Groups
+    compile group: 'kg.apc', name: 'jmeter-plugins-json', version: '2.6'                        // JSON plugin
+    compile group: 'kg.apc', name: 'jmeter-plugins-httpraw', version: '0.1'                     // Jmeter自定义HTTP
+    compile group: 'kg.apc', name: 'jmeter-plugins-redis', version: '0.2'                       // Jmeter Redis支持
+    compile group: 'kg.apc', name: 'jmeter-plugins-tst', version: '2.3'                         // 基于处理能力Jmeter插件
+    compile group: 'net.luminis.jmeter', name: 'jmeter-websocket-samplers', version: '1.1.1'    // Jmeter对WebSocket的支持
 
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'

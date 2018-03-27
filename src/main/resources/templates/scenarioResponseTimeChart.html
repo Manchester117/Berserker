@@ -5,18 +5,21 @@
       layout:decorator="layout">
 <head>
     <meta charset="UTF-8"/>
-    <title>ScenarioRun</title>
+    <title>平均响应时间</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div id="sampler_charts">
-        <div id="mean_time_chart" style="min-width:600px; min-height:400px;"></div>
-        <div id="request_rate_chart" style="min-width:600px; min-height:400px;"></div>
+        <input type="hidden" name="chartId" value="#mean_time_chart"/>
+        <input type="hidden" name="dataType" th:value="${dataType}"/>
+        <input type="hidden" name="chartTitle" value="平均响应时间"/>
+        <input type="hidden" name="unit" value="毫秒"/>
+        <div id="mean_time_chart" style="min-width:640px; min-height:480px;"></div>
     </div>
     <!-- WebSocket support -->
     <script type="text/javascript" th:src="@{js/sockjs.js}"></script>
     <script type="text/javascript" th:src="@{js/stomp.js}"></script>
-    <script type="text/javascript" th:src="@{custom/scenarioChart.js}"></script>
+    <script type="text/javascript" th:src="@{custom/scenarioCommonChart.js}"></script>
 </div>
 </body>
 </html>

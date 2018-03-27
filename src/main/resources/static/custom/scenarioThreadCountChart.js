@@ -1,27 +1,31 @@
 var stompClient = null;
 var samplerInfo = null;
+var samplerFilter = {};
 
 /**
  * @description WebSocket建立连接,获取实时数据
  */
-function sampleResultSocket(series, dataType) {
+function sampleResultSocket(chart, dataType) {
     var sock = new SockJS('/socket');
     stompClient = Stomp.over(sock);
     stompClient.connect({}, function (frame) {
-        console.log('connected ' + frame);
+        // console.log('connected ' + frame);
         stompClient.subscribe('/sampleResult/data', function (data) {
             // 拿到数据后将字符串转成JSON对象
             samplerInfo = $.parseJSON(data.body);
             if (samplerInfo) {
                 var timeStamp = samplerInfo["timeStamp"];
-                var dataSampler = samplerInfo[dataType];
-                series.addPoint([timeStamp, dataSampler], true, false);   // 第三个参数,设置为false,说明将以前的数据积累下来
+                var samplerData = samplerInfo[dataType];
+                chart.series[0].addPoint([timeStamp, samplerData], true, false, true);   // 第三个参数,设置为false,说明将以前的数据积累
                 samplerInfo = null;
             }
         });
     });
 }
 
+/**
+ * @description HighCharts的全局时区设置
+ */
 Highcharts.setOptions({
     global: {
         useUTC: false
@@ -31,35 +35,38 @@ Highcharts.setOptions({
 /**
  * @description 动态显示趋势图
  */
-$('#mean_time_chart').highcharts({
+var chartId = $("input[name='chartId']").val();
+$(chartId).highcharts({
     series: [
         {
-            name: '平均响应时间',
+            name: "并发数量",
             data: []
         }
     ],
     chart: {
-        type: 'area',
+        type: 'spline',
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
         events: {
             load: function () {
-                var series = this.series[0];
-                sampleResultSocket(series, "meanTime");
+                sampleResultSocket(this, $("input[name='dataType']").val());
             }
         }
     },
     title: {
-        text: '平均响应时间'
+        text: $("input[name='chartTitle']").val()
     },
     xAxis: {
         type: 'datetime',
-        tickPixelInterval: 25,
-        rotation: 25
+        tickPixelInterval: 50,
+        rotation: 50
     },
     yAxis: {
         title: {
-            text: '毫秒'
+            text: $("input[name='unit']").val(),
+            style: {
+                fontWeight: 'bold'
+            }
         },
         plotLines: [{
             value: 0,
@@ -71,7 +78,8 @@ $('#mean_time_chart').highcharts({
         series: {
             marker: {
                 enabled: false          // 不显示数据点
-            }
+            },
+            lineWidth: 1.5              // 线宽
         }
     },
     tooltip: {

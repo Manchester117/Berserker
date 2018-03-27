@@ -23,14 +23,14 @@
                         </div>
                     </div>
                 </div>
-                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId})}">
+                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='meanTime')}">
                     <div class="panel-footer announcement-bottom">
                         <div class="row">
                             <div class="col-xs-6">
                                 查看趋势图
                             </div>
                             <div class="col-xs-6 text-right">
-                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId})}"><i class="fa fa-arrow-circle-right"></i></a>
+                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='meanTime')}"><i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -50,14 +50,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='requestRate')}">
                     <div class="panel-footer announcement-bottom">
                         <div class="row">
                             <div class="col-xs-6">
                                 查看趋势图
                             </div>
                             <div class="col-xs-6 text-right">
-                                <i class="fa fa-arrow-circle-right"></i>
+                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='requestRate')}"><i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -79,14 +79,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='errorPercentage')}">
                     <div class="panel-footer announcement-bottom">
                         <div class="row">
                             <div class="col-xs-6">
                                 查看趋势图
                             </div>
                             <div class="col-xs-6 text-right">
-                                <i class="fa fa-arrow-circle-right"></i>
+                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='errorPercentage')}"><i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -106,14 +106,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='threadCount')}">
                     <div class="panel-footer announcement-bottom">
                         <div class="row">
                             <div class="col-xs-6">
                                 查看趋势图
                             </div>
                             <div class="col-xs-6 text-right">
-                                <i class="fa fa-arrow-circle-right"></i>
+                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='threadCount')}"><i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -135,14 +135,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='sentKBPerSecond')}">
                     <div class="panel-footer announcement-bottom">
                         <div class="row">
                             <div class="col-xs-6">
                                 查看趋势图
                             </div>
                             <div class="col-xs-6 text-right">
-                                <i class="fa fa-arrow-circle-right"></i>
+                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='sentKBPerSecond')}"><i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -162,14 +162,14 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='receiveKBPerSecond')}">
                     <div class="panel-footer announcement-bottom">
                         <div class="row">
                             <div class="col-xs-6">
                                 查看趋势图
                             </div>
                             <div class="col-xs-6 text-right">
-                                <i class="fa fa-arrow-circle-right"></i>
+                                <a th:href="@{scenarioChartDetail(scenarioId=${scenarioId},dataType='receiveKBPerSecond')}"><i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>

@@ -40,7 +40,7 @@ public class EngineResultHandler {
 //            summary.setProperty("summariser.interval", "1");
         }
         // 定义存入Redis的结果Key
-        String runningScenarioKey = StringUtils.join("running_", scenarioId);
+        String runningScenarioKey = StringUtils.join("scenario_", scenarioId);
         runningSampleResultList = stringRedisTemplate.boundListOps(runningScenarioKey);
 
         // 定义结果收集器的List
