@@ -168,7 +168,10 @@ $modify_csv_data_set_button.click(
                 } else if (status === "Fail") {
                     bootbox.alert({
                         title: "提示",
-                        message: result.message
+                        message: result.message,
+                        callback: function () {
+                            window.location.href = "/";             // 回到场景列表页
+                        }
                     });
                 }
             }

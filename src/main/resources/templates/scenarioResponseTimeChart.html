@@ -10,7 +10,7 @@
 <body>
 <div layout:fragment="content">
     <div id="sampler_charts">
-        <input type="hidden" name="chartId" value="#mean_time_chart"/>
+        <input type="hidden" name="chartId" value="mean_time_chart"/>
         <input type="hidden" name="dataType" th:value="${dataType}"/>
         <input type="hidden" name="chartTitle" value="平均响应时间"/>
         <input type="hidden" name="unit" value="毫秒"/>
@@ -19,7 +19,7 @@
     <!-- WebSocket support -->
     <script type="text/javascript" th:src="@{js/sockjs.js}"></script>
     <script type="text/javascript" th:src="@{js/stomp.js}"></script>
-    <script type="text/javascript" th:src="@{custom/scenarioCommonChart.js}"></script>
+    <script type="text/javascript" th:src="@{custom/scenarioChart.js}"></script>
 </div>
 </body>
 </html>

@@ -34,23 +34,15 @@ $add_script_modal.on("hidden.bs.modal",
     }
 );
 
-// 与Controller交互
-function performController(path, id) {
-    $.ajax({
-        url: path,
-        type: "post",
-        data : {
-            id: id
-        },
-        success: function(result) {
-            bootbox.alert({
-                title: '提示',
-                message: result.delScenarioStatus
-            });
-            $scenario_list.bootstrapTable('selectPage', 1);     // 在每次提交操作后返回首页
-        }
+// 判断场景是否处于运行状态
+var isActive = $("#scenario_is_active").val();
+if (isActive !== undefined && isActive === "False") {
+    bootbox.alert({
+        title: '提示',
+        message: '当前没有场景正在运行'
     });
 }
+
 
 // 修改场景
 function modScenario(id) {
@@ -110,6 +102,52 @@ function delScenario(id) {
     });
 }
 
-function runScenario(id) {
-    $(window).attr('location', "/scenarioStartRun?scenarioId=" + id);
+// 运行场景
+function runScenario(scenarioId) {
+    $.ajax({
+        url: "/scenarioIsActive",
+        type: "post",
+        data : {
+            scenarioId: scenarioId
+        },
+        success: function(result) {
+            if (result["isActive"] === "true") {
+                bootbox.alert({
+                    title: '提示',
+                    message: '场景' + result['scenarioName'] + '正在运行,请等待测试完成后再试.',
+                    callback: function () {
+                        $scenario_list.bootstrapTable('selectPage', 1);
+                    }
+                });
+            } else {
+                bootbox.confirm({
+                    title: '提示',
+                    message: '当前没有测试运行,开始执行测试.',
+                    callback: function (isConfirm) {
+                        // 如果在bootbox上点击的了确定,则执行测试.否则什么都不做.result为回调值
+                        if (isConfirm === true)
+                            $(window).attr('location', "/scenarioStartRun?scenarioId=" + scenarioId);
+                    }
+                });
+            }
+        }
+    });
 }
+
+// 与Controller交互
+// function performController(path, id) {
+//     $.ajax({
+//         url: path,
+//         type: "post",
+//         data : {
+//             id: id
+//         },
+//         success: function(result) {
+//             bootbox.alert({
+//                 title: '提示',
+//                 message: result.delScenarioStatus
+//             });
+//             $scenario_list.bootstrapTable('selectPage', 1);     // 在每次提交操作后返回首页
+//         }
+//     });
+// }

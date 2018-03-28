@@ -24,6 +24,21 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         return engineController.stopEngine();
     }
 
+    @Override
+    public Boolean getEngineIsActive() {
+        return engineController.getEngineStatus();
+    }
+
+    @Override
+    public Integer getRunningScenarioId() {
+        return engineController.getRunningScenarioId();
+    }
+
+    @Override
+    public String getRunningScenarioName() {
+        return engineController.getRunningScenarioName();
+    }
+
     @Async
     @Override
     public void scenarioSampleResultRealOuter() {

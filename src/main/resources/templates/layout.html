@@ -16,8 +16,6 @@
     <!-- Add custom CSS here -->
     <link type="text/css" rel="stylesheet" th:href="@{css/sb-admin.css}">
     <link type="text/css" rel="stylesheet" th:href="@{font-awesome/css/font-awesome.min.css}">
-    <!-- Page Specific CSS -->
-    <!--<link type="text/css" rel="stylesheet" th:href="@{css/morris-0.4.3.min.css}">-->
 
     <!-- JavaScript -->
     <script type="text/javascript" th:src="@{js/jquery-1.12.4.js}"></script>
@@ -32,21 +30,17 @@
     <script type="text/javascript" th:src="@{js/bootstrap-treeview.min.js}"></script>
     <script type="text/javascript" th:src="@{js/bootbox.min.js}"></script>
 
-    <!-- Page Specific Plugins -->
-    <!--<script type="text/javascript" th:src="@{js/raphael-min.js}"></script>-->
-    <!--<script type="text/javascript" th:src="@{js/morris-0.4.3.min.js}"></script>-->
-    <!--<script type="text/javascript" th:src="@{js/morris/chart-data-morris.js}"></script>-->
-    <!--<script type="text/javascript" th:src="@{js/tablesorter/jquery.tablesorter.js}"></script>-->
-    <!--<script type="text/javascript" th:src="@{js/tablesorter/tables.js}"></script>-->
-
     <!-- HighCharts support -->
     <script type="text/javascript" th:src="@{js/highcharts.js}"></script>
     <script type="text/javascript" th:src="@{js/exporting.js}"></script>
+    <script type="text/javascript" th:src="@{js/boost.js}"></script>
+    <!-- ECharts support -->
+    <script type="text/javascript" th:src="@{js/echarts.js}"></script>
+
+    <!-- 小于IE11使用boost-canvas.js-->
+    <script type="text/javascript" th:src="@{js/boost-canvas.js}"></script>
     <script type="text/javascript" th:src="@{js/dark-unica.js}"></script>
     <script type="text/javascript" th:src="@{js/highcharts-zh_CN.js}"></script>
-
-    <!-- Echarts support-->
-    <!--<script type="text/javascript" th:src="@{js/echarts.js}"></script>-->
 
     <style type="text/css">
         #search {
@@ -80,24 +74,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li class="active"><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li><a href="charts.html"><i class="fa fa-bar-chart-o"></i> Charts</a></li>
-                <li><a href="tables.html"><i class="fa fa-table"></i> Tables</a></li>
-                <li><a href="forms.html"><i class="fa fa-edit"></i> Forms</a></li>
-                <li><a href="typography.html"><i class="fa fa-font"></i> Typography</a></li>
-                <li><a href="bootstrap-elements.html"><i class="fa fa-desktop"></i> Bootstrap Elements</a></li>
-                <li><a href="bootstrap-grid.html"><i class="fa fa-wrench"></i> Bootstrap Grid</a></li>
-                <li><a href="blank-page.html"><i class="fa fa-file"></i> Blank Page</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i>
-                        Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Dropdown Item</a></li>
-                        <li><a href="#">Another Item</a></li>
-                        <li><a href="#">Third Item</a></li>
-                        <li><a href="#">Last Item</a></li>
-                    </ul>
-                </li>
+                <li><a href="/"><i class="fa fa-dashboard"></i> 场景列表</a></li>
+                <li><a href="/scenarioRunningCheck"><i class="fa fa-bar-chart-o"></i> 正在运行</a></li>
+                <li><a href="tables.html"><i class="fa fa-table"></i> 结果查看</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right navbar-user">

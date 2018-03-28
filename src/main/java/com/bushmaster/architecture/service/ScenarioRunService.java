@@ -7,5 +7,11 @@ public interface ScenarioRunService {
 
     Map<String, Object> scenarioStopRun();
 
+    Boolean getEngineIsActive();
+
+    Integer getRunningScenarioId();
+
+    String getRunningScenarioName();
+
     void scenarioSampleResultRealOuter();
 }

@@ -22,6 +22,8 @@ public class EngineScenarioReader {
         File scriptFileObject = scriptUtil.getScriptFileByScenarioId(scenarioId);
 
         Map<String, Object> scenarioRunInfo = new HashMap<>();
+        scenarioRunInfo.put("scenarioId", scenarioInfo.getId());
+        scenarioRunInfo.put("scenarioName", scenarioInfo.getScenarioName());
         scenarioRunInfo.put("scriptFile", scriptFileObject);
         scenarioRunInfo.put("scriptAbsolutePath", scriptFileObject.getAbsolutePath());
         scenarioRunInfo.put("numThreads", scenarioInfo.getNumThreads());

@@ -27,6 +27,10 @@ public class EngineController {
 
     private StandardJMeterEngine engine = new StandardJMeterEngine();
 
+    private Integer runningScenarioId;
+
+    private String runningScenarioName;
+
     public StandardJMeterEngine getEngine() {
         return engine;
     }
@@ -35,14 +39,22 @@ public class EngineController {
         return engine.isActive();
     }
 
+    public Integer getRunningScenarioId() {
+        return runningScenarioId;
+    }
+
+    public String getRunningScenarioName(){
+        return runningScenarioName;
+    }
+
     public Map<String, Object> stopEngine() {
         Map<String, Object> stopRunResult = new HashMap<>();
         if (engine.isActive()) {
             engine.stopTest(Boolean.TRUE);
-            stopRunResult.put("info", "Success");
+            stopRunResult.put("status", "True");
             stopRunResult.put("message", "场景成功停止运行");
         } else {
-            stopRunResult.put("info", "Info");
+            stopRunResult.put("status", "False");
             stopRunResult.put("message", "没有场景处于运行状态");
         }
         return stopRunResult;
@@ -53,6 +65,10 @@ public class EngineController {
         paramLoader.setEngineParam();
         // 添加场景参数,获得新的测试计划树
         Map<String, Object> scenarioRunInfo = scenarioReader.testPlanReader(scenarioId);
+        // 获取场景名称
+        runningScenarioId = Integer.parseInt(scenarioRunInfo.get("scenarioId").toString());
+        runningScenarioName = scenarioRunInfo.get("scenarioName").toString();
+        // 添加场景的结果收集
         List<ResultCollector> resultCollectorList = resultHandler.resultCollect(scenarioId);
         HashTree testPlanTree = testPlanSetter.testPlanSetting(scenarioRunInfo, resultCollectorList);
         // 运行测试
