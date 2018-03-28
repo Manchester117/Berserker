@@ -6,21 +6,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
-import java.util.Date;
 import java.util.Properties;
 
 //@SpringBootApplication
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)      // Springboot启动时不要默认加载MongoDriver
-@EnableTransactionManagement
-@EnableAsync
-@MapperScan("com.bushmaster.architecture.mapper")
+@EnableTransactionManagement                                        // 开启事务管理
+@EnableWebSocketMessageBroker                                       // 启用WebSocket
+@EnableAsync                                                        // 启用异步处理
+@MapperScan("com.bushmaster.architecture.mapper")                   // 扫描Mapper
 public class ArchitectureApplication {
     @Bean
     public PageHelper pageHelper() {
@@ -37,11 +35,8 @@ public class ArchitectureApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ArchitectureApplication.class, args);
-        // 检查消息队列
-//        ApplicationContext ctx = SpringApplication.run(ArchitectureApplication.class, args);
-//        StringRedisTemplate template = ctx.getBean(StringRedisTemplate.class);
-//        template.convertAndSend("message", "Hello Spring Redis");
     }
+
 //    @Override
 //    public void run(String... args) throws Exception {
 //        System.out.println(this.mapper.getScenarioInfoList("个", 1).size());
