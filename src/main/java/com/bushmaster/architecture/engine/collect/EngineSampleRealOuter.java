@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Component
 public class EngineSampleRealOuter {
@@ -44,6 +46,11 @@ public class EngineSampleRealOuter {
     public void sampleRealOuter() {
         // 初始化游标
         long cursor = 0;
+        // 定时器开关
+        Boolean isSendSamplerResult = Boolean.TRUE;
+        // 下一次发送时间
+        Long nextSendTime = 0L;
+        Long currentTime = 0L;
         // 如果Engine还处于运行状态则保持输出状态
         while (controller.getEngineStatus()) {
             // 首先获取Redis中SampleResult列表的长度
@@ -55,7 +62,16 @@ public class EngineSampleRealOuter {
             while (cursor < sampleResultLength) {
                 String sampleResult = runningSampleResultList.index(cursor);
                 log.info(sampleResult);
-                template.convertAndSend("/sampleResult/data", sampleResult);
+                // 做一个定时器,每隔1秒向前端发送一个SamplerResult
+                currentTime = System.currentTimeMillis();
+                if (isSendSamplerResult) {
+                    nextSendTime = currentTime + 1000L;
+                    template.convertAndSend("/sampleResult/data", sampleResult);
+                    isSendSamplerResult = Boolean.FALSE;
+                }
+                if (currentTime >= nextSendTime)
+                    isSendSamplerResult = Boolean.TRUE;
+                // 列表下标自加
                 cursor++;
             }
             // 此时cursor的值和sampleResultLength相同,进行下一次循环
