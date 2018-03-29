@@ -34,7 +34,6 @@ public class ScenarioInfoProvider {
                         conditionStatus.append(" status = ");
                         conditionStatus.append(params.get("status"));
                     }
-
                 }
                 statusSQL = conditionStatus.toString();
 
@@ -48,6 +47,7 @@ public class ScenarioInfoProvider {
                 } else if (!Strings.isNullOrEmpty(scenarioNameSQL) && !Strings.isNullOrEmpty(statusSQL)) {
                     WHERE(scenarioNameSQL, statusSQL);
                 }
+                ORDER_BY("createTime");
             }
         }.toString();
     }
@@ -111,9 +111,8 @@ public class ScenarioInfoProvider {
             {
                 UPDATE("scenarioInfo");
                 assembleColumnSQL(this, scenarioInfo, "UPDATE");
-                if (Objects.nonNull(scenarioInfo.getId()) && StringUtils.isNotEmpty(scenarioInfo.getId().toString())) {
+                if (Objects.nonNull(scenarioInfo.getId()) && StringUtils.isNotEmpty(scenarioInfo.getId().toString()))
                     WHERE("id = " + scenarioInfo.getId().toString());
-                }
             }
         }.toString();
     }

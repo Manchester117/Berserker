@@ -71,7 +71,7 @@ dependencies {
     compile('kg.apc:jmeter-plugins-graphs-additional:2.0')           // Jmeter图形显示-additional
     compile('kg.apc:jmeter-plugins-casutg:2.5')                      // Custom Thread Groups
     compile('kg.apc:jmeter-plugins-json:2.6')                        // JSON plugin
-    compile('kg.apc:jmeter-plugins-httpraw:0.1')                     // Jmeter自定义HTTP
+    compile('kg.apc:jmeter-plugins-httpraw:0.1')                     // Jmeter自定义HTTP请求
     compile('kg.apc:jmeter-plugins-redis:0.2')                       // Jmeter Redis支持
     compile('kg.apc:jmeter-plugins-tst:2.3')                         // 基于处理能力Jmeter插件
     compile('net.luminis.jmeter:jmeter-websocket-samplers:1.1.1')    // Jmeter对WebSocket的支持

@@ -2,10 +2,6 @@ package com.bushmaster.architecture.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bushmaster.architecture.domain.entity.ScenarioInfo;
-import com.bushmaster.architecture.domain.entity.ScenarioResultInfo;
-import com.bushmaster.architecture.service.ScenarioInfoService;
-import com.bushmaster.architecture.service.ScenarioResultService;
 import com.bushmaster.architecture.service.ScenarioRunService;
 import com.google.common.base.Objects;
 import org.springframework.beans.factory.annotation.Autowired;

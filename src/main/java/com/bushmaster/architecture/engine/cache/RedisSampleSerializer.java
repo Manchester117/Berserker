@@ -25,7 +25,7 @@ public class RedisSampleSerializer implements RedisSerializer<Object>{
      * @throws SerializationException       序列化异常
      */
     @Override
-    public byte[] serialize(Object object) throws SerializationException {
+    public byte [] serialize(Object object) throws SerializationException {
         if (Objects.isNull(object)) {
             return EMPTY_ARRAY;
         }

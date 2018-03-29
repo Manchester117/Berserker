@@ -39,6 +39,7 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         // 保留结果ID
         Integer resultId = Integer.parseInt(addResult.get("resultId").toString());
         engineController.setRunningResultId(resultId);
+        // 启动场景测试
         engineController.engineScenarioRunner(scenarioId);
     }
 

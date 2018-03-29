@@ -3,7 +3,8 @@ var $script_list = $('#scenario_list');
 $script_list.bootstrapTable({
     url: '/scenarioInfoList',
     method: 'post',
-    // contentType: "application/x-www-form-urlencoded",        // 如果不指定contentType,则BootstrapTable默认以application/json的形式发送请求
+    // 如果不指定contentType,则BootstrapTable默认以application/json的形式发送请求
+    // contentType: "application/x-www-form-urlencoded",
     dataType: 'json',
     striped: true,
     pagination: true,
@@ -66,7 +67,7 @@ $script_list.bootstrapTable({
                     '<i class="fa fa-cogs"></i>运行' +
                     '</a>' +
                     '&nbsp&nbsp' +
-                    '<a href="javascript:chkScenario(' + row.id + ')">' +
+                    '<a href="javascript:resScenario(' + row.id + ')">' +
                     '<i class="fa fa-eye"></i>结果' +
                     '</a>'
                 ].join('');

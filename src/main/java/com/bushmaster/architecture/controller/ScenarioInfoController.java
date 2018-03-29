@@ -100,9 +100,9 @@ public class ScenarioInfoController {
             limitInt = 15;
         }
         Boolean statusValue = this.getBooleanValue(status);
-        Map<String, Object> resultMap = scenarioInfoService.getScenarioInfoByPageList(offsetInt, limitInt, scenarioName, statusValue);
+        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(offsetInt, limitInt, scenarioName, statusValue);
 
-        return JSONObject.parseObject(JSON.toJSONString(resultMap));
+        return JSONObject.parseObject(JSON.toJSONString(result));
     }
 
     /** 添加场景部分 **/
