@@ -37,6 +37,9 @@ public class EngineSampleRealOuter {
 //        }
 //    }
 
+    /**
+     * @description 通过WebSocket向前端发送数据(控制时间间隔发送数据,避免浏览器崩溃)
+     */
     public void sampleRealOuter() {
         // 初始化游标
         long cursor = 0;
@@ -55,11 +58,11 @@ public class EngineSampleRealOuter {
             // 如果列表中有数据,则按照索引读取,通过WebSocket发送到前端
             while (cursor < sampleResultLength) {
                 String sampleResult = runningSampleResultList.index(cursor);
-                log.info(sampleResult);
+//                log.info(sampleResult);
                 // 做一个定时器,每隔1秒向前端发送一个SamplerResult
                 currentTime = System.currentTimeMillis();
                 if (isSendSamplerResult) {
-                    nextSendTime = currentTime + 1000L;
+                    nextSendTime = currentTime + 500L;
                     template.convertAndSend("/sampleResult/data", sampleResult);
                     isSendSamplerResult = Boolean.FALSE;
                 }

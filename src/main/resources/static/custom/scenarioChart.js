@@ -1,9 +1,11 @@
 var stompClient = null;
 var samplerInfo = null;
-var samplerFilter = {};
+var samplerChartFilter = {};
+var samplerTableFilter = {};
+var rowId = 0;
 
 /**
- * @description WebSocket建立连接,获取实时数据
+ * @description         WebSocket建立连接,获取实时数据
  */
 function sampleResultSocket(chart, dataType) {
     var sock = new SockJS('/socket');
@@ -13,29 +15,80 @@ function sampleResultSocket(chart, dataType) {
         stompClient.subscribe('/sampleResult/data', function (data) {
             // 拿到数据后将字符串转成JSON对象
             samplerInfo = $.parseJSON(data.body);
-            if (samplerInfo) {
-                var timeStamp = samplerInfo["timeStamp"];
-                var samplerLabel = samplerInfo["samplerLabel"];
-                var samplerData = samplerInfo[dataType];
-
-                if (samplerFilter[samplerLabel] === undefined) {
-                    var samplerDataList = [];
-                    samplerDataList.push({
-                        x: timeStamp,
-                        y: samplerData
-                    });
-                    // 注意!不能在data中使用生成数组的方法
-                    samplerFilter[samplerLabel] = chart.addSeries({
-                        name: samplerLabel,
-                        data: samplerDataList
-                    });
-                } else {
-                    samplerFilter[samplerLabel].addPoint([timeStamp, samplerData], true, false, true);   // 第三个参数,设置为false,说明将以前的数据积累
-                }
-                samplerInfo = null;
-            }
+            paintingChart(chart, dataType);
+            paintingTable();
+            samplerInfo = null;
         });
     });
+}
+
+/**
+ * @description         添加数据系列,绘制数据点
+ * @param chart
+ * @param dataType
+ */
+function paintingChart(chart, dataType) {
+    if (samplerInfo) {
+        var timeStamp = samplerInfo["timeStamp"];
+        var samplerLabel = samplerInfo["samplerLabel"];
+        var samplerData = samplerInfo[dataType];
+
+        if (samplerChartFilter[samplerLabel] === undefined) {
+            var samplerDataList = [];
+            samplerDataList.push({
+                x: timeStamp,
+                y: samplerData
+            });
+            // 注意!不能在data中使用生成数组的方法
+            samplerChartFilter[samplerLabel] = chart.addSeries({
+                name: samplerLabel,
+                data: samplerDataList
+            });
+        } else {
+            samplerChartFilter[samplerLabel].addPoint([timeStamp, samplerData], true, false, true);   // 第三个参数,设置为false,说明将以前的数据积累
+        }
+    }
+}
+
+function paintingTable() {
+    if (samplerInfo) {
+        var samplerLabel = samplerInfo["samplerLabel"];
+        if (samplerTableFilter[samplerLabel] === undefined) {
+            var trRowId = 'samplerResult_' + rowId;
+            var addSamplerResultRow = '<tr id="' + trRowId + '">'+
+                                            '<td>' + samplerInfo['samplerLabel'] + '</td>' +
+                                            '<td>' + samplerInfo['meanTime'] + '</td>' +
+                                            '<td>' + samplerInfo['minTime'] + '</td>' +
+                                            '<td>' + samplerInfo['maxTime'] + '</td>' +
+                                            '<td>' + samplerInfo['standardDeviation'] + '</td>' +
+                                            '<td>' + samplerInfo['errorPercentage'] + '</td>' +
+                                            '<td>' + samplerInfo['requestRate'] + '</td>' +
+                                            '<td>' + samplerInfo['receiveKBPerSecond'] + '</td>' +
+                                            '<td>' + samplerInfo['sentKBPerSecond'] + '</td>' +
+                                            '<td>' + samplerInfo['avgPageBytes'] + '</td>' +
+                                      '</tr>';
+            $(".table").append(addSamplerResultRow);
+            samplerTableFilter[samplerLabel] = trRowId;
+            rowId++;        // 在添加了一个系列之后,rowId自加,为后面的系列做准备.
+        } else {
+            var samplerResultRow = $("#" + samplerTableFilter[samplerLabel]);
+            var newSamplerResultRow = '<td>' + samplerInfo['samplerLabel'] + '</td>' +
+                                      '<td>' + samplerInfo['meanTime'] + '</td>' +
+                                      '<td>' + samplerInfo['minTime'] + '</td>' +
+                                      '<td>' + samplerInfo['maxTime'] + '</td>' +
+                                      '<td>' + samplerInfo['standardDeviation'] + '</td>' +
+                                      '<td>' + samplerInfo['errorPercentage'] + '</td>' +
+                                      '<td>' + samplerInfo['requestRate'] + '</td>' +
+                                      '<td>' + samplerInfo['receiveKBPerSecond'] + '</td>' +
+                                      '<td>' + samplerInfo['sentKBPerSecond'] + '</td>' +
+                                      '<td>' + samplerInfo['avgPageBytes'] + '</td>';
+
+            // 删除原有数据
+            samplerResultRow.empty();
+            // 更新数据
+            samplerResultRow.append(newSamplerResultRow);
+        }
+    }
 }
 
 /**
@@ -48,13 +101,14 @@ Highcharts.setOptions({
 });
 
 /**
- * @description 动态显示趋势图
+ * @description HighCharts配置项
  */
-var chart = new Highcharts.Chart({
+var chartId = $("input[name='chartId']").val();
+$(chartId).highcharts({
     series: [],
     chart: {
         renderTo: $("input[name='chartId']").val(),
-        type: 'spline',
+        type: 'line',
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
         events: {
@@ -63,13 +117,17 @@ var chart = new Highcharts.Chart({
             }
         }
     },
+    boost: {                        // 启用boost.js,使用WebGL进行渲染.
+        enabled: true,
+        useGPUTranslations: true
+    },
     title: {
-        text: $("input[name='chartTitle']").val()
+        text: $("input[name='chartTitle']").val() + '-运行状态'
     },
     xAxis: {
         type: 'datetime',
-        tickPixelInterval: 25,
-        rotation: 25
+        tickPixelInterval: 50,
+        rotation: 50
     },
     yAxis: {
         title: {
@@ -87,9 +145,9 @@ var chart = new Highcharts.Chart({
     plotOptions: {
         series: {
             marker: {
-                enabled: false          // 不显示数据点
+                enabled: true          // 不显示数据点
             },
-            lineWidth: 1.5              // 线宽
+            lineWidth: 2               // 线宽
         }
     },
     tooltip: {
@@ -100,7 +158,7 @@ var chart = new Highcharts.Chart({
         }
     },
     legend: {
-        enabled: false
+        enabled: true
     },
     exporting: {
         enabled: false

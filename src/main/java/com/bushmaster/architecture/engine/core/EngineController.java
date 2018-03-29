@@ -1,7 +1,6 @@
 package com.bushmaster.architecture.engine.core;
 
 import com.bushmaster.architecture.engine.reader.EngineScenarioReader;
-import com.bushmaster.architecture.utils.FileStorageUtil;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jorphan.collections.HashTree;
@@ -31,6 +30,8 @@ public class EngineController {
 
     private String runningScenarioName;
 
+    private Integer runningResultId;
+
     public StandardJMeterEngine getEngine() {
         return engine;
     }
@@ -45,6 +46,14 @@ public class EngineController {
 
     public String getRunningScenarioName(){
         return runningScenarioName;
+    }
+
+    public Integer getRunningResultId() {
+        return runningResultId;
+    }
+
+    public void setRunningResultId(Integer runningResultId) {
+        this.runningResultId = runningResultId;
     }
 
     public Map<String, Object> stopEngine() {

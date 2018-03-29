@@ -122,7 +122,7 @@ function runScenario(scenarioId) {
             } else {
                 bootbox.confirm({
                     title: '提示',
-                    message: '当前没有测试运行,开始执行测试.',
+                    message: '当前没有场景运行,开始执行测试.',
                     callback: function (isConfirm) {
                         // 如果在bootbox上点击的了确定,则执行测试.否则什么都不做.result为回调值
                         if (isConfirm === true)

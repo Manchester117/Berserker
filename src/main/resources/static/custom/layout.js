@@ -64,6 +64,10 @@ $script_list.bootstrapTable({
                     '&nbsp&nbsp' +
                     '<a href="javascript:runScenario(' + row.id + ')">' +
                     '<i class="fa fa-cogs"></i>运行' +
+                    '</a>' +
+                    '&nbsp&nbsp' +
+                    '<a href="javascript:chkScenario(' + row.id + ')">' +
+                    '<i class="fa fa-eye"></i>结果' +
                     '</a>'
                 ].join('');
             }

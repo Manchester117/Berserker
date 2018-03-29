@@ -13,11 +13,10 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 
 import java.util.Properties;
 
-//@SpringBootApplication
-@SpringBootApplication(exclude = MongoAutoConfiguration.class)      // Springboot启动时不要默认加载MongoDriver
+@SpringBootApplication(exclude = MongoAutoConfiguration.class)      // SpringBoot启动时不要默认加载MongoDriver
 @EnableTransactionManagement                                        // 开启事务管理
 @EnableWebSocketMessageBroker                                       // 启用WebSocket
-@EnableAsync                                                        // 启用异步处理
+@EnableAsync                                                        // 启用异步事务
 @MapperScan("com.bushmaster.architecture.mapper")                   // 扫描Mapper
 public class ArchitectureApplication {
     @Bean

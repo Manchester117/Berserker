@@ -125,6 +125,7 @@ public class SampleResultInfo implements Serializable {
     public String toString() {
         return "SampleResultInfo{" +
                 "timeStamp=" + timeStamp +
+                ", samplerLabel='" + samplerLabel +
                 ", samplerCount=" + samplerCount +
                 ", meanTime=" + meanTime +
                 ", minTime=" + minTime +

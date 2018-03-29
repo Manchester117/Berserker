@@ -10,11 +10,31 @@
 <body>
 <div layout:fragment="content">
     <div id="sampler_charts">
-        <input type="hidden" name="chartId" value="mean_time_chart"/>
+        <input type="hidden" name="chartId" value="#mean_time_chart"/>
         <input type="hidden" name="dataType" th:value="${dataType}"/>
         <input type="hidden" name="chartTitle" value="平均响应时间"/>
         <input type="hidden" name="unit" value="毫秒"/>
         <div id="mean_time_chart" style="min-width:640px; min-height:480px;"></div>
+        <br/>
+        <div id="sample_result_table">
+            <table class="table table-bordered">
+                <thead>
+                <tr align="center">
+                    <th>请求名称</th>
+                    <th>平均响应时间(ms)</th>
+                    <th>最小响应时间(global)</th>
+                    <th>最大响应时间(global)</th>
+                    <th>标准方差</th>
+                    <th>错误百分比(%)</th>
+                    <th>每秒请求处理能力</th>
+                    <th>每秒接收数据量(KB/s)</th>
+                    <th>每秒发送数据量(KB/s)</th>
+                    <th>平均页面大小(Bytes)</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
     <!-- WebSocket support -->
     <script type="text/javascript" th:src="@{js/sockjs.js}"></script>
