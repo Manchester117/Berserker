@@ -69,6 +69,13 @@ public class EngineSampleCollector extends ResultCollector{
 //        runningSampleResultList.rightPush(sampleResultJson);
 //    }
 
+//    /**
+//     * @description     在测试完成后,清理结果收集器的数据
+//     */
+//    public void clearCalculator() {
+//        calculator.clear();
+//    }
+
     @Override
     public void sampleOccurred(SampleEvent event) {
         super.sampleOccurred(event);
@@ -119,13 +126,6 @@ public class EngineSampleCollector extends ResultCollector{
         // 使用右侧插入,在实时显示的时候可以以正确顺序显示
         runningSampleResultList.rightPush(sampleResultJson);
     }
-
-//    /**
-//     * @description     在测试完成后,清理结果收集器的数据
-//     */
-//    public void clearCalculator() {
-//        calculator.clear();
-//    }
 
     /**
      * @description     在测试完成后,清理结果收集器的数据
