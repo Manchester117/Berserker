@@ -48,12 +48,14 @@ public class EngineResultHandler {
 
         // 自定义结果收集.继承自ResultCollector.runningSampleResultList,将SampleResult的数据进行缓存
         engineSampleCollector = new EngineSampleCollector(summary, runningSampleResultList);
+        // 这两个方法都是继承自ResultCollector的方法
         engineSampleCollector.setName("自定义结果收集");
         engineSampleCollector.setEnabled(Boolean.TRUE);
 //        engineSampleCollector.setFilename(reportFilePath);
         // 添加刚才定义的结果收集
         resultCollectorList.add(engineSampleCollector);
 
+        // 原生的结果收集器
         ResultCollector csvCollector = new ResultCollector(summary);
         csvCollector.setName("自定义结果记录");
         csvCollector.setFilename("D:\\zbc.csv");
@@ -73,5 +75,13 @@ public class EngineResultHandler {
     public void clearCalculator() {
         if (Objects.nonNull(engineSampleCollector))
             engineSampleCollector.clearCalculator();
+    }
+
+    /**
+     * @description     获取当前的SamplerResult列表
+     * @return
+     */
+    public BoundListOperations<String, String> getRunningSampleResultList() {
+        return runningSampleResultList;
     }
 }

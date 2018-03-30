@@ -36,7 +36,7 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         scenarioResultInfo.setScenarioId(scenarioInfo.getId());
         // 在库中添加结果信息
         Map<String, Object> addResult = scenarioResultService.addScenarioResultInfo(scenarioResultInfo);
-        // 保留结果ID
+        // 保留结果ID,将结果ID放置到EngineController中,方便后面的结果写入DB
         Integer resultId = Integer.parseInt(addResult.get("resultId").toString());
         engineController.setRunningResultId(resultId);
         // 启动场景测试

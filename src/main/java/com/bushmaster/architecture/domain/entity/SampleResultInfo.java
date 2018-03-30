@@ -17,6 +17,7 @@ public class SampleResultInfo implements Serializable {
     private Double sentKBPerSecond;
     private Double avgPageBytes;
     private Integer threadCount;
+    private Integer resultId;
 
     public Long getTimeStamp() {
         return timeStamp;
@@ -73,7 +74,7 @@ public class SampleResultInfo implements Serializable {
     public void setStandardDeviation(Double standardDeviation) {
         // 保留4位小数
         BigDecimal bigDecimal = new BigDecimal(standardDeviation);
-        this.standardDeviation = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.standardDeviation = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getErrorPercentage() {
@@ -90,7 +91,7 @@ public class SampleResultInfo implements Serializable {
 
     public void setRequestRate(Double requestRate) {
         BigDecimal bigDecimal = new BigDecimal(requestRate);
-        this.requestRate = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.requestRate = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getReceiveKBPerSecond() {
@@ -99,7 +100,7 @@ public class SampleResultInfo implements Serializable {
 
     public void setReceiveKBPerSecond(Double receiveKBPerSecond) {
         BigDecimal bigDecimal = new BigDecimal(receiveKBPerSecond);
-        this.receiveKBPerSecond = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.receiveKBPerSecond = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getSentKBPerSecond() {
@@ -108,7 +109,7 @@ public class SampleResultInfo implements Serializable {
 
     public void setSentKBPerSecond(Double sentKBPerSecond) {
         BigDecimal bigDecimal = new BigDecimal(sentKBPerSecond);
-        this.sentKBPerSecond = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.sentKBPerSecond = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getAvgPageBytes() {
@@ -117,7 +118,7 @@ public class SampleResultInfo implements Serializable {
 
     public void setAvgPageBytes(Double avgPageBytes) {
         BigDecimal bigDecimal = new BigDecimal(avgPageBytes);
-        this.avgPageBytes = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.avgPageBytes = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Integer getThreadCount() {
@@ -128,11 +129,19 @@ public class SampleResultInfo implements Serializable {
         this.threadCount = threadCount;
     }
 
+    public Integer getResultId() {
+        return resultId;
+    }
+
+    public void setResultId(Integer resultId) {
+        this.resultId = resultId;
+    }
+
     @Override
     public String toString() {
         return "SampleResultInfo{" +
                 "timeStamp=" + timeStamp +
-                ", samplerLabel='" + samplerLabel +
+                ", samplerLabel='" + samplerLabel + '\'' +
                 ", samplerCount=" + samplerCount +
                 ", meanTime=" + meanTime +
                 ", minTime=" + minTime +
@@ -144,6 +153,7 @@ public class SampleResultInfo implements Serializable {
                 ", sentKBPerSecond=" + sentKBPerSecond +
                 ", avgPageBytes=" + avgPageBytes +
                 ", threadCount=" + threadCount +
+                ", resultId=" + resultId +
                 '}';
     }
 }

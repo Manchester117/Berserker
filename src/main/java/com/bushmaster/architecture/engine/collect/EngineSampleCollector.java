@@ -21,10 +21,12 @@ public class EngineSampleCollector extends ResultCollector{
     private static Map<String, Calculator> calculatorContainer = new HashMap<>();       // 针对不同请求的计数器集合
 
     private BoundListOperations<String, String> runningSampleResultList;                // 将SampleResult存入Redis的模板
+    private Integer runningResultId;
 
     public EngineSampleCollector(Summariser summer, BoundListOperations<String, String> runningSampleResultList) {
         super(summer);
         this.runningSampleResultList = runningSampleResultList;
+        this.runningResultId = runningResultId;
     }
 
 //    @Override

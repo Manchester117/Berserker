@@ -27,11 +27,11 @@ public class ScenarioRunController {
         if (engineIsActive) {
             // 如果场景正在运行,则返回正在运行的场景名称
             String runningScenarioName = scenarioRunService.getRunningScenarioName();
-            engineMessage.put("isActive", "true");
+            engineMessage.put("isActive", "True");
             engineMessage.put("scenarioName", runningScenarioName);
         } else {
             // 如果场景没有运行,则返回要运行场景的ID
-            engineMessage.put("isActive", "false");
+            engineMessage.put("isActive", "False");
             engineMessage.put("scenarioId", scenarioId);
         }
         return JSONObject.parseObject(JSON.toJSONString(engineMessage));

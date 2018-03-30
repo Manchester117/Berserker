@@ -62,7 +62,7 @@ public class EngineSampleRealOuter {
                 // 做一个定时器,每隔1秒向前端发送一个SamplerResult
                 currentTime = System.currentTimeMillis();
                 if (isSendSamplerResult) {
-                    nextSendTime = currentTime + 500L;
+                    nextSendTime = currentTime + 750L;
                     template.convertAndSend("/sampleResult/data", sampleResult);
                     isSendSamplerResult = Boolean.FALSE;
                 }

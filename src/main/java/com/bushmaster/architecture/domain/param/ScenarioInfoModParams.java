@@ -3,7 +3,6 @@ package com.bushmaster.architecture.domain.param;
 import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-
 public class ScenarioInfoModParams {
     @Pattern(regexp = "^\\+?[1-9][0-9]*$", message = "场景ID必须是非零正整数")
     private String scenarioId;

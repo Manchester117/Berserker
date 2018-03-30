@@ -10,6 +10,7 @@ import com.bushmaster.architecture.domain.param.ScenarioInfoListParams;
 import com.bushmaster.architecture.domain.param.ScenarioInfoModParams;
 import com.bushmaster.architecture.interceptor.PreventRepeatSubmit;
 import com.bushmaster.architecture.service.ScenarioInfoService;
+import com.bushmaster.architecture.utils.CommonUtil;
 import com.google.common.base.Strings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,56 +18,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
 public class ScenarioInfoController {
     @Autowired
     private ScenarioInfoService scenarioInfoService;
-
-    private Map<String, List<String>> paramsValidator(BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, List<String>> errorResult = new HashMap<>();
-            List<String> errorMsgList = new ArrayList<>();
-            for (ObjectError objectError: bindingResult.getAllErrors())
-                errorMsgList.add(objectError.getDefaultMessage());
-            errorResult.put("paramErrors", errorMsgList);
-            return errorResult;
-        } else {
-            return null;
-        }
-    }
-
-    private Date getDateTimeValue(String dateTime) {
-        Date dateTimeValue = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            dateTimeValue = sdf.parse(dateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return dateTimeValue;
-    }
-
-    private Boolean getBooleanValue(String status) {
-        Boolean statusValue = null;
-        if (Objects.nonNull(status) && StringUtils.isNumeric(status)) {
-            if (Objects.equals(status, "1"))
-                statusValue = Boolean.TRUE;
-            else
-                statusValue = Boolean.FALSE;
-        } else {
-            statusValue = null;
-        }
-        return statusValue;
-    }
 
     /** 场景列表部分 **/
 
@@ -78,26 +39,17 @@ public class ScenarioInfoController {
     @PostMapping(path = "/scenarioInfoList")
     public @ResponseBody JSONObject scenarioInfoList(@Validated @RequestBody ScenarioInfoListParams requestParams, BindingResult bindingResult) {
         // 参数验证
-        Map<String, List<String>> errorResultInfo = this.paramsValidator(bindingResult);
+        Map<String, List<String>> errorResultInfo = CommonUtil.paramsValidator(bindingResult);
         if (Objects.nonNull(errorResultInfo))
             return JSONObject.parseObject(JSON.toJSONString(errorResultInfo));
 
-        String offset = requestParams.getOffset();
-        String limit = requestParams.getLimit();
+        Integer offset = Integer.parseInt(requestParams.getOffset());
+        Integer limit = Integer.parseInt(requestParams.getLimit());
         String scenarioName = requestParams.getScenarioName();
         String status = requestParams.getStatus();
 
-        Integer offsetInt = null;
-        Integer limitInt = null;
-        if (StringUtils.isNumeric(offset) && StringUtils.isNumeric(limit)) {
-            offsetInt = Integer.parseInt(offset);
-            limitInt = Integer.parseInt(limit);
-        } else {
-            offsetInt = 0;
-            limitInt = 15;
-        }
-        Boolean statusValue = this.getBooleanValue(status);
-        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(offsetInt, limitInt, scenarioName, statusValue);
+        Boolean statusValue = CommonUtil.getBooleanValue(status);
+        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(offset, limit, scenarioName, statusValue);
 
         return JSONObject.parseObject(JSON.toJSONString(result));
     }
@@ -115,7 +67,7 @@ public class ScenarioInfoController {
                                                     @RequestParam(value = "scriptFile", required = false) MultipartFile scriptFile) {
         // 参数验证部分
         Map<String, List<String>> errorResultInfo = new HashMap<>();
-        Map<String, List<String>> paramsError = this.paramsValidator(bindingResult);
+        Map<String, List<String>> paramsError = CommonUtil.paramsValidator(bindingResult);
         if (Objects.nonNull(paramsError))
             errorResultInfo.put("errorMessages", paramsError.get("paramErrors"));
 
@@ -247,7 +199,7 @@ public class ScenarioInfoController {
     @PostMapping(path = "/modScenarioInfo")
     public @ResponseBody JSONObject modScenarioInfo(@Validated ScenarioInfoModParams requestParams, BindingResult bindingResult,
                                                     @RequestParam(value = "scriptFile", required = false) MultipartFile scriptFile) {
-        Map<String, List<String>> errorResultInfo = this.paramsValidator(bindingResult);
+        Map<String, List<String>> errorResultInfo = CommonUtil.paramsValidator(bindingResult);
         if (Objects.nonNull(errorResultInfo))
             return JSONObject.parseObject(JSON.toJSONString(errorResultInfo));
 
@@ -290,16 +242,16 @@ public class ScenarioInfoController {
     /** 删除场景部分 **/
 
     @PostMapping(path = "/delScenarioInfo")
-    public @ResponseBody JSONObject delScenarioInfo(@RequestParam("id") String id) {
+    public @ResponseBody JSONObject delScenarioInfo(@RequestParam("scenarioId") String scenarioId) {
         JSONObject resultJson = new JSONObject();
-        if (Objects.isNull(id)) {
+        if (Objects.isNull(scenarioId)) {
             resultJson.put("status", "Error");
             resultJson.put("message", "删除场景的ID不能为空");
             return resultJson;
         }
 
-        if (StringUtils.isNumeric(id) && Integer.parseInt(id) > 0) {
-            Map<String, Object> result = scenarioInfoService.delScenarioInfo(Integer.parseInt(id));
+        if (StringUtils.isNumeric(scenarioId) && Integer.parseInt(scenarioId) > 0) {
+            Map<String, Object> result = scenarioInfoService.delScenarioInfo(Integer.parseInt(scenarioId));
             return JSONObject.parseObject(JSON.toJSONString(result));
         } else {
             resultJson.put("status", "Error");

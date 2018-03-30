@@ -45,12 +45,12 @@ if (isActive !== undefined && isActive === "False") {
 
 
 // 修改场景
-function modScenario(id) {
-    $(window).attr('location', "/scenarioInfoMod?scenarioId=" + id);
+function modScenario(scenarioId) {
+    $(window).attr('location', "/scenarioInfoMod?scenarioId=" + scenarioId);
 }
 
 // 删除场景
-function delScenario(id) {
+function delScenario(scenarioId) {
     bootbox.confirm({
         title: '提示',
         message: '确认删除场景?',
@@ -59,8 +59,8 @@ function delScenario(id) {
                 $.ajax({
                     url: "/delScenarioInfo",
                     type: "post",
-                    data : {
-                        id: id
+                    data: {
+                        scenarioId: scenarioId
                     },
                     success: function(result) {
                         var delScenarioMsg = null;
@@ -107,11 +107,11 @@ function runScenario(scenarioId) {
     $.ajax({
         url: "/scenarioIsActive",
         type: "post",
-        data : {
+        data: {
             scenarioId: scenarioId
         },
         success: function(result) {
-            if (result["isActive"] === "true") {
+            if (result["isActive"] === "True") {
                 bootbox.alert({
                     title: '提示',
                     message: '场景' + result['scenarioName'] + '正在运行,请等待测试完成后再试.',
@@ -134,20 +134,25 @@ function runScenario(scenarioId) {
     });
 }
 
-// 与Controller交互
-// function performController(path, id) {
-//     $.ajax({
-//         url: path,
-//         type: "post",
-//         data : {
-//             id: id
-//         },
-//         success: function(result) {
-//             bootbox.alert({
-//                 title: '提示',
-//                 message: result.delScenarioStatus
-//             });
-//             $scenario_list.bootstrapTable('selectPage', 1);     // 在每次提交操作后返回首页
-//         }
-//     });
-// }
+// 查看结果列表
+function resScenario(scenarioId) {
+    $(window).attr('location', "/scenarioResultList?scenarioId=" + scenarioId);
+}
+
+
+// $.ajax({
+//     url: "/delScenarioResult",
+//     type: "post",
+//     data: {
+//         scenarioId: scenarioId
+//     },
+//     success: function(result) {
+//         bootbox.alert({
+//             title: '提示',
+//             message: result["message"],
+//             callback: function () {
+//                 $scenario_list.bootstrapTable('selectPage', 1);
+//             }
+//         });
+//     }
+// });

@@ -1,9 +1,11 @@
 package com.bushmaster.architecture.engine.core;
 
 import com.bushmaster.architecture.engine.reader.EngineScenarioReader;
+import com.bushmaster.architecture.engine.result.EngineStorageSampleResult;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jorphan.collections.HashTree;
+import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,8 @@ public class EngineController {
     private EngineTestPlanSetter testPlanSetter;
     @Autowired
     private EngineTestRunner testRunner;
+    @Autowired
+    private EngineStorageSampleResult storageSampleResult;
 
     private StandardJMeterEngine engine = new StandardJMeterEngine();
 
@@ -31,6 +35,8 @@ public class EngineController {
     private String runningScenarioName;
 
     private Integer runningResultId;
+
+    private BoundListOperations<String, String> runningSampleResultList;
 
     public StandardJMeterEngine getEngine() {
         return engine;
@@ -46,10 +52,6 @@ public class EngineController {
 
     public String getRunningScenarioName(){
         return runningScenarioName;
-    }
-
-    public Integer getRunningResultId() {
-        return runningResultId;
     }
 
     public void setRunningResultId(Integer runningResultId) {
@@ -74,8 +76,9 @@ public class EngineController {
         paramLoader.setEngineParam();
         // 添加场景参数,获得新的测试计划树
         Map<String, Object> scenarioRunInfo = scenarioReader.testPlanReader(scenarioId);
-        // 获取场景名称
+        // 获取运行场景ID,为检查是否有场景运行做准备
         runningScenarioId = Integer.parseInt(scenarioRunInfo.get("scenarioId").toString());
+        // 获取运行场景名称,为检查是否有场景运行做准备
         runningScenarioName = scenarioRunInfo.get("scenarioName").toString();
         // 添加场景的结果收集
         List<ResultCollector> resultCollectorList = resultHandler.resultCollect(scenarioId);
@@ -84,6 +87,10 @@ public class EngineController {
         testRunner.scenarioRun(engine, testPlanTree);
         // 重置结果收集器
         resultHandler.clearCalculator();
+        // 获取存放SamplerResult的列表
+        runningSampleResultList = resultHandler.getRunningSampleResultList();
+
+//        storageSampleResult.SampleResultToDB(runningResultId, runningSampleResultList);
     }
 
     public void engineScenarioRealOuter() {
