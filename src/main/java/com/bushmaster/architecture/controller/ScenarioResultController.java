@@ -21,4 +21,10 @@ public class ScenarioResultController {
         Map<String, Object> result = resultService.getScenarioResultInfoByScenarioId(0, 15, scenarioId);
         return JSONObject.parseObject(JSON.toJSONString(result));
     }
+
+    @PostMapping(path = "/delScenarioResult")
+    public @ResponseBody JSONObject delScenarioResult(@RequestParam("scenarioId") Integer scenarioId) {
+        Map<String, Object> result = resultService.delScenarioResultInfo(scenarioId);
+        return JSONObject.parseObject(JSON.toJSONString(result));
+    }
 }

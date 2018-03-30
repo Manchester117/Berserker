@@ -1,6 +1,7 @@
 package com.bushmaster.architecture.domain.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class SampleResultInfo implements Serializable {
     private Long timeStamp;
@@ -70,7 +71,9 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setStandardDeviation(Double standardDeviation) {
-        this.standardDeviation = standardDeviation;
+        // 保留4位小数
+        BigDecimal bigDecimal = new BigDecimal(standardDeviation);
+        this.standardDeviation = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getErrorPercentage() {
@@ -86,7 +89,8 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setRequestRate(Double requestRate) {
-        this.requestRate = requestRate;
+        BigDecimal bigDecimal = new BigDecimal(requestRate);
+        this.requestRate = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getReceiveKBPerSecond() {
@@ -94,7 +98,8 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setReceiveKBPerSecond(Double receiveKBPerSecond) {
-        this.receiveKBPerSecond = receiveKBPerSecond;
+        BigDecimal bigDecimal = new BigDecimal(receiveKBPerSecond);
+        this.receiveKBPerSecond = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getSentKBPerSecond() {
@@ -102,7 +107,8 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setSentKBPerSecond(Double sentKBPerSecond) {
-        this.sentKBPerSecond = sentKBPerSecond;
+        BigDecimal bigDecimal = new BigDecimal(sentKBPerSecond);
+        this.sentKBPerSecond = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Double getAvgPageBytes() {
@@ -110,7 +116,8 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setAvgPageBytes(Double avgPageBytes) {
-        this.avgPageBytes = avgPageBytes;
+        BigDecimal bigDecimal = new BigDecimal(avgPageBytes);
+        this.avgPageBytes = bigDecimal.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Integer getThreadCount() {
