@@ -1,7 +1,6 @@
 package com.bushmaster.architecture.engine.core;
 
 import com.bushmaster.architecture.engine.reader.EngineScenarioReader;
-import com.bushmaster.architecture.engine.result.EngineStorageSampleResult;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jorphan.collections.HashTree;
@@ -25,16 +24,12 @@ public class EngineController {
     private EngineTestPlanSetter testPlanSetter;
     @Autowired
     private EngineTestRunner testRunner;
-    @Autowired
-    private EngineStorageSampleResult storageSampleResult;
 
     private StandardJMeterEngine engine = new StandardJMeterEngine();
 
     private Integer runningScenarioId;
 
     private String runningScenarioName;
-
-    private Integer runningResultId;
 
     private BoundListOperations<String, String> runningSampleResultList;
 
@@ -54,8 +49,8 @@ public class EngineController {
         return runningScenarioName;
     }
 
-    public void setRunningResultId(Integer runningResultId) {
-        this.runningResultId = runningResultId;
+    public BoundListOperations<String, String> getRunningSampleResultList() {
+        return runningSampleResultList;
     }
 
     public Map<String, Object> stopEngine() {
@@ -89,8 +84,6 @@ public class EngineController {
         resultHandler.clearCalculator();
         // 获取存放SamplerResult的列表
         runningSampleResultList = resultHandler.getRunningSampleResultList();
-
-//        storageSampleResult.SampleResultToDB(runningResultId, runningSampleResultList);
     }
 
     public void engineScenarioRealOuter() {

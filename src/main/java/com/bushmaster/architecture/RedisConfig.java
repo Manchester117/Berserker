@@ -32,7 +32,7 @@ public class RedisConfig {
         RedisTemplate<String, SampleResultInfo> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new RedisSampleSerializer());
+//        template.setValueSerializer(new RedisSampleSerializer());
         return template;
     }
 }

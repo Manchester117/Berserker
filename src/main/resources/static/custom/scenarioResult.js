@@ -1,6 +1,6 @@
 // 脚本列表bootstrap-table
-var $script_list = $('#result_list');
-$script_list.bootstrapTable({
+var $result_list = $('#result_list');
+$result_list.bootstrapTable({
     url: '/getScenarioResultList',
     method: 'post',
     dataType: 'json',
@@ -85,4 +85,24 @@ function convertDateFormat(date_value) {
 // 查看历史结果
 function resSampler(resultId) {
 
+}
+
+// 删除历史结果
+function delResult(resultId) {
+    $.ajax({
+        url: '/delScenarioResult',
+        type: 'post',
+        data: {
+            resultId: resultId
+        },
+        success: function(result) {
+            bootbox.alert({
+                title: '提示',
+                message: result['message'],
+                callback: function () {
+                    $result_list.bootstrapTable('selectPage', 1);
+                }
+            });
+        }
+    });
 }

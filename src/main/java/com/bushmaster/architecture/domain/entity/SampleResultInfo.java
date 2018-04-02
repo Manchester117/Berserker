@@ -2,12 +2,13 @@ package com.bushmaster.architecture.domain.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class SampleResultInfo implements Serializable {
-    private Long timeStamp;
+    private Timestamp timeStamp;
     private String samplerLabel;
     private int samplerCount;
-    private Number meanTime;
+    private Double meanTime;
     private Long minTime;
     private Long maxTime;
     private Double standardDeviation;
@@ -19,11 +20,11 @@ public class SampleResultInfo implements Serializable {
     private Integer threadCount;
     private Integer resultId;
 
-    public Long getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Long timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -43,12 +44,13 @@ public class SampleResultInfo implements Serializable {
         this.samplerCount = samplerCount;
     }
 
-    public Number getMeanTime() {
+    public Double getMeanTime() {
         return meanTime;
     }
 
-    public void setMeanTime(Number meanTime) {
-        this.meanTime = meanTime;
+    public void setMeanTime(Double meanTime) {
+        BigDecimal bigDecimal = new BigDecimal(meanTime);
+        this.meanTime = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public Long getMinTime() {
@@ -72,7 +74,7 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setStandardDeviation(Double standardDeviation) {
-        // 保留4位小数
+        // 保留2位小数
         BigDecimal bigDecimal = new BigDecimal(standardDeviation);
         this.standardDeviation = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }

@@ -107,8 +107,8 @@ var chartId = $("input[name='chartId']").val();
 $(chartId).highcharts({
     series: [],
     chart: {
-        renderTo: $("input[name='chartId']").val(),
-        type: 'line',
+        renderTo: chartId,
+        type: 'spline',
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
         events: {
@@ -145,9 +145,9 @@ $(chartId).highcharts({
     plotOptions: {
         series: {
             marker: {
-                enabled: false          // 不显示数据点
+                enabled: false            // 不显示数据点
             },
-            lineWidth: 1                // 线宽
+            lineWidth: 2                  // 线宽
         }
     },
     tooltip: {

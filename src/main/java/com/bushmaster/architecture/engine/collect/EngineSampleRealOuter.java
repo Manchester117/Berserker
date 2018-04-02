@@ -26,17 +26,6 @@ public class EngineSampleRealOuter {
         this.runningSampleResultList = runningSampleResultList;
     }
 
-//    public void sampleRealOuter() {
-//        // 如果Engine还处于运行状态则保持输出状态
-//        while (controller.getEngineStatus()) {
-//            String sampleResult = runningSampleResultList.rightPop();
-//            if (Objects.nonNull(sampleResult)) {
-//                log.info(sampleResult);
-//                template.convertAndSend("/sampleResult/data", sampleResult);
-//            }
-//        }
-//    }
-
     /**
      * @description 通过WebSocket向前端发送数据(控制时间间隔发送数据,避免浏览器崩溃)
      */
@@ -62,7 +51,7 @@ public class EngineSampleRealOuter {
                 // 做一个定时器,每隔1秒向前端发送一个SamplerResult
                 currentTime = System.currentTimeMillis();
                 if (isSendSamplerResult) {
-                    nextSendTime = currentTime + 750L;
+                    nextSendTime = currentTime + 500L;
                     template.convertAndSend("/sampleResult/data", sampleResult);
                     isSendSamplerResult = Boolean.FALSE;
                 }
@@ -74,4 +63,15 @@ public class EngineSampleRealOuter {
             // 此时cursor的值和sampleResultLength相同,进行下一次循环
         }
     }
+
+//    public void sampleRealOuter() {
+//        // 如果Engine还处于运行状态则保持输出状态
+//        while (controller.getEngineStatus()) {
+//            String sampleResult = runningSampleResultList.rightPop();
+//            if (Objects.nonNull(sampleResult)) {
+//                log.info(sampleResult);
+//                template.convertAndSend("/sampleResult/data", sampleResult);
+//            }
+//        }
+//    }
 }
