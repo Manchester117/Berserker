@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 public class SampleResultInfo implements Serializable {
     private Timestamp timeStamp;
     private String samplerLabel;
-    private int samplerCount;
+    private Long samplerCount;
     private Double meanTime;
     private Long minTime;
     private Long maxTime;
@@ -36,11 +36,11 @@ public class SampleResultInfo implements Serializable {
         this.samplerLabel = samplerLabel;
     }
 
-    public int getSamplerCount() {
+    public Long getSamplerCount() {
         return samplerCount;
     }
 
-    public void setSamplerCount(int samplerCount) {
+    public void setSamplerCount(Long samplerCount) {
         this.samplerCount = samplerCount;
     }
 

@@ -30,7 +30,7 @@ configurations {
 }
 
 bootRun {
-    addResources = true
+//    addResources = true
 }
 
 dependencies {

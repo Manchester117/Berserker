@@ -145,7 +145,7 @@ $(chartId).highcharts({
     plotOptions: {
         series: {
             marker: {
-                enabled: false            // 不显示数据点
+                enabled: true             // 显示数据点
             },
             lineWidth: 2                  // 线宽
         }

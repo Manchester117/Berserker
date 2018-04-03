@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>场景测试详细结果</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="sampler_charts">
+        <input type="hidden" name="chartId" value="#receive_kb_per_second"/>
+        <input type="hidden" name="resultId" th:value="${resultId}"/>
+        <input type="hidden" name="dataType" th:value="${dataType}"/>
+        <input type="hidden" name="chartTitle" th:value="${chartTitle}"/>
+        <input type="hidden" name="unit" th:value="${unit}"/>
+        <div id="container" style="min-width:640px; min-height:480px;"></div>
+    </div>
+    <!-- HighCharts support -->
+    <script type="text/javascript" th:src="@{custom/scenarioChart.js}"></script>
+</div>
+</body>
+</html>

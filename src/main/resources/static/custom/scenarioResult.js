@@ -84,7 +84,7 @@ function convertDateFormat(date_value) {
 
 // 查看历史结果
 function resSampler(resultId) {
-
+    $(window).attr('location', "/scenarioSampleDetailChartGrid?resultId=" + resultId);
 }
 
 // 删除历史结果

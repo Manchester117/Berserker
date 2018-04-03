@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SampleResultInfoProvider {
-    @SuppressWarnings("unchecked")
     public String insertBatchSampleResult(Map<String, List<SampleResultInfo>> params) {
         List<SampleResultInfo> sampleResultInfoList = params.get("sampleResultInfoList");
         MessageFormat messageFormat = new MessageFormat(

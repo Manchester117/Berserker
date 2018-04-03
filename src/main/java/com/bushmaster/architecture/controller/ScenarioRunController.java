@@ -42,7 +42,7 @@ public class ScenarioRunController {
         // 启动场景
         scenarioRunService.scenarioStartRun(Integer.parseInt(scenarioId));
         model.addAttribute("scenarioId", scenarioId);
-        return "scenarioChartGrid";
+        return "scenarioRealTimeChartGrid";
     }
 
     @GetMapping(path = "/scenarioStopRun")
@@ -58,32 +58,31 @@ public class ScenarioRunController {
         if (engineIsActive) {
             scenarioId = scenarioRunService.getRunningScenarioId();
             model.addAttribute("scenarioId", scenarioId);
-            return "scenarioChartGrid";
+            return "scenarioRealTimeChartGrid";
         } else {
             model.addAttribute("isActive", "False");
             return "scenarioList";
         }
     }
 
-    @GetMapping(path = "/scenarioChartDetail")
-    public String scenarioChartDetail(Model model, @RequestParam("scenarioId") String scenarioId, @RequestParam("dataType") String dataType) {
+    @GetMapping(path = "/scenarioRealTimeChartDetail")
+    public String scenarioRealTimeChartDetail(Model model, @RequestParam("scenarioId") String scenarioId, @RequestParam("dataType") String dataType) {
         scenarioRunService.scenarioSampleResultRealOuter();
         model.addAttribute("scenarioId", scenarioId);
         model.addAttribute("dataType", dataType);
 
         if (Objects.equal(dataType, "meanTime"))
             return "scenarioResponseTimeChart";
-        else if (Objects.equal(dataType, "requestRate"))
+        if (Objects.equal(dataType, "requestRate"))
             return "scenarioRequestRateChart";
-        else if (Objects.equal(dataType, "errorPercentage"))
+        if (Objects.equal(dataType, "errorPercentage"))
             return "scenarioErrorByPercentChart";
-        else if (Objects.equal(dataType, "threadCount"))
+        if (Objects.equal(dataType, "threadCount"))
             return "scenarioThreadCountChart";
-        else if (Objects.equal(dataType, "sentKBPerSecond"))
+        if (Objects.equal(dataType, "sentKBPerSecond"))
             return "scenarioSendKBPerSecChart";
-        else if (Objects.equal(dataType, "receiveKBPerSecond"))
+        if (Objects.equal(dataType, "receiveKBPerSecond"))
             return "scenarioReceiveKBPerSecChart";
-        else
-            return "";
+        return "";
     }
 }

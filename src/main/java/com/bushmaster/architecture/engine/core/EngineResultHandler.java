@@ -1,7 +1,7 @@
 package com.bushmaster.architecture.engine.core;
 
 import com.bushmaster.architecture.engine.collect.EngineSampleCollector;
-import com.bushmaster.architecture.engine.collect.EngineSampleRealOuter;
+import com.bushmaster.architecture.engine.collect.EngineSampleRealTimeOuter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
@@ -20,7 +20,7 @@ public class EngineResultHandler {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
-    private EngineSampleRealOuter engineSampleRealOuter;
+    private EngineSampleRealTimeOuter engineSampleRealTimeOuter;
 
     private EngineSampleCollector engineSampleCollector;
 
@@ -64,9 +64,12 @@ public class EngineResultHandler {
         return resultCollectorList;
     }
 
-    public void resultRealOuter() {
-        engineSampleRealOuter.setRunningSampleResultList(runningSampleResultList);
-        engineSampleRealOuter.sampleRealOuter();
+    /**
+     * @description     结果实时输出
+     */
+    public void resultRealTimeOuter() {
+        engineSampleRealTimeOuter.setRunningSampleResultList(runningSampleResultList);
+        engineSampleRealTimeOuter.sampleRealTimeOuter();
     }
 
     /**

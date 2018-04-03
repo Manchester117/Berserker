@@ -87,6 +87,6 @@ public class EngineController {
     }
 
     public void engineScenarioRealOuter() {
-        resultHandler.resultRealOuter();
+        resultHandler.resultRealTimeOuter();
     }
 }

@@ -4,17 +4,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.bushmaster.architecture.domain.entity.SampleResultInfo;
 import com.bushmaster.architecture.mapper.SampleResultInfoMapper;
 import com.bushmaster.architecture.service.SampleResultService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
 public class SampleResultServiceImpl implements SampleResultService{
+    private static final Logger log = LoggerFactory.getLogger(SampleResultServiceImpl.class);
     @Autowired
     private SampleResultInfoMapper sampleMapper;
 
@@ -28,14 +30,90 @@ public class SampleResultServiceImpl implements SampleResultService{
     }
 
     @Override
-    public Map<String, Object> getSampleResultInfoListByResultId(Integer offset, Integer limit, Integer resultId) {
-        Map<String, Object> result = new HashMap<>();
-        Page<Object> page = PageHelper.offsetPage(offset, limit);
+    public Map<String, List<Map<Timestamp, Object>>> getSampleResultDataListByResultId(Integer resultId, String dataType) {
         List<SampleResultInfo> sampleResultInfoList = sampleMapper.getSampleResultInfoListByResultId(resultId);
-        result.put("total", page.getTotal());
-        result.put("rows", sampleResultInfoList);
-        return result;
+
+        Map<String, List<Map<Timestamp, Object>>> sampleResultContainer = new HashMap<>();
+        if (Objects.nonNull(sampleResultInfoList)) {
+            for (SampleResultInfo resultInfo : sampleResultInfoList) {
+                String sampleLabel = resultInfo.getSamplerLabel();
+                List<Map<Timestamp, Object>> series = null;
+                Map<Timestamp, Object> seriesElement = null;
+                if (Objects.isNull(sampleResultContainer.get(sampleLabel))) {
+                    series = new ArrayList<>();
+                    seriesElement = this.createSeriesElement(resultInfo, dataType);
+                    series.add(seriesElement);
+                    sampleResultContainer.put(sampleLabel, series);
+                } else {
+                    seriesElement = this.createSeriesElement(resultInfo, dataType);
+                    sampleResultContainer.get(sampleLabel).add(seriesElement);
+                }
+            }
+        }
+        return sampleResultContainer;
     }
+
+    private Map<Timestamp, Object> createSeriesElement(SampleResultInfo resultInfo, String dataType) {
+        Map<Timestamp, Object> seriesElement = new HashMap<>();
+        Timestamp timestamp = resultInfo.getTimeStamp();
+        if (Objects.equals(dataType, "meanTime"))
+            seriesElement.put(timestamp, resultInfo.getMeanTime().toString());
+        if (Objects.equals(dataType, "requestRate"))
+            seriesElement.put(timestamp, resultInfo.getRequestRate().toString());
+        if (Objects.equals(dataType, "errorPercentage"))
+            seriesElement.put(timestamp, resultInfo.getErrorPercentage().toString());
+        if (Objects.equals(dataType, "threadCount"))
+            seriesElement.put(timestamp, resultInfo.getThreadCount().toString());
+        if (Objects.equals(dataType, "receiveKBPerSecond"))
+            seriesElement.put(timestamp, resultInfo.getReceiveKBPerSecond().toString());
+        if (Objects.equals(dataType, "sentKBPerSecond"))
+            seriesElement.put(timestamp, resultInfo.getSentKBPerSecond().toString());
+        return seriesElement;
+    }
+
+//    @Override
+//    public JSONObject getSampleResultDataListByResultId(Integer resultId, String dataType) {
+//        List<SampleResultInfo> sampleResultInfoList = sampleMapper.getSampleResultInfoListByResultId(resultId);
+//
+//        JSONObject sampleResultContainer = new JSONObject();
+//        if (Objects.nonNull(sampleResultInfoList)) {
+//            for (SampleResultInfo resultInfo : sampleResultInfoList) {
+//                String sampleLabel = resultInfo.getSamplerLabel();
+//                JSONArray series = null;
+//                JSONObject seriesElement = null;
+//                if (Objects.isNull(sampleResultContainer.get(sampleLabel))) {
+//                    series = new JSONArray();
+//                    seriesElement = this.createSeriesElement(resultInfo, dataType);
+//                    series.add(seriesElement);
+//                    sampleResultContainer.put(sampleLabel, series);
+//                } else {
+//                    seriesElement = this.createSeriesElement(resultInfo, dataType);
+//                    ((JSONArray)sampleResultContainer.get(sampleLabel)).add(seriesElement);
+//                }
+//                log.info(seriesElement.toJSONString());
+//            }
+//        }
+//        return sampleResultContainer;
+//    }
+//
+//    private JSONObject createSeriesElement(SampleResultInfo resultInfo, String dataType) {
+//        Long timestamp = resultInfo.getTimeStamp().getTime();
+//        Map<Object, Object> seriesElement = new HashMap<>();
+//        if (Objects.equals(dataType, "meanTime"))
+//            seriesElement.put(timestamp, resultInfo.getMeanTime());
+//        if (Objects.equals(dataType, "requestRate"))
+//            seriesElement.put(timestamp, resultInfo.getRequestRate());
+//        if (Objects.equals(dataType, "errorPercentage"))
+//            seriesElement.put(timestamp, resultInfo.getErrorPercentage());
+//        if (Objects.equals(dataType, "threadCount"))
+//            seriesElement.put(timestamp, resultInfo.getThreadCount());
+//        if (Objects.equals(dataType, "receiveKBPerSecond"))
+//            seriesElement.put(timestamp, resultInfo.getReceiveKBPerSecond());
+//        if (Objects.equals(dataType, "sentKBPerSecond"))
+//            seriesElement.put(timestamp, resultInfo.getSentKBPerSecond());
+//        return JSONObject.parseObject(JSON.toJSONString(seriesElement));
+//    }
+
 
     @Async
     @Override
@@ -50,8 +128,7 @@ public class SampleResultServiceImpl implements SampleResultService{
             sampleResultInfoList.add(sampleResultInfo);
         }
         // 将采样结果写入到DB
-        Integer resultNum = sampleMapper.insertSampleResultInfoList(sampleResultInfoList);
-        System.out.println("XTX: " + resultNum);
+        sampleMapper.insertSampleResultInfoList(sampleResultInfoList);
     }
 
     @Override

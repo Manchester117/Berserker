@@ -9,18 +9,13 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EngineSampleRealOuter {
-    private static final Logger log = LoggerFactory.getLogger(EngineSampleRealOuter.class);
+public class EngineSampleRealTimeOuter {
+    private static final Logger log = LoggerFactory.getLogger(EngineSampleRealTimeOuter.class);
     private BoundListOperations<String, String> runningSampleResultList;
     @Autowired
     private EngineController controller;
     @Autowired
     private SimpMessagingTemplate template;
-
-
-    public BoundListOperations<String, String> getRunningSampleResultList() {
-        return runningSampleResultList;
-    }
 
     public void setRunningSampleResultList(BoundListOperations<String, String> runningSampleResultList) {
         this.runningSampleResultList = runningSampleResultList;
@@ -29,7 +24,7 @@ public class EngineSampleRealOuter {
     /**
      * @description 通过WebSocket向前端发送数据(控制时间间隔发送数据,避免浏览器崩溃)
      */
-    public void sampleRealOuter() {
+    public void sampleRealTimeOuter() {
         // 初始化游标
         long cursor = 0;
         // 定时器开关
@@ -51,7 +46,7 @@ public class EngineSampleRealOuter {
                 // 做一个定时器,每隔1秒向前端发送一个SamplerResult
                 currentTime = System.currentTimeMillis();
                 if (isSendSamplerResult) {
-                    nextSendTime = currentTime + 500L;
+                    nextSendTime = currentTime + 1000L;
                     template.convertAndSend("/sampleResult/data", sampleResult);
                     isSendSamplerResult = Boolean.FALSE;
                 }
