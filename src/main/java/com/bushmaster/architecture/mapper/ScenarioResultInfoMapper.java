@@ -22,4 +22,7 @@ public interface ScenarioResultInfoMapper {
 
     @Delete("DELETE FROM scenarioresultinfo WHERE id = #{id}")
     int deleteScenarioResultInfo(@Param("id") Integer id);
+
+    @Delete("DELETE FROM scenarioresultinfo WHERE scenarioId = #{scenarioId}")
+    int deleteScenarioResultInfoByScenarioId(@Param("scenarioId") Integer scenarioId);
 }

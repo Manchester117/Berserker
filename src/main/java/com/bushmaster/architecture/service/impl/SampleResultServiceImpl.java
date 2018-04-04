@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -30,15 +29,15 @@ public class SampleResultServiceImpl implements SampleResultService{
     }
 
     @Override
-    public Map<String, List<Map<Timestamp, Object>>> getSampleResultDataListByResultId(Integer resultId, String dataType) {
+    public Map<String, List<List<Number>>> getSampleResultDataListByResultId(Integer resultId, String dataType) {
         List<SampleResultInfo> sampleResultInfoList = sampleMapper.getSampleResultInfoListByResultId(resultId);
 
-        Map<String, List<Map<Timestamp, Object>>> sampleResultContainer = new HashMap<>();
+        Map<String, List<List<Number>>> sampleResultContainer = new HashMap<>();
         if (Objects.nonNull(sampleResultInfoList)) {
             for (SampleResultInfo resultInfo : sampleResultInfoList) {
                 String sampleLabel = resultInfo.getSamplerLabel();
-                List<Map<Timestamp, Object>> series = null;
-                Map<Timestamp, Object> seriesElement = null;
+                List<List<Number>> series = null;
+                List<Number> seriesElement = null;
                 if (Objects.isNull(sampleResultContainer.get(sampleLabel))) {
                     series = new ArrayList<>();
                     seriesElement = this.createSeriesElement(resultInfo, dataType);
@@ -53,21 +52,22 @@ public class SampleResultServiceImpl implements SampleResultService{
         return sampleResultContainer;
     }
 
-    private Map<Timestamp, Object> createSeriesElement(SampleResultInfo resultInfo, String dataType) {
-        Map<Timestamp, Object> seriesElement = new HashMap<>();
-        Timestamp timestamp = resultInfo.getTimeStamp();
+    private List<Number> createSeriesElement(SampleResultInfo resultInfo, String dataType) {
+        List<Number> seriesElement = new ArrayList<>();
+        Long timestamp = resultInfo.getTimeStamp().getTime();
+        seriesElement.add(timestamp);
         if (Objects.equals(dataType, "meanTime"))
-            seriesElement.put(timestamp, resultInfo.getMeanTime().toString());
+            seriesElement.add(resultInfo.getMeanTime());
         if (Objects.equals(dataType, "requestRate"))
-            seriesElement.put(timestamp, resultInfo.getRequestRate().toString());
+            seriesElement.add(resultInfo.getRequestRate());
         if (Objects.equals(dataType, "errorPercentage"))
-            seriesElement.put(timestamp, resultInfo.getErrorPercentage().toString());
+            seriesElement.add(resultInfo.getErrorPercentage());
         if (Objects.equals(dataType, "threadCount"))
-            seriesElement.put(timestamp, resultInfo.getThreadCount().toString());
+            seriesElement.add(resultInfo.getThreadCount());
         if (Objects.equals(dataType, "receiveKBPerSecond"))
-            seriesElement.put(timestamp, resultInfo.getReceiveKBPerSecond().toString());
+            seriesElement.add(resultInfo.getReceiveKBPerSecond());
         if (Objects.equals(dataType, "sentKBPerSecond"))
-            seriesElement.put(timestamp, resultInfo.getSentKBPerSecond().toString());
+            seriesElement.add(resultInfo.getSentKBPerSecond());
         return seriesElement;
     }
 

@@ -6,6 +6,7 @@ import com.bushmaster.architecture.mapper.ScenarioInfoMapper;
 import com.bushmaster.architecture.mapper.ScriptFileInfoMapper;
 import com.bushmaster.architecture.service.ParamFileService;
 import com.bushmaster.architecture.service.ScenarioInfoService;
+import com.bushmaster.architecture.service.ScenarioResultService;
 import com.bushmaster.architecture.service.ScriptInfoService;
 import com.bushmaster.architecture.utils.FileStorageUtil;
 import com.github.pagehelper.Page;
@@ -33,6 +34,8 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
     private ParamFileService paramFileService;
     @Autowired
     private FileStorageUtil fileUtil;
+    @Autowired
+    private ScenarioResultService resultService;
 
     /**
      * @description             通过ID获取场景实体信息
@@ -204,33 +207,38 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
     @Transactional
     public Map<String, Object> delScenarioInfo(Integer scenarioId) {
         Map<String, Object> result = new HashMap<>();
+
+        // 删除场景的所有结果集
+        Map<String, Object> delResultInfo = resultService.delScenarioResultInfoByScenarioId(scenarioId);
+        result.put("delResultInfo", delResultInfo);
+
         // 根据场景ID获取脚本文件
         ScriptFileInfo scriptInfo = scriptMapper.getScriptFileInfoByScenarioId(scenarioId);
 
         // 删除参数化文件
-        List<Map<String, Object>> delParamFileResult = paramFileService.delParamFileInfoByScenarioId(scenarioId);
-        result.put("delParamFileResult", delParamFileResult);
+        List<Map<String, Object>> delParamFileInfo = paramFileService.delParamFileInfoByScenarioId(scenarioId);
+        result.put("delParamFileInfo", delParamFileInfo);
 
         // 删除脚本记录
-        Map<String, Object> delScriptResult = scriptInfoService.delScriptInfoByScenarioId(scenarioId);
-        result.put("delScriptResult", delScriptResult);
+        Map<String, Object> delScriptInfo = scriptInfoService.delScriptInfoByScenarioId(scenarioId);
+        result.put("delScriptInfo", delScriptInfo);
 
         // 删除场景记录
-        Map<String, String> delScenarioResult = new HashMap<>();
+        Map<String, String> delScenarioInfo = new HashMap<>();
         Path scriptFolderUri = Paths.get(URI.create(scriptInfo.getScriptFilePath()));
         Integer deleteScenarioFlag = scenarioMapper.deleteScenarioInfo(scenarioId);
         Boolean scriptFolderDelFlag = fileUtil.deleteScriptFolder(scriptFolderUri);
         if (deleteScenarioFlag <= 0) {
-            delScenarioResult.put("status", "Info");
-            delScenarioResult.put("message", "未找到待删除场景");
+            delScenarioInfo.put("status", "Info");
+            delScenarioInfo.put("message", "未找到待删除场景");
         } else if (!scriptFolderDelFlag) {
-            delScenarioResult.put("status", "Fail");
-            delScenarioResult.put("message", "未能删除脚本文件夹");
+            delScenarioInfo.put("status", "Fail");
+            delScenarioInfo.put("message", "未能删除脚本文件夹");
         } else {
-            delScenarioResult.put("status", "Success");
-            delScenarioResult.put("message", "场景删除成功");
+            delScenarioInfo.put("status", "Success");
+            delScenarioInfo.put("message", "场景删除成功");
         }
-        result.put("delScenarioResult", delScenarioResult);
+        result.put("delScenarioInfo", delScenarioInfo);
 
         return result;
     }

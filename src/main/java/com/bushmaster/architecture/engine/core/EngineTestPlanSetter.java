@@ -53,7 +53,7 @@ public class EngineTestPlanSetter {
                         threadGroup.setDuration(duration);
                         // 获取测试计划运行逻辑(启用调度器,确定运行时间)
                         LoopController loopController = (LoopController)threadGroup.getProperty("ThreadGroup.main_controller").getObjectValue();
-                        loopController.setLoops(-1);        // 不按照Loop次数来运行测试
+                        loopController.setLoops(-1);                        // 不按照Loop次数来运行测试
                         loopController.setContinueForever(Boolean.FALSE);
                         System.out.println();
                     }

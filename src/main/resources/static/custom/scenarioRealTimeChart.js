@@ -109,7 +109,7 @@ $(chartId).highcharts({
     chart: {
         renderTo: chartId,
         type: 'spline',
-        animation: false,   // 去掉动画
+        animation: false,           // 去掉动画
         marginRight: 10,
         events: {
             load: function () {
@@ -118,7 +118,6 @@ $(chartId).highcharts({
         }
     },
     boost: {                        // 启用boost.js,使用WebGL进行渲染.
-        enabled: true,
         useGPUTranslations: true
     },
     title: {

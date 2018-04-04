@@ -75,6 +75,7 @@ dependencies {
     compile('kg.apc:jmeter-plugins-redis:0.2')                       // Jmeter Redis支持
     compile('kg.apc:jmeter-plugins-tst:2.3')                         // 基于处理能力Jmeter插件
     compile('net.luminis.jmeter:jmeter-websocket-samplers:1.1.1')    // Jmeter对WebSocket的支持
+    compile('kg.apc:jmeter-plugins-fifo:0.2')                        // 多个线程组之间交互数据
 
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile('org.hamcrest:hamcrest-all:1.3')

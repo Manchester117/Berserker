@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +65,9 @@ public class ScenarioSampleController {
 
     // 修改后的方法,直接使用Java的数据结构返回.
     @PostMapping(path = "/getSampleResultDetailData")
-    public @ResponseBody Map<String, List<Map<Timestamp, Object>>> getSampleResultDetailData(@RequestParam("resultId") Integer resultId,
-                                                                                             @RequestParam("dataType") String dataType) {
+    public @ResponseBody Map<String, List<List<Number>>> getSampleResultDetailData(@RequestParam("resultId") Integer resultId,
+                                                                                   @RequestParam("dataType") String dataType) {
+        // 如果给HighCharts传时间,需要使用Long类型.
         return resultService.getSampleResultDataListByResultId(resultId, dataType);
     }
 }

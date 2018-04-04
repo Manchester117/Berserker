@@ -9,10 +9,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ScenarioResultServiceImpl implements ScenarioResultService{
@@ -66,12 +63,12 @@ public class ScenarioResultServiceImpl implements ScenarioResultService{
     }
 
     @Override
-    public Map<String, Object> delScenarioResultInfo(Integer resultId) {
+    public Map<String, Object> delScenarioResultInfoByResultId(Integer resultId) {
         Map<String, Object> result = new HashMap<>();
         int deleteSampleResultFlag = sampleMapper.deleteSampleResultInfoByResultId(resultId);
-        if (deleteSampleResultFlag > 0) {
+        if (deleteSampleResultFlag >= 0) {
             int deleteFlag = resultMapper.deleteScenarioResultInfo(resultId);
-            if (deleteFlag > 0) {
+            if (deleteFlag >= 0) {
                 result.put("status", "Success");
                 result.put("message", "结果集删除成功");
             } else {
@@ -81,6 +78,24 @@ public class ScenarioResultServiceImpl implements ScenarioResultService{
         } else {
             result.put("status", "Fail");
             result.put("message", "结果详情删除失败");
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> delScenarioResultInfoByScenarioId(Integer scenarioId) {
+        Integer successCount = 0;
+        Integer failCount = 0;
+        Map<String, Object> result = new HashMap<>();
+        List<ScenarioResultInfo> ScenarioResultInfoList = resultMapper.getScenarioResultInfoListByScenarioId(scenarioId);
+        for (ScenarioResultInfo resultInfo: ScenarioResultInfoList) {
+            Map<String, Object> delScenarioResult = delScenarioResultInfoByResultId(resultInfo.getId());
+            String status = delScenarioResult.get("status").toString();
+            if (Objects.equals(status, "Success")) {
+                result.put("successCount", ++successCount);
+            } else {
+                result.put("failCount", ++failCount);
+            }
         }
         return result;
     }

@@ -15,5 +15,7 @@ public interface ScenarioResultService {
 
     Map<String, Object> addScenarioResultInfo(ScenarioResultInfo scenarioResultInfo);
 
-    Map<String, Object> delScenarioResultInfo(Integer id);
+    Map<String, Object> delScenarioResultInfoByResultId(Integer resultId);
+
+    Map<String, Object> delScenarioResultInfoByScenarioId(Integer scenarioId);
 }

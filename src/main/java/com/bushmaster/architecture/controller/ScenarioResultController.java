@@ -44,7 +44,7 @@ public class ScenarioResultController {
 
     @PostMapping(path = "/delScenarioResult")
     public @ResponseBody JSONObject delScenarioResult(@RequestParam("resultId") Integer resultId) {
-        Map<String, Object> result = resultService.delScenarioResultInfo(resultId);
+        Map<String, Object> result = resultService.delScenarioResultInfoByResultId(resultId);
         return JSONObject.parseObject(JSON.toJSONString(result));
     }
 }

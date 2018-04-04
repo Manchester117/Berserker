@@ -65,18 +65,18 @@ function delScenario(scenarioId) {
                     success: function(result) {
                         var delScenarioMsg = null;
                         // 从Controller返回来的Json
-                        if (result["delScenarioResult"]) {
-                            delScenarioMsg = result["delScenarioResult"].message;
+                        if (result["delScenarioInfo"]) {
+                            delScenarioMsg = result["delScenarioInfo"].message;
                             delScenarioMsg = delScenarioMsg + "<br/>";
                         }
                         var delScriptMsg = null;
-                        if (result["delScriptResult"]) {
-                            delScriptMsg = result["delScriptResult"].message;
+                        if (result["delScriptInfo"]) {
+                            delScriptMsg = result["delScriptInfo"].message;
                             delScenarioMsg = delScenarioMsg + delScriptMsg + "<br/>";
                         }
                         var delParamsMsgList = null;
-                        if (result["delParamFileResult"]) {
-                            delParamsMsgList = result["delParamFileResult"];
+                        if (result["delScriptInfo"]) {
+                            delParamsMsgList = result["delScriptInfo"];
                             if (delParamsMsgList) {
                                 for (var i = 0; i < delParamsMsgList.length; ++i) {
                                     var delParamsMsg = delParamsMsgList[i].message + "<br/>";
@@ -85,6 +85,16 @@ function delScenario(scenarioId) {
                             } else {
                                 delScenarioMsg = delScenarioMsg + "没有参数文件需要删除<br/>";
                             }
+                        }
+                        if (result["delResultInfo"]) {
+                            var successCount = 0;
+                            var failCount = 0;
+                            if (result["delResultInfo"]["successCount"])
+                                successCount = result["delResultInfo"]["successCount"];
+                            if (result["delResultInfo"]["failCount"])
+                                failCount = result["delResultInfo"]["failCount"];
+                            delScenarioMsg = delScenarioMsg + "删除场景结果成功,共" + successCount + "条<br/>";
+                            delScenarioMsg = delScenarioMsg + "删除场景结果失败,共" + failCount + "条<br/>";
                         }
                         // 从Controller返回的Json
                         if (result["Error"] !== undefined) {
@@ -105,16 +115,21 @@ function delScenario(scenarioId) {
 // 运行场景
 function runScenario(scenarioId) {
     $.ajax({
-        url: "/scenarioIsActive",
+        url: "/scenarioStartRunCheck",
         type: "post",
         data: {
             scenarioId: scenarioId
         },
         success: function(result) {
-            if (result["isActive"] === "True") {
+            if (result["enableRun"] === "False") {
+                var msgList = result["message"];
+                var message = '';
+                for (var index = 0; index < msgList.length; ++index) {
+                    message = message + msgList[index] + "<br/>";
+                }
                 bootbox.alert({
                     title: '提示',
-                    message: '场景' + result['scenarioName'] + '正在运行,请等待测试完成后再试.',
+                    message: message,
                     callback: function () {
                         $scenario_list.bootstrapTable('selectPage', 1);
                     }
@@ -122,11 +137,11 @@ function runScenario(scenarioId) {
             } else {
                 bootbox.confirm({
                     title: '提示',
-                    message: '当前没有场景运行,开始执行测试.',
+                    message: '当前没有场景运行,可以执行测试.',
                     callback: function (isConfirm) {
-                        // 如果在bootbox上点击的了确定,则执行测试.否则什么都不做.result为回调值
+                        // 如果在BootBox上点击的了确定,则执行测试.否则什么都不做.result为回调值
                         if (isConfirm === true)
-                            $(window).attr('location', "/scenarioStartRun?scenarioId=" + scenarioId);
+                            $(window).attr('location', "/scenarioStartRun?scenarioId=" + result["scenarioId"]);
                     }
                 });
             }

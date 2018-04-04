@@ -51,22 +51,22 @@ public class EngineSampleCollector extends ResultCollector{
 
         SamplingStatCalculator calculator = calculatorContainer.get(sampleLabel);
 
-        log.info("Sampler Label: " + result.getSampleLabel() +
-                "\t\tSampler Count: " + calculator.getCount() +
-                "\t\tResponse Mean Time: " + calculator.getMeanAsNumber() +
-                "\t\tResponse Min Time: " + calculator.getMin() +
-                "\t\tResponse Max Time: " + calculator.getMax() +
-                "\t\tResponse Standard Deviation: " + calculator.getStandardDeviation() +
-                "\t\tError Percentage: " + calculator.getErrorPercentage() +
-                "\t\tThroughput: " + calculator.getRate() +
-                "\t\tThroughput bytes Per Second: " + calculator.getKBPerSecond() +
-                "\t\tSent Throughput KB Per Second: " + calculator.getSentKBPerSecond() +
-                "\t\tAvg Page Bytes: " + calculator.getAvgPageBytes() +
-                "\t\tThread Count: " + result.getAllThreads()
-        );
+//        log.info("Sampler Label: " + result.getSampleLabel() +
+//                "\t\tSampler Count: " + calculator.getCount() +
+//                "\t\tResponse Mean Time: " + calculator.getMeanAsNumber() +
+//                "\t\tResponse Min Time: " + calculator.getMin() +
+//                "\t\tResponse Max Time: " + calculator.getMax() +
+//                "\t\tResponse Standard Deviation: " + calculator.getStandardDeviation() +
+//                "\t\tError Percentage: " + calculator.getErrorPercentage() +
+//                "\t\tRequest Rate: " + calculator.getRate() +
+//                "\t\tThroughput bytes Per Second: " + calculator.getKBPerSecond() +
+//                "\t\tSent Throughput KB Per Second: " + calculator.getSentKBPerSecond() +
+//                "\t\tAvg Page Bytes: " + calculator.getAvgPageBytes() +
+//                "\t\tThread Count: " + result.getAllThreads()
+//        );
 
         SampleResultInfo sampleResultInfo = new SampleResultInfo();
-        sampleResultInfo.setTimeStamp(new Timestamp(result.getTimeStamp()));             // 时间戳(这里使用TimeStamp类型)
+        sampleResultInfo.setTimeStamp(new Timestamp(result.getTimeStamp()));             // 时间戳(这里将Long转换为TimeStamp类型)
         sampleResultInfo.setSamplerLabel(result.getSampleLabel());                       // 请求名称
         sampleResultInfo.setSamplerCount(calculator.getCount());                         // SamplerCount
         sampleResultInfo.setMeanTime(calculator.getMean());                              // 平均响应时间
@@ -82,7 +82,7 @@ public class EngineSampleCollector extends ResultCollector{
 
         // 将信息以列表形式存入Redis,以时间戳为Key
         String sampleResultJson = JSON.toJSONString(sampleResultInfo);
-        // 使用右侧插入,在实时显示的时候可以以正确顺序显示
+        // 使用右侧插入,在实时显示的时候可以按正确顺序显示
         runningSampleResultList.rightPush(sampleResultJson);
     }
 
