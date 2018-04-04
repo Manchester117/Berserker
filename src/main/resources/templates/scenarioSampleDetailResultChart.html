@@ -10,15 +10,14 @@
 <body>
 <div layout:fragment="content">
     <div id="sampler_charts">
-        <input type="hidden" name="chartId" value="#receive_kb_per_second"/>
-        <input type="hidden" name="resultId" th:value="${resultId}"/>
-        <input type="hidden" name="dataType" th:value="${dataType}"/>
-        <input type="hidden" name="chartTitle" th:value="${chartTitle}"/>
-        <input type="hidden" name="unit" th:value="${unit}"/>
+        <input type="hidden" id="result_id" name="resultId" th:value="${resultId}"/>
+        <input type="hidden" id="data_type" name="dataType" th:value="${dataType}"/>
+        <input type="hidden" id="chart_title" name="chartTitle" th:value="${chartTitle}"/>
+        <input type="hidden" id="unit" name="unit" th:value="${unit}"/>
         <div id="container" style="min-width:640px; min-height:480px;"></div>
     </div>
     <!-- HighCharts support -->
-    <script type="text/javascript" th:src="@{custom/scenarioChart.js}"></script>
+    <script type="text/javascript" th:src="@{custom/scenarioSampleResult.js}"></script>
 </div>
 </body>
 </html>

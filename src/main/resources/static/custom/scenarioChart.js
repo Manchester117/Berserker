@@ -109,7 +109,7 @@ $(chartId).highcharts({
     chart: {
         renderTo: chartId,
         type: 'spline',
-        animation: Highcharts.svg, // don't animate in old IE
+        animation: false,   // 去掉动画
         marginRight: 10,
         events: {
             load: function () {

@@ -1,13 +1,12 @@
 package com.bushmaster.architecture.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.bushmaster.architecture.service.SampleResultService;
 import com.google.common.base.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -65,8 +64,8 @@ public class ScenarioSampleController {
 //        return JSONObject.parseObject(JSON.toJSONString(sampleResultContainer));
 //    }
 
-    // 修改后的方法
-    @GetMapping(path = "/getSampleResultDetailData")
+    // 修改后的方法,直接使用Java的数据结构返回.
+    @PostMapping(path = "/getSampleResultDetailData")
     public @ResponseBody Map<String, List<Map<Timestamp, Object>>> getSampleResultDetailData(@RequestParam("resultId") Integer resultId,
                                                                                              @RequestParam("dataType") String dataType) {
         return resultService.getSampleResultDataListByResultId(resultId, dataType);
