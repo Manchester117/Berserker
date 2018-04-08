@@ -32,7 +32,7 @@ public class ScenarioServiceTests {
 
     @Test
     public void testGetScenarioInfoByPageList() {
-        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(0, 15, "", null);
+        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(0, 15, "");
         String jsonResult = JSONObject.toJSONString(result);
         System.out.println(jsonResult);
     }

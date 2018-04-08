@@ -178,7 +178,38 @@
         </div>
     </div>
     <div class="row">
-
+        <div id="sample_data_table" class="col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr align="center">
+                    <th>请求名称</th>
+                    <th>平均响应时间(ms)</th>
+                    <th>最小响应时间(ms)</th>
+                    <th>最大响应时间(ms)</th>
+                    <th>标准方差</th>
+                    <th>错误百分比(%)</th>
+                    <th>每秒请求处理能力</th>
+                    <th>每秒接收数据量(KB/s)</th>
+                    <th>每秒发送数据量(KB/s)</th>
+                    <th>平均页面大小(Bytes)</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="resultData:${resultDataList}">
+                        <td th:text="${resultData.getSamplerLabel()}"></td>
+                        <td th:text="${resultData.getMeanTime()}"></td>
+                        <td th:text="${resultData.getMinTime()}"></td>
+                        <td th:text="${resultData.getMaxTime()}"></td>
+                        <td th:text="${resultData.getStandardDeviation()}"></td>
+                        <td th:text="${resultData.getErrorPercentage()}"></td>
+                        <td th:text="${resultData.getRequestRate()}"></td>
+                        <td th:text="${resultData.getReceiveKBPerSecond()}"></td>
+                        <td th:text="${resultData.getSentKBPerSecond()}"></td>
+                        <td th:text="${resultData.getAvgPageBytes()}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>

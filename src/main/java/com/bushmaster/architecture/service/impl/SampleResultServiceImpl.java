@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -71,51 +70,17 @@ public class SampleResultServiceImpl implements SampleResultService{
         return seriesElement;
     }
 
-//    @Override
-//    public JSONObject getSampleResultDataListByResultId(Integer resultId, String dataType) {
-//        List<SampleResultInfo> sampleResultInfoList = sampleMapper.getSampleResultInfoListByResultId(resultId);
-//
-//        JSONObject sampleResultContainer = new JSONObject();
-//        if (Objects.nonNull(sampleResultInfoList)) {
-//            for (SampleResultInfo resultInfo : sampleResultInfoList) {
-//                String sampleLabel = resultInfo.getSamplerLabel();
-//                JSONArray series = null;
-//                JSONObject seriesElement = null;
-//                if (Objects.isNull(sampleResultContainer.get(sampleLabel))) {
-//                    series = new JSONArray();
-//                    seriesElement = this.createSeriesElement(resultInfo, dataType);
-//                    series.add(seriesElement);
-//                    sampleResultContainer.put(sampleLabel, series);
-//                } else {
-//                    seriesElement = this.createSeriesElement(resultInfo, dataType);
-//                    ((JSONArray)sampleResultContainer.get(sampleLabel)).add(seriesElement);
-//                }
-//                log.info(seriesElement.toJSONString());
-//            }
-//        }
-//        return sampleResultContainer;
-//    }
-//
-//    private JSONObject createSeriesElement(SampleResultInfo resultInfo, String dataType) {
-//        Long timestamp = resultInfo.getTimeStamp().getTime();
-//        Map<Object, Object> seriesElement = new HashMap<>();
-//        if (Objects.equals(dataType, "meanTime"))
-//            seriesElement.put(timestamp, resultInfo.getMeanTime());
-//        if (Objects.equals(dataType, "requestRate"))
-//            seriesElement.put(timestamp, resultInfo.getRequestRate());
-//        if (Objects.equals(dataType, "errorPercentage"))
-//            seriesElement.put(timestamp, resultInfo.getErrorPercentage());
-//        if (Objects.equals(dataType, "threadCount"))
-//            seriesElement.put(timestamp, resultInfo.getThreadCount());
-//        if (Objects.equals(dataType, "receiveKBPerSecond"))
-//            seriesElement.put(timestamp, resultInfo.getReceiveKBPerSecond());
-//        if (Objects.equals(dataType, "sentKBPerSecond"))
-//            seriesElement.put(timestamp, resultInfo.getSentKBPerSecond());
-//        return JSONObject.parseObject(JSON.toJSONString(seriesElement));
-//    }
+    @Override
+    public List<SampleResultInfo> getSampleResultData(Integer resultId) {
+        List<String> samplerLabelList = sampleMapper.getSamplerLabelByResultId(resultId);
+        List<SampleResultInfo> sampleResultData = new ArrayList<>();
+        for (String samplerLabel: samplerLabelList) {
+            SampleResultInfo resultInfo = sampleMapper.getSampleResultData(resultId, samplerLabel);
+            sampleResultData.add(resultInfo);
+        }
+        return sampleResultData;
+    }
 
-
-    @Async
     @Override
     public void addSampleResultToDB(Integer runningResultId, BoundListOperations<String, String> runningSampleResultList) {
         List<SampleResultInfo> sampleResultInfoList = new ArrayList<>();

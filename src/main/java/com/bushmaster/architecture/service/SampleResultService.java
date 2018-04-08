@@ -11,7 +11,7 @@ public interface SampleResultService {
 
     Map<String, List<List<Number>>> getSampleResultDataListByResultId(Integer resultId, String dataType);
 
-//    JSONObject getSampleResultDataListByResultId(Integer resultId, String dataType);
+    List<SampleResultInfo> getSampleResultData(Integer resultId);
 
     void addSampleResultToDB(Integer runningResultId, BoundListOperations<String, String> runningSampleResultList);
 

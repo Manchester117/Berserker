@@ -56,14 +56,13 @@ public class ScenarioInfoServiceImpl implements ScenarioInfoService{
      * @param offset            页码
      * @param limit             单页信息个数
      * @param scenarioName      搜索条件: 场景名称
-     * @param status            搜索条件: 场景使用状态
      * @return                  返回场景列表的分页信息
      */
     @Override
-    public Map<String, Object> getScenarioInfoByPageList(Integer offset, Integer limit, String scenarioName, Boolean status) {
+    public Map<String, Object> getScenarioInfoByPageList(Integer offset, Integer limit, String scenarioName) {
         Map<String, Object> result = new HashMap<>();
         Page<Object> page = PageHelper.offsetPage(offset, limit);
-        List<ScenarioInfo> scenarioInfoList = scenarioMapper.getScenarioInfoList(scenarioName, status);
+        List<ScenarioInfo> scenarioInfoList = scenarioMapper.getScenarioInfoList(scenarioName);
         result.put("total", page.getTotal());
         result.put("rows", scenarioInfoList);
         return result;

@@ -9,14 +9,14 @@ public interface ScenarioResultInfoMapper {
     @Select("SELECT * FROM scenarioresultinfo WHERE id = #{id}")
     ScenarioResultInfo getScenarioResultInfo(@Param("id") Integer id);
 
-    @Select("SELECT * FROM scenarioresultinfo WHERE scenarioId = #{scenarioId}")
+    @Select("SELECT * FROM scenarioresultinfo WHERE scenarioId = #{scenarioId} ORDER BY runTime DESC")
     List<ScenarioResultInfo> getScenarioResultInfoListByScenarioId(@Param("scenarioId") Integer scenarioId);
 
-    @Select("SELECT * FROM scenarioresultinfo")
+    @Select("SELECT * FROM scenarioresultinfo ORDER BY runTime DESC")
     List<ScenarioResultInfo> getScenarioResultInfoList();
 
-    @Insert("INSERT INTO scenarioresultinfo(numThreads, rampUp, duration, runTime, scenarioId)" +
-            "VALUES(#{numThreads}, #{rampUp}, #{duration}, #{runTime}, #{scenarioId})")
+    @Insert("INSERT INTO scenarioresultinfo(scenarioName, numThreads, rampUp, duration, runTime, scenarioId)" +
+            "VALUES(#{scenarioName}, #{numThreads}, #{rampUp}, #{duration}, #{runTime}, #{scenarioId})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertScenarioResultInfo(ScenarioResultInfo scenarioResultInfo);
 

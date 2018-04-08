@@ -10,7 +10,6 @@ public class ScenarioInfo {
     private Integer numThreads;
     private Integer rampUp;
     private Integer duration;
-    private Boolean status;
 
     public Integer getId() {
         return id;
@@ -68,12 +67,16 @@ public class ScenarioInfo {
         this.duration = duration;
     }
 
-    public Boolean getStatus() {
-        return status;
+    @Override
+    public String toString() {
+        return "ScenarioInfo{" +
+                "id=" + id +
+                ", scenarioName='" + scenarioName + '\'' +
+                ", scenarioDescription='" + scenarioDescription + '\'' +
+                ", createTime=" + createTime +
+                ", numThreads=" + numThreads +
+                ", rampUp=" + rampUp +
+                ", duration=" + duration +
+                '}';
     }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
 }

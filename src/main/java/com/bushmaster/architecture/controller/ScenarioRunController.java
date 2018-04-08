@@ -62,23 +62,6 @@ public class ScenarioRunController {
         return JSONObject.parseObject(JSON.toJSONString(startRunInfo));
     }
 
-//    @PostMapping(path = "/scenarioIsActive")
-//    public @ResponseBody JSONObject scenarioIsActive(@RequestParam("scenarioId") String scenarioId) {
-//        Boolean engineIsActive = scenarioRunService.getEngineIsActive();
-//        Map<String, Object> engineMessage = new HashMap<>();
-//        if (engineIsActive) {
-//            // 如果场景正在运行,则返回正在运行的场景名称
-//            String runningScenarioName = scenarioRunService.getRunningScenarioName();
-//            engineMessage.put("isActive", "True");
-//            engineMessage.put("scenarioName", runningScenarioName);
-//        } else {
-//            // 如果场景没有运行,则返回要运行场景的ID
-//            engineMessage.put("isActive", "False");
-//            engineMessage.put("scenarioId", scenarioId);
-//        }
-//        return JSONObject.parseObject(JSON.toJSONString(engineMessage));
-//    }
-
     @GetMapping(path = "/scenarioStartRun")
     public String scenarioStartRun(Model model, @RequestParam("scenarioId") String scenarioId) {
         // 启动场景
@@ -113,18 +96,36 @@ public class ScenarioRunController {
         model.addAttribute("scenarioId", scenarioId);
         model.addAttribute("dataType", dataType);
 
-        if (Objects.equals(dataType, "meanTime"))
-            return "scenarioResponseTimeChart";
-        if (Objects.equals(dataType, "requestRate"))
-            return "scenarioRequestRateChart";
-        if (Objects.equals(dataType, "errorPercentage"))
-            return "scenarioErrorByPercentChart";
-        if (Objects.equals(dataType, "threadCount"))
-            return "scenarioThreadCountChart";
-        if (Objects.equals(dataType, "sentKBPerSecond"))
-            return "scenarioSendKBPerSecChart";
-        if (Objects.equals(dataType, "receiveKBPerSecond"))
-            return "scenarioReceiveKBPerSecChart";
-        return "";
+        if (Objects.equals(dataType, "meanTime")) {
+            model.addAttribute("chartTitle", "平均响应时间-运行状态");
+            model.addAttribute("unit", "毫秒");
+//            return "scenarioResponseTimeChart";
+        }
+        if (Objects.equals(dataType, "requestRate")) {
+            model.addAttribute("chartTitle", "每秒请求处理能力-运行状态");
+            model.addAttribute("unit", "个");
+//            return "scenarioRequestRateChart";
+        }
+        if (Objects.equals(dataType, "errorPercentage")) {
+            model.addAttribute("chartTitle", "错误百分比-运行状态");
+            model.addAttribute("unit", "百分比");
+//            return "scenarioErrorByPercentChart";
+        }
+        if (Objects.equals(dataType, "threadCount")) {
+            model.addAttribute("chartTitle", "并发数量趋势-运行状态");
+            model.addAttribute("unit", "个");
+//            return "scenarioThreadCountChart";
+        }
+        if (Objects.equals(dataType, "sentKBPerSecond")) {
+            model.addAttribute("chartTitle", "发送数据量趋势-运行状态");
+            model.addAttribute("unit", "KB");
+//            return "scenarioSendKBPerSecChart";
+        }
+        if (Objects.equals(dataType, "receiveKBPerSecond")) {
+            model.addAttribute("chartTitle", "接收数据量趋势-运行状态");
+            model.addAttribute("unit", "KB");
+//            return "scenarioReceiveKBPerSecChart";
+        }
+        return "scenarioRealTimeChart";
     }
 }

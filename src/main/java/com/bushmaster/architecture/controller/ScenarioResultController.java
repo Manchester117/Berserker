@@ -2,6 +2,7 @@ package com.bushmaster.architecture.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bushmaster.architecture.domain.param.ScenarioResultByIdParams;
 import com.bushmaster.architecture.domain.param.ScenarioResultListParams;
 import com.bushmaster.architecture.service.ScenarioResultService;
 import com.bushmaster.architecture.utils.CommonUtil;
@@ -21,14 +22,33 @@ public class ScenarioResultController {
     @Autowired
     private ScenarioResultService resultService;
 
-    @GetMapping(path = "scenarioResultList")
-    public String scenarioResultList(Model model, @RequestParam("scenarioId") Integer scenarioId) {
-        model.addAttribute("scenarioId", scenarioId);
-        return "scenarioResult";
+    @GetMapping(path = "/scenarioNewResultList")
+    public String scenarioNewResultList() {
+        return "scenarioNewResultList";
     }
 
-    @PostMapping(path = "/getScenarioResultList")
-    public @ResponseBody JSONObject getScenarioResultList(@Validated @RequestBody ScenarioResultListParams requestParams, BindingResult bindingResult) {
+    @PostMapping(path = "/getScenarioNewResultList")
+    public @ResponseBody JSONObject getScenarioNewResultList(@Validated @RequestBody ScenarioResultListParams requestParams, BindingResult bindingResult) {
+        // 参数验证
+        Map<String, List<String>> errorResultInfo = CommonUtil.paramsValidator(bindingResult);
+        if (Objects.nonNull(errorResultInfo))
+            return JSONObject.parseObject(JSON.toJSONString(errorResultInfo));
+
+        Integer offset = Integer.parseInt(requestParams.getOffset());
+        Integer limit = Integer.parseInt(requestParams.getLimit());
+
+        Map<String, Object> result = resultService.getScenarioResultInfoList(offset, limit);
+        return JSONObject.parseObject(JSON.toJSONString(result));
+    }
+
+    @GetMapping(path = "/scenarioResultListById")
+    public String scenarioResultListById(Model model, @RequestParam("scenarioId") Integer scenarioId) {
+        model.addAttribute("scenarioId", scenarioId);
+        return "scenarioResultListById";
+    }
+
+    @PostMapping(path = "/getScenarioResultListByScenarioId")
+    public @ResponseBody JSONObject getScenarioResultListByScenarioId(@Validated @RequestBody ScenarioResultByIdParams requestParams, BindingResult bindingResult) {
         // 参数验证
         Map<String, List<String>> errorResultInfo = CommonUtil.paramsValidator(bindingResult);
         if (Objects.nonNull(errorResultInfo))

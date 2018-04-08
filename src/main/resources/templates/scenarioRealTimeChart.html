@@ -5,16 +5,16 @@
       layout:decorator="layout">
 <head>
     <meta charset="UTF-8"/>
-    <title>接收数据量趋势</title>
+    <title>平均响应时间</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div id="sampler_charts">
-        <input type="hidden" name="chartId" value="#receive_kb_per_second"/>
+        <input type="hidden" name="chartId" value="#mean_time_chart"/>
         <input type="hidden" name="dataType" th:value="${dataType}"/>
-        <input type="hidden" name="chartTitle" value="接收数据量趋势"/>
-        <input type="hidden" name="unit" value="KB"/>
-        <div id="receive_kb_per_second" style="min-width:640px; min-height:480px;"></div>
+        <input type="hidden" name="chartTitle" th:value="${chartTitle}"/>
+        <input type="hidden" name="unit" th:value="${unit}"/>
+        <div id="container" style="min-width:640px; min-height:480px;"></div>
         <br/>
         <div id="sample_result_table">
             <table class="table table-bordered">

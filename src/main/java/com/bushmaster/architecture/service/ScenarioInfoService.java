@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ScenarioInfoService {
     ScenarioInfo getScenarioInfo(Integer id);
 
-    Map<String, Object> getScenarioInfoByPageList(Integer offset, Integer limit, String scenarioName, Boolean status);
+    Map<String, Object> getScenarioInfoByPageList(Integer offset, Integer limit, String scenarioName);
 
     ScriptFileInfo getScriptFileInfoByScenarioId(Integer scenarioId);
 

@@ -37,9 +37,9 @@ public class EngineResultHandler {
         if (summariserName.length() > 0) {
             summary = new Summariser(summariserName);
             // 设置summary打印间隔,没起作用
-//            summary.setProperty("summariser.interval", "1");
+            summary.setProperty("summariser.interval", "1");
         }
-        // 定义存入Redis的结果Key
+        // 先将SampleResult的结果队列定义好,定义存入Redis的结果Key
         String runningScenarioKey = StringUtils.join("scenario_", scenarioId);
         runningSampleResultList = stringRedisTemplate.boundListOps(runningScenarioKey);
 

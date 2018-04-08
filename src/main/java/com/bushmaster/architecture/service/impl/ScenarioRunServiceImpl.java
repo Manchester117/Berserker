@@ -41,6 +41,7 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         scenarioResultInfo.setNumThreads(scenarioInfo.getNumThreads());
         scenarioResultInfo.setRampUp(scenarioInfo.getRampUp());
         scenarioResultInfo.setDuration(scenarioInfo.getDuration());
+        scenarioResultInfo.setScenarioName(scenarioInfo.getScenarioName());
         scenarioResultInfo.setScenarioId(scenarioInfo.getId());
         // 在库中添加结果信息
         Map<String, Object> addResult = scenarioResultService.addScenarioResultInfo(scenarioResultInfo);
@@ -74,7 +75,6 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         return engineController.getRunningScenarioName();
     }
 
-    @Async
     @Override
     public void scenarioSampleResultRealOuter() {
         engineController.engineScenarioRealOuter();

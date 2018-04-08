@@ -46,10 +46,8 @@ public class ScenarioInfoController {
         Integer offset = Integer.parseInt(requestParams.getOffset());
         Integer limit = Integer.parseInt(requestParams.getLimit());
         String scenarioName = requestParams.getScenarioName();
-        String status = requestParams.getStatus();
 
-        Boolean statusValue = CommonUtil.getBooleanValue(status);
-        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(offset, limit, scenarioName, statusValue);
+        Map<String, Object> result = scenarioInfoService.getScenarioInfoByPageList(offset, limit, scenarioName);
 
         return JSONObject.parseObject(JSON.toJSONString(result));
     }
@@ -110,8 +108,7 @@ public class ScenarioInfoController {
             scenarioInfo.setDuration(null);
 
         scenarioInfo.setScenarioDescription(requestParams.getScenarioDescription());
-        // 默认场景停用
-        scenarioInfo.setStatus(false);
+
         // 获取场景添加状态和解析脚本CSV的Json
         Map<String, Object> result = scenarioInfoService.addScenarioInfo(scenarioInfo, scriptFile);
 
@@ -231,8 +228,6 @@ public class ScenarioInfoController {
             scenarioInfo.setDuration(null);
 
         scenarioInfo.setScenarioDescription(requestParams.getScenarioDescription());
-
-        scenarioInfo.setStatus(false);
 
         Map<String, Object> result = scenarioInfoService.modScenarioInfo(scenarioInfo, scriptFile);
         result.put("scenarioId", scenarioId);

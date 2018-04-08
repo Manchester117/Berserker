@@ -1,10 +1,8 @@
 // 脚本列表bootstrap-table
-var $script_list = $('#scenario_list');
-$script_list.bootstrapTable({
-    url: '/scenarioInfoList',
+var $result_list = $('#result_list');
+$result_list.bootstrapTable({
+    url: '/getScenarioResultListByScenarioId',
     method: 'post',
-    // 如果不指定contentType,则BootstrapTable默认以application/json的形式发送请求
-    // contentType: "application/x-www-form-urlencoded",
     dataType: 'json',
     striped: true,
     pagination: true,
@@ -18,8 +16,7 @@ $script_list.bootstrapTable({
         return {
             offset: params.offset,
             limit: params.limit,
-            scenarioName: $('#search_name').val(),
-            status: $('#select_status').val()
+            scenarioId: $('#scenario_id').val()
         }
     },
     columns: [
@@ -35,32 +32,37 @@ $script_list.bootstrapTable({
             title: '场景名称',
             align: 'center'
         }, {
-            field: 'createTime',
-            title: '创建时间',
+            field: 'numThreads',
+            title: '并发数量',
+            align: 'center'
+        }, {
+            field: 'rampUp',
+            title: '攀升时间',
+            align: 'center'
+        }, {
+            field: 'duration',
+            title: '持续时间',
+            align: 'center'
+        },{
+            field: 'runTime',
+            title: '运行时间',
             align: 'center',
             formatter: function (value, row, index) {
                 return convertDateFormat(value);
             }
-        }, {
+        },
+        {
             field: 'operate',
             title: '操作',
             align: 'center',
             formatter: function (value, row, index) {
                 return [
-                    '<a href="javascript:modScenario(' + row.id + ')">' +
-                    '<i class="fa fa-pencil"></i>修改' +
-                    '</a>',
-                    '&nbsp&nbsp&nbsp&nbsp' +
-                    '<a href="javascript:delScenario(' + row.id + ')">' +
-                    '<i class="fa fa-times"></i>删除' +
-                    '</a>',
-                    '&nbsp&nbsp&nbsp&nbsp' +
-                    '<a href="javascript:runScenario(' + row.id + ')">' +
-                    '<i class="fa fa-cogs"></i>运行' +
+                    '<a href="javascript:resSampler(' + row.id + ')">' +
+                    '<i class="fa fa-eye"></i>查看' +
                     '</a>' +
-                    '&nbsp&nbsp&nbsp&nbsp' +
-                    '<a href="javascript:resScenario(' + row.id + ')">' +
-                    '<i class="fa fa-eye"></i>结果' +
+                    '&nbsp&nbsp' +
+                    '<a href="javascript:delResult(' + row.id + ')">' +
+                    '<i class="fa fa-times"></i>删除' +
                     '</a>'
                 ].join('');
             }
@@ -82,4 +84,29 @@ function convertDateFormat(date_value) {
 
         return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
     }
+}
+
+// 查看历史结果
+function resSampler(resultId) {
+    $(window).attr('location', "/scenarioSampleDetailChartGrid?resultId=" + resultId);
+}
+
+// 删除历史结果
+function delResult(resultId) {
+    $.ajax({
+        url: '/delScenarioResult',
+        type: 'post',
+        data: {
+            resultId: resultId
+        },
+        success: function(result) {
+            bootbox.alert({
+                title: '提示',
+                message: result['message'],
+                callback: function () {
+                    $result_list.bootstrapTable('selectPage', 1);
+                }
+            });
+        }
+    });
 }

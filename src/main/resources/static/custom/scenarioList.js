@@ -151,7 +151,7 @@ function runScenario(scenarioId) {
 
 // 查看结果列表
 function resScenario(scenarioId) {
-    $(window).attr('location', "/scenarioResultList?scenarioId=" + scenarioId);
+    $(window).attr('location', "/scenarioResultListById?scenarioId=" + scenarioId);
 }
 
 

@@ -1,5 +1,6 @@
 package com.bushmaster.architecture.controller;
 
+import com.bushmaster.architecture.domain.entity.SampleResultInfo;
 import com.bushmaster.architecture.service.SampleResultService;
 import com.google.common.base.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class ScenarioSampleController {
 
     @GetMapping(path = "/scenarioSampleDetailChartGrid")
     public String scenarioSampleDetailChartGrid(Model model, @RequestParam("resultId") Integer resultId) {
+        List<SampleResultInfo> resultDataList = resultService.getSampleResultData(resultId);
+        model.addAttribute("resultDataList", resultDataList);
         model.addAttribute("resultId", resultId);
         return "scenarioSampleDetailChartGrid";
     }
@@ -52,7 +55,7 @@ public class ScenarioSampleController {
             model.addAttribute("chartTitle", "接收数据量趋势");
             model.addAttribute("unit", "KB");
         }
-        return "scenarioSampleDetailResultChart";
+        return "scenarioSampleDetailChart";
     }
 
     // Springboot 1.5.X 直接返回JSON时解析会报错.避免此问题需要直接按照Java的数据结构返回.

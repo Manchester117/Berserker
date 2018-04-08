@@ -1,7 +1,7 @@
 // 脚本列表bootstrap-table
 var $result_list = $('#result_list');
 $result_list.bootstrapTable({
-    url: '/getScenarioResultList',
+    url: '/getScenarioNewResultList',
     method: 'post',
     dataType: 'json',
     striped: true,
@@ -15,8 +15,7 @@ $result_list.bootstrapTable({
     queryParams: function (params) {
         return {
             offset: params.offset,
-            limit: params.limit,
-            scenarioId: $('#scenario_id').val()
+            limit: params.limit
         }
     },
     columns: [
@@ -27,6 +26,10 @@ $result_list.bootstrapTable({
             formatter: function(value, row, index) {            // 以列表的序列来标号
                 return index + 1;
             }
+        }, {
+            field: 'scenarioName',
+            title: '场景名称',
+            align: 'center'
         }, {
             field: 'numThreads',
             title: '并发数量',
@@ -65,22 +68,6 @@ $result_list.bootstrapTable({
         }
     ]
 });
-
-// 转换日期格式(时间戳转换为datetime格式)
-function convertDateFormat(date_value) {
-    var date_val = date_value + "";
-    if (date_value != null) {
-        var date = new Date(parseInt(date_val.replace("/Date(", "").replace(")/", ""), 10));
-        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-        var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-
-        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-
-        return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
-    }
-}
 
 // 查看历史结果
 function resSampler(resultId) {

@@ -13,7 +13,7 @@ public interface ScenarioInfoMapper {
     ScenarioInfo getScenarioInfo(@Param("id") Integer id);
 
     @SelectProvider(type = ScenarioInfoProvider.class, method = "selectScenarioByCondition")
-    List<ScenarioInfo> getScenarioInfoList(@Param("scenarioName") String scenarioName, @Param("status") Boolean status);
+    List<ScenarioInfo> getScenarioInfoList(@Param("scenarioName") String scenarioName);
 
     @InsertProvider(type = ScenarioInfoProvider.class, method = "insertScenario")
     @Options(useGeneratedKeys = true, keyProperty = "id")

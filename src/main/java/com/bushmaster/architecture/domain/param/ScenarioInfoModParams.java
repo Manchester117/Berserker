@@ -14,7 +14,6 @@ public class ScenarioInfoModParams {
     private String numThreads;
     private String rampUp;
     private String duration;
-    private String status;
 
     public String getScenarioId() {
         return scenarioId;
@@ -70,13 +69,5 @@ public class ScenarioInfoModParams {
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

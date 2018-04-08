@@ -9,7 +9,6 @@ public class ScenarioInfoAddParams {
     private String rampUp;
     private String duration;
     private String scenarioDescription;
-    private String status;
 
     public String getScenarioName() {
         return scenarioName;
@@ -49,13 +48,5 @@ public class ScenarioInfoAddParams {
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

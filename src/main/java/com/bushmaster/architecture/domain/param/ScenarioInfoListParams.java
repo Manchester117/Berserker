@@ -9,7 +9,6 @@ public class ScenarioInfoListParams {
     @NotBlank(message = "记录个数不能为空")
     private String limit;
     private String scenarioName;
-    private String status;
 
     public String getOffset() {
         return offset;
@@ -33,13 +32,5 @@ public class ScenarioInfoListParams {
 
     public void setScenarioName(String scenarioName) {
         this.scenarioName = scenarioName;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

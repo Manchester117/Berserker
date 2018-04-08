@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ScenarioResultInfo {
     private Integer id;
+    private String scenarioName;
     private Integer numThreads;
     private Integer rampUp;
     private Integer duration;
@@ -16,6 +17,14 @@ public class ScenarioResultInfo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getScenarioName() {
+        return scenarioName;
+    }
+
+    public void setScenarioName(String scenarioName) {
+        this.scenarioName = scenarioName;
     }
 
     public Integer getNumThreads() {
@@ -62,6 +71,7 @@ public class ScenarioResultInfo {
     public String toString() {
         return "ScenarioResultInfo{" +
                 "id=" + id +
+                ", scenarioName='" + scenarioName + '\'' +
                 ", numThreads=" + numThreads +
                 ", rampUp=" + rampUp +
                 ", duration=" + duration +

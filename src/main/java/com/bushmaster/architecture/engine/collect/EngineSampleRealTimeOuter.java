@@ -6,16 +6,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EngineSampleRealTimeOuter {
     private static final Logger log = LoggerFactory.getLogger(EngineSampleRealTimeOuter.class);
-    private BoundListOperations<String, String> runningSampleResultList;
     @Autowired
     private EngineController controller;
     @Autowired
     private SimpMessagingTemplate template;
+
+    private BoundListOperations<String, String> runningSampleResultList;
 
     public void setRunningSampleResultList(BoundListOperations<String, String> runningSampleResultList) {
         this.runningSampleResultList = runningSampleResultList;
@@ -24,6 +26,7 @@ public class EngineSampleRealTimeOuter {
     /**
      * @description 通过WebSocket向前端发送数据(控制时间间隔发送数据,避免浏览器崩溃)
      */
+    @Async
     public void sampleRealTimeOuter() {
         // 初始化游标
         long cursor = 0;
@@ -50,6 +53,7 @@ public class EngineSampleRealTimeOuter {
                     template.convertAndSend("/sampleResult/data", sampleResult);
                     isSendSamplerResult = Boolean.FALSE;
                 }
+                // 如果当前时间大于等于上次发送信息时定义的nextSendTime,则将是否发送的标志位置为TRUE
                 if (currentTime >= nextSendTime)
                     isSendSamplerResult = Boolean.TRUE;
                 // 列表下标自加

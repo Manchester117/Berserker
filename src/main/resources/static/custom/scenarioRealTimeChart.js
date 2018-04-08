@@ -103,11 +103,10 @@ Highcharts.setOptions({
 /**
  * @description HighCharts配置项
  */
-var chartId = $("input[name='chartId']").val();
-$(chartId).highcharts({
+// var chartId = $("input[name='chartId']").val();
+$("#container").highcharts({
     series: [],
     chart: {
-        renderTo: chartId,
         type: 'spline',
         animation: false,           // 去掉动画
         marginRight: 10,
