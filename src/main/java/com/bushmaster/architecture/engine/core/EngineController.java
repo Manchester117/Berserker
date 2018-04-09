@@ -31,6 +31,8 @@ public class EngineController {
 
     private String runningScenarioName;
 
+    private Integer runningResultId;
+
     private BoundListOperations<String, String> runningSampleResultList;
 
     public StandardJMeterEngine getEngine() {
@@ -47,6 +49,18 @@ public class EngineController {
 
     public String getRunningScenarioName(){
         return runningScenarioName;
+    }
+
+    public Integer getRunningResultId() {
+        return runningResultId;
+    }
+
+    public void setRunningResultId(Integer runningResultId) {
+        this.runningResultId = runningResultId;
+    }
+
+    public void setRunningSampleResultList(BoundListOperations<String, String> runningSampleResultList) {
+        this.runningSampleResultList = runningSampleResultList;
     }
 
     public BoundListOperations<String, String> getRunningSampleResultList() {
@@ -66,6 +80,10 @@ public class EngineController {
         return stopRunResult;
     }
 
+    /**
+     * @description             场景运行器
+     * @param scenarioId        场景ID
+     */
     public void engineScenarioRunner(Integer scenarioId) {
         // 设置引擎参数
         paramLoader.setEngineParam();
@@ -80,9 +98,9 @@ public class EngineController {
         HashTree testPlanTree = testPlanSetter.testPlanSetting(scenarioRunInfo, resultCollectorList);
         // 运行测试
         testRunner.scenarioRun(engine, testPlanTree);
-        // 重置结果收集器
+        // 运行完场景之后,重置结果收集器
         resultHandler.clearCalculator();
-        // 获取存放SamplerResult的列表
+        // 运行完场景之后,将SamplerResultList赋给EngineController中的runningSampleResultList
         runningSampleResultList = resultHandler.getRunningSampleResultList();
     }
 

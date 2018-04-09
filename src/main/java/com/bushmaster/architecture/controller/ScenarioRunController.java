@@ -79,9 +79,8 @@ public class ScenarioRunController {
     @GetMapping(path = "/scenarioRunningCheck")
     public String scenarioRunningCheck(Model model) {
         Boolean engineIsActive = runService.getEngineIsActive();
-        Integer scenarioId = null;
         if (engineIsActive) {
-            scenarioId = runService.getRunningScenarioId();
+            Integer scenarioId = runService.getRunningScenarioId();
             model.addAttribute("scenarioId", scenarioId);
             return "scenarioRealTimeChartGrid";
         } else {

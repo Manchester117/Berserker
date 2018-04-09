@@ -51,7 +51,6 @@ public class EngineResultHandler {
         // 这两个方法都是继承自ResultCollector的方法
         engineSampleCollector.setName("自定义结果收集");
         engineSampleCollector.setEnabled(Boolean.TRUE);
-//        engineSampleCollector.setFilename(reportFilePath);
         // 添加刚才定义的结果收集
         resultCollectorList.add(engineSampleCollector);
 

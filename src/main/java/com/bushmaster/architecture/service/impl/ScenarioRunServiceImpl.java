@@ -3,6 +3,7 @@ package com.bushmaster.architecture.service.impl;
 import com.bushmaster.architecture.domain.entity.ScenarioInfo;
 import com.bushmaster.architecture.domain.entity.ScenarioResultInfo;
 import com.bushmaster.architecture.engine.core.EngineController;
+import com.bushmaster.architecture.engine.core.EngineResultHandler;
 import com.bushmaster.architecture.service.SampleResultService;
 import com.bushmaster.architecture.service.ScenarioInfoService;
 import com.bushmaster.architecture.service.ScenarioResultService;
@@ -14,11 +15,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class ScenarioRunServiceImpl implements ScenarioRunService{
     @Autowired
     private EngineController engineController;
+    @Autowired
+    private EngineResultHandler resultHandler;
     @Autowired
     private ScenarioInfoService scenarioInfoService;
     @Autowired
@@ -47,6 +51,8 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         Map<String, Object> addResult = scenarioResultService.addScenarioResultInfo(scenarioResultInfo);
         // 保留结果ID,将结果ID放置到EngineController中,方便后面的结果写入DB
         Integer resultId = Integer.parseInt(addResult.get("resultId").toString());
+        // 在EngineController中保存结果ID
+        engineController.setRunningResultId(resultId);
         // 启动场景测试
         engineController.engineScenarioRunner(scenarioId);
         // 获取运行完成之后SampleResultList
@@ -55,26 +61,61 @@ public class ScenarioRunServiceImpl implements ScenarioRunService{
         sampleResultService.addSampleResultToDB(resultId, runningSampleResultList);
     }
 
+    /**
+     * @description             手动终止场景
+     * @return                  返回终止信息
+     */
     @Override
     public Map<String, Object> scenarioStopRun() {
-        return engineController.stopEngine();
+        // 停止场景运行
+        Map<String, Object> result = engineController.stopEngine();
+        if (Objects.equals(result.get("status"), "True")) {
+            // 清空当前的计数器
+            resultHandler.clearCalculator();
+            // 获取当前的SampleResultList,交给EngineController中的runningSampleResultList.
+            // 由于场景是手动中止的,不能直接从EngineController中直接获取,要从EngineResultHandler中获取.
+            // 从EngineResultHandler中获取的是已经存入数据队列
+            engineController.setRunningSampleResultList(resultHandler.getRunningSampleResultList());
+            // 获取运行完成之后SampleResultList
+            BoundListOperations<String, String> runningSampleResultList = engineController.getRunningSampleResultList();
+            // 从EngineController中获取结果ID
+            Integer resultId = engineController.getRunningResultId();
+            // 将SamplerResultList中的内容写入到DB中
+            sampleResultService.addSampleResultToDB(resultId, runningSampleResultList);
+        }
+        return result;
     }
 
+    /**
+     * @description             获取当前测试状态
+     * @return                  是否正在运行
+     */
     @Override
     public Boolean getEngineIsActive() {
         return engineController.getEngineStatus();
     }
 
+    /**
+     * @description             获取当前场景ID
+     * @return                  场景ID
+     */
     @Override
     public Integer getRunningScenarioId() {
         return engineController.getRunningScenarioId();
     }
 
+    /**
+     * @description             获取当前场景的名称
+     * @return                  场景名称
+     */
     @Override
     public String getRunningScenarioName() {
         return engineController.getRunningScenarioName();
     }
 
+    /**
+     * @description             SampleResult的实时输出
+     */
     @Override
     public void scenarioSampleResultRealOuter() {
         engineController.engineScenarioRealOuter();

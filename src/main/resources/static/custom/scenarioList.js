@@ -54,7 +54,7 @@ function delScenario(scenarioId) {
     bootbox.confirm({
         title: '提示',
         message: '确认删除场景?',
-        callback: function(flag) {                              // 如果flag是true则代表确认删除
+        callback: function(flag) {                              // 如果flag是true则代表确认删除,否则不删除
             if (flag) {
                 $.ajax({
                     url: "/delScenarioInfo",

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ScenarioException</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:text="${url}"></div>
+    <div th:text="${exceptMessage}"></div>
+</div>
+</body>
+</html>

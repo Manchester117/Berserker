@@ -62,15 +62,4 @@ public class EngineSampleRealTimeOuter {
             // 此时cursor的值和sampleResultLength相同,进行下一次循环
         }
     }
-
-//    public void sampleRealOuter() {
-//        // 如果Engine还处于运行状态则保持输出状态
-//        while (controller.getEngineStatus()) {
-//            String sampleResult = runningSampleResultList.rightPop();
-//            if (Objects.nonNull(sampleResult)) {
-//                log.info(sampleResult);
-//                template.convertAndSend("/sampleResult/data", sampleResult);
-//            }
-//        }
-//    }
 }

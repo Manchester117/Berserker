@@ -70,6 +70,11 @@ public class SampleResultServiceImpl implements SampleResultService{
         return seriesElement;
     }
 
+    /**
+     * @description                     根据resultId获取场景的SampleResultList,提供给前端显示趋势图.
+     * @param resultId                  场景结果ID
+     * @return                          返回给前端的列表
+     */
     @Override
     public List<SampleResultInfo> getSampleResultData(Integer resultId) {
         List<String> samplerLabelList = sampleMapper.getSamplerLabelByResultId(resultId);
@@ -81,9 +86,15 @@ public class SampleResultServiceImpl implements SampleResultService{
         return sampleResultData;
     }
 
+    /**
+     * @description                     将所有SampleResult写入到DB中
+     * @param runningResultId           场景结果ID
+     * @param runningSampleResultList   从Redis中取出的SampleResultList
+     */
     @Override
     public void addSampleResultToDB(Integer runningResultId, BoundListOperations<String, String> runningSampleResultList) {
         List<SampleResultInfo> sampleResultInfoList = new ArrayList<>();
+        // 对Redis中存放的SampleResultList进行迭代
         while (runningSampleResultList.size() > 0) {
             // 从Redis中获取每个SampleResult的字符串
             String sampleResultString = runningSampleResultList.leftPop();
