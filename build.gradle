@@ -25,8 +25,8 @@ repositories {
 
 configurations {
     providedRuntime
-    // 禁用Springboot的默认日志组件
-//     all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    // 禁用Springboot的默认日志组件(部署至Tomcat时需要打开此注释)
+    // all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 }
 
 bootRun {
@@ -40,6 +40,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-redis:1.5.11.RELEASE')
     compile('org.springframework.boot:spring-boot-gradle-plugin:1.5.11.RELEASE')
     compile('org.springframework.boot:spring-boot-devtools:1.5.11.RELEASE')
+    // 部署至Tomcat时需要注释此引用
     compile('org.springframework.boot:spring-boot-starter-logging:1.5.11.RELEASE') {
         exclude module: 'ch.qos.logback:logback-classic:1.1.11'
     }
@@ -80,5 +81,6 @@ dependencies {
     testCompile('org.mockito:mockito-all:1.10.19')
     testCompile('org.springframework.boot:spring-boot-starter-test:1.5.11.RELEASE')
 
-    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat:1.5.11.RELEASE')
+    // 部署至Tomcat时需要打开此注释
+//    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat:1.5.11.RELEASE')
 }
