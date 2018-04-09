@@ -1,7 +1,6 @@
 package com.bushmaster.architecture.engine.core;
 
 import com.bushmaster.architecture.utils.FileStorageUtil;
-import com.google.common.base.Objects;
 import org.apache.jmeter.control.LoopController;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.save.SaveService;
