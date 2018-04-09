@@ -2,8 +2,6 @@ package com.bushmaster.architecture.domain.param;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Pattern;
-
 public class ScenarioResultListParams {
     @NotEmpty(message="分页页码不能为空")
     private String offset;
