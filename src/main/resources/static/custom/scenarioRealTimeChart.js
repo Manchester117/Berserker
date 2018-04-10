@@ -120,7 +120,7 @@ $("#container").highcharts({
         useGPUTranslations: true
     },
     title: {
-        text: $("input[name='chartTitle']").val() + '-运行状态'
+        text: $("input[name='chartTitle']").val()
     },
     xAxis: {
         type: 'datetime',
