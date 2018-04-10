@@ -25,7 +25,6 @@ repositories {
 
 configurations {
     providedRuntime
-    // 禁用Springboot的默认日志组件(部署至Tomcat时需要打开此注释)
     all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
 }
 
