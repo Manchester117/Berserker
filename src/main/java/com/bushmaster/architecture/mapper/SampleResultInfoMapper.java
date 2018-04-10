@@ -24,6 +24,6 @@ public interface SampleResultInfoMapper {
     @Select("SELECT samplerLabel FROM sampleresultinfo WHERE resultId = #{resultId} GROUP BY samplerLabel")
     List<String> getSamplerLabelByResultId(Integer resultId);
 
-    @Select("SELECT * FROM sampleresultinfo WHERE resultId = 2 AND samplerLabel = #{samplerLabel} ORDER BY id DESC LIMIT 1")
+    @Select("SELECT * FROM sampleresultinfo WHERE resultId = #{resultId} AND samplerLabel = #{samplerLabel} ORDER BY id DESC LIMIT 1")
     SampleResultInfo getSampleResultData(@Param("resultId") Integer resultId, @Param("samplerLabel") String samplerLabel);
 }

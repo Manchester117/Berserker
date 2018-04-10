@@ -194,7 +194,7 @@
                     <th>平均页面大小(Bytes)</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody th:if="${not #lists.isEmpty(resultDataList)}">
                     <tr th:each="resultData:${resultDataList}">
                         <td th:text="${resultData.getSamplerLabel()}"></td>
                         <td th:text="${resultData.getMeanTime()}"></td>

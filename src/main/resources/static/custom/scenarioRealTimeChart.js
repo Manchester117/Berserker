@@ -103,7 +103,6 @@ Highcharts.setOptions({
 /**
  * @description HighCharts配置项
  */
-// var chartId = $("input[name='chartId']").val();
 $("#container").highcharts({
     series: [],
     chart: {
