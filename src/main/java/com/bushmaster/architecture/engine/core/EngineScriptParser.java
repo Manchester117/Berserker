@@ -152,7 +152,7 @@ public class EngineScriptParser {
                     Map<String, Object> subTestElementMap = new HashMap<>();            // 将测试计划中的子元素添加到Map当中
                     subTestElementMap.put("text", subTestElement.getName());
                     subTestElementList.add(subTestElementMap);
-
+                    // 递归方法,解析测试计划
                     createScriptDataStructure(subTestElement, subTestPlanTree, subTestElementMap);
                 }
             }
