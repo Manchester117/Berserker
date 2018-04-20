@@ -142,7 +142,7 @@ $("#container").highcharts({
     plotOptions: {
         series: {
             marker: {
-                enabled: true             // 显示数据点
+                enabled: false            // 显示数据点
             },
             lineWidth: 2                  // 线宽
         }

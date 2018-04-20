@@ -2,6 +2,7 @@ package com.bushmaster.architecture.engine.collect;
 
 import com.alibaba.fastjson.JSON;
 import com.bushmaster.architecture.domain.entity.SampleResultInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
@@ -39,6 +40,14 @@ public class EngineSampleCollector extends ResultCollector{
         super.sampleOccurred(event);
         SampleResult result = event.getResult();
         String sampleLabel = result.getSampleLabel();
+
+        // 输出请求数据和响应,用于调试.后面考虑加入实时日志显示
+        if (result.getUrlAsString().contains("/Recruiter/Login")) {
+            log.info("*************************************");
+            log.info(StringUtils.join("请求发送: ", result.getSamplerData()));                       // 打印请求URL和参数
+            log.info(StringUtils.join("请求响应: " + result.getResponseDataAsString()));              // 打印请求返回值
+            log.info("*************************************");
+        }
 
         // 必须要针对不同的请求分别实例化计数器.如果直接使用计数器,则区分不出来请求的数据.
         if (Objects.isNull(calculatorContainer.get(sampleLabel))){

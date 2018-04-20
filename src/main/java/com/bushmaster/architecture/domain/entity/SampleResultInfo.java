@@ -49,8 +49,12 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setMeanTime(Double meanTime) {
-        BigDecimal bigDecimal = new BigDecimal(meanTime);
-        this.meanTime = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (Double.isFinite(meanTime)) {
+            BigDecimal bigDecimal = new BigDecimal(meanTime.toString());
+            this.meanTime = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else {
+            this.meanTime = 0.0;
+        }
     }
 
     public Long getMinTime() {
@@ -74,9 +78,12 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setStandardDeviation(Double standardDeviation) {
-        // 保留2位小数
-        BigDecimal bigDecimal = new BigDecimal(standardDeviation);
-        this.standardDeviation = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (Double.isFinite(standardDeviation)) {
+            BigDecimal bigDecimal = new BigDecimal(standardDeviation.toString());
+            this.standardDeviation = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();        // 保留2位小数
+        } else {
+            this.standardDeviation = 0.0;
+        }
     }
 
     public Double getErrorPercentage() {
@@ -92,8 +99,12 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setRequestRate(Double requestRate) {
-        BigDecimal bigDecimal = new BigDecimal(requestRate);
-        this.requestRate = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (Double.isFinite(requestRate)) {                                     // 这里使用了isFinite方法,判断是有效数据,避免计数器返回无限大的数据,导致数据解析失败.
+            BigDecimal bigDecimal = new BigDecimal(requestRate.toString());
+            this.requestRate = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else {
+            this.requestRate = 0.0;
+        }
     }
 
     public Double getReceiveKBPerSecond() {
@@ -101,8 +112,12 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setReceiveKBPerSecond(Double receiveKBPerSecond) {
-        BigDecimal bigDecimal = new BigDecimal(receiveKBPerSecond);
-        this.receiveKBPerSecond = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (Double.isFinite(receiveKBPerSecond)) {
+            BigDecimal bigDecimal = new BigDecimal(receiveKBPerSecond);
+            this.receiveKBPerSecond = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else {
+            this.receiveKBPerSecond = 0.0;
+        }
     }
 
     public Double getSentKBPerSecond() {
@@ -110,8 +125,12 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setSentKBPerSecond(Double sentKBPerSecond) {
-        BigDecimal bigDecimal = new BigDecimal(sentKBPerSecond);
-        this.sentKBPerSecond = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (Double.isFinite(sentKBPerSecond)) {
+            BigDecimal bigDecimal = new BigDecimal(sentKBPerSecond.toString());
+            this.sentKBPerSecond = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else {
+            this.sentKBPerSecond = 0.0;
+        }
     }
 
     public Double getAvgPageBytes() {
@@ -119,8 +138,12 @@ public class SampleResultInfo implements Serializable {
     }
 
     public void setAvgPageBytes(Double avgPageBytes) {
-        BigDecimal bigDecimal = new BigDecimal(avgPageBytes);
-        this.avgPageBytes = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (Double.isFinite(avgPageBytes)) {
+            BigDecimal bigDecimal = new BigDecimal(avgPageBytes.toString());
+            this.avgPageBytes = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else {
+            this.avgPageBytes = 0.0;
+        }
     }
 
     public Integer getThreadCount() {

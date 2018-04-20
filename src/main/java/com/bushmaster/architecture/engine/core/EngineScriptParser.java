@@ -115,9 +115,8 @@ public class EngineScriptParser {
     public List<Map<String, Object>> parseScriptToDataStructure(File scriptFile) {
         HashTree testPlanTree = this.loadTestPlan(scriptFile);
         List<Map<String, Object>> scriptStructureList = new ArrayList<>();
-        Map<String, Object> scriptDataStructure = null;
         // 将测试计划的HashTree转换成Java的Map结构
-        scriptDataStructure = new HashMap<>();
+        Map<String, Object> scriptDataStructure = new HashMap<>();
         TestElement testPlanElement = (TestElement)testPlanTree.getArray()[0];
         createScriptDataStructure(testPlanElement, testPlanTree, scriptDataStructure);
 
@@ -147,11 +146,15 @@ public class EngineScriptParser {
             for (Object subTestElementObj: subTestElementArray) {
                 TestElement subTestElement = (TestElement) subTestElementObj;
 
-                Map<String, Object> subTestElementMap = new HashMap<>();            // 将测试计划中的子元素添加到Map当中
-                subTestElementMap.put("text", subTestElement.getName());
-                subTestElementList.add(subTestElementMap);
+                // 如果测试计划中的元素时启用状态,则显示,否则不显示.
+                String testElementIsEnable = subTestElement.getProperty("TestElement.enabled").getStringValue();
+                if (Objects.equals(testElementIsEnable, "true")) {
+                    Map<String, Object> subTestElementMap = new HashMap<>();            // 将测试计划中的子元素添加到Map当中
+                    subTestElementMap.put("text", subTestElement.getName());
+                    subTestElementList.add(subTestElementMap);
 
-                createScriptDataStructure(subTestElement, subTestPlanTree, subTestElementMap);
+                    createScriptDataStructure(subTestElement, subTestPlanTree, subTestElementMap);
+                }
             }
         }
     }
