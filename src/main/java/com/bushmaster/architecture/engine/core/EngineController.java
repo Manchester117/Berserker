@@ -67,6 +67,10 @@ public class EngineController {
         return runningSampleResultList;
     }
 
+    /**
+     * @description             场景的停止方法
+     * @return                  返回停止的标志位
+     */
     public Map<String, Object> stopEngine() {
         Map<String, Object> stopRunResult = new HashMap<>();
         if (engine.isActive()) {

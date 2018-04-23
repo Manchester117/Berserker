@@ -35,6 +35,10 @@ public class EngineSampleCollector extends ResultCollector{
         this.runningResultId = runningResultId;
     }
 
+    /**
+     * @description         性能数据的采样方法
+     * @param event         请求样本
+     */
     @Override
     public void sampleOccurred(SampleEvent event) {
         super.sampleOccurred(event);

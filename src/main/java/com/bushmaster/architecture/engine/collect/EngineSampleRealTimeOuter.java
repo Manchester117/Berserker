@@ -19,6 +19,10 @@ public class EngineSampleRealTimeOuter {
 
     private BoundListOperations<String, String> runningSampleResultList;
 
+    /**
+     * @description                         获取Redis的队列列表
+     * @param runningSampleResultList       Redis队列列表
+     */
     public void setRunningSampleResultList(BoundListOperations<String, String> runningSampleResultList) {
         this.runningSampleResultList = runningSampleResultList;
     }

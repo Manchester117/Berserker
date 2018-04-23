@@ -17,6 +17,11 @@ public class EngineScenarioReader {
     @Autowired
     private ScriptUtil scriptUtil;
 
+    /**
+     * @description         场景信息的读取(ID,场景名称,测试计划,并发数量,攀升时间,持续时间)
+     * @param scenarioId    场景ID
+     * @return              返回场景的Map<String, Object>结构
+     */
     public Map<String, Object> testPlanReader(Integer scenarioId) {
         ScenarioInfo scenarioInfo = scenarioInfoMapper.getScenarioInfo(scenarioId);
         File scriptFileObject = scriptUtil.getScriptFileByScenarioId(scenarioId);

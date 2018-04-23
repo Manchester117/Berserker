@@ -22,6 +22,12 @@ public class EngineTestPlanSetter {
     @Autowired
     private FileStorageUtil fileUtil;
 
+    /**
+     * @description             根据页面中输入的参数,给测试计划设定并发数量,攀升时间,持续时间.以及修改一些计划中的数据
+     * @param testPlanInfo      测试计划的实体
+     * @param collectorList     结果收集器的列表
+     * @return
+     */
     public HashTree testPlanSetting(Map<String, Object> testPlanInfo, List<ResultCollector> collectorList) {
         // 脚本读取
         File scriptFile = (File) testPlanInfo.get("scriptFile");
