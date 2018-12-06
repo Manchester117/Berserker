@@ -1,14 +1,5 @@
 .gradle
-/build/
 !gradle/wrapper/gradle-wrapper.jar
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
 
 ### IntelliJ IDEA ###
 .idea
@@ -23,3 +14,5 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+log/
+out/
